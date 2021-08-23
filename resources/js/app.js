@@ -22,6 +22,7 @@ Vue.component(
 //     "permanences",
 //     require("./components/PermanencesComponent.vue").default
 // );
+Vue.component('navbar-component', require('./components/NavbarComponent.vue').default);
 
 // import Default from './layouts/Default.vue'
 // import NoSidebar from './layouts/NoSidebar.vue'

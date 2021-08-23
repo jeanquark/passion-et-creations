@@ -27,8 +27,12 @@
 </head>
 
 <body class="">
-    <div id="app" v-cloak>
-        <v-app>
+    {{-- <div id="app" v-cloak> --}}
+        <v-app id="app" v-cloak>
+            {{-- <router-view></router-view> --}}
+            <navbar-component></navbar-component>
+            <br />
+
             <h1>Passion et Créations</h1>
             <example-component></example-component>
             <v-row no-gutters>
@@ -89,8 +93,9 @@
                     @endrole
                 </v-col>
             </v-row>
+            <router-view></router-view>
         </v-app>
-    </div>
+    {{-- </div> --}}
     <script src="{{ mix('js/app.js') }}"></script>
 </body>
 

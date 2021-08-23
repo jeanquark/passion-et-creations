@@ -57,6 +57,13 @@ return [
             'root' => storage_path('app/files'),
             'url' => env('APP_URL').'/files',
             'visibility' => 'private',
+        ],
+
+        'portfolio' => [
+            'driver' => 'local',
+            'root' => public_path('images/portfolio'),
+            'url' => env('APP_URL').'/images/portfolio',
+            'visibility' => 'public',
         ]
     ],
 

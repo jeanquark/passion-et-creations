@@ -22,12 +22,18 @@ import Lawyer from '../views/lawyer'
 import Permanences from '../views/permanences'
 import Slider from '../views/slider'
 import Portfolio from '../views/portfolio'
+import Home from '../views/index'
 
 import log from '../middleware/log'
 
 const router = new VueRouter({
     mode: 'history',
     routes: [
+        {
+            path: '/',
+            name: 'Home',
+            component: Home
+        },
         {
             path: '/student',
             name: 'student',

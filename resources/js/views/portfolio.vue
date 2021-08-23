@@ -1,34 +1,42 @@
 <template>
-    <v-app>
+    <div>
+        <navbar-component></navbar-component>
         <p>Start of page</p>
-        <v-btn small color="primary"> Click me </v-btn><br />
         <waterfall :line-gap="250" :watch="items">
             <waterfall-slot v-for="(item, index) in items" :width="item.width" :height="item.height" :order="index" :key="index">
-                <v-img :lazy-src="item.src" :src="item.src" style="margin: 5px" @click="dialog = true"></v-img>
+                <v-img :lazy-src="item.src" :src="item.src" class="image" style="margin: 5px" @click="dialog = true"></v-img>
             </waterfall-slot>
         </waterfall>
         <p>End of page</p>
         <v-dialog v-model="dialog" max-width="60%">
             <v-card>
-                <v-row no-gutters>
-                    <v-col cols="8" class="pa-2">
-                        <v-img src="/images/portfolio/1920x1080.jpg"></v-img>
-                    </v-col>
-                    <v-col cols="4" class="px-4 py-1">
-                        <v-row no-gutters>
-                            <v-col cols="4" class="pa-1">
-                                <v-img src="/images/portfolio/1920x1200.jpg" aspect-ratio="1"></v-img>
-                            </v-col>
-                            <v-col cols="4" class="pa-1">
-                                <v-img src="/images/portfolio/3200x1800.jpg" aspect-ratio="1"></v-img> </v-col
-                            ><v-col cols="4" class="pa-1">
-                                <v-img src="/images/portfolio/768x1080.jpg" aspect-ratio="1"></v-img> </v-col
-                            ><v-col cols="4" class="pa-1">
-                                <v-img src="/images/portfolio/1920x1080.jpg" aspect-ratio="1"></v-img>
-                            </v-col>
-                        </v-row>
-                    </v-col>
-                </v-row>
+                <v-card-title class="text-h5 grey lighten-2">
+                    <v-btn small>Left</v-btn>
+                    <v-btn small>Right</v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn small @click="dialog = false">Close</v-btn>
+                </v-card-title>
+                <v-card-text>
+                    <v-row no-gutters>
+                        <!-- <v-col cols="1"></v-col> -->
+                        <v-col cols="8" class="pa-2">
+                            <v-img src="/images/portfolio/1920x1080.jpg"></v-img>
+                        </v-col>
+                        <v-col cols="4" class="px-4 py-1">
+                            <v-row no-gutters>
+                                <v-col cols="4" class="pa-1">
+                                    <v-img src="/images/portfolio/1920x1200.jpg" aspect-ratio="1"></v-img>
+                                </v-col>
+                                <v-col cols="4" class="pa-1"> <v-img src="/images/portfolio/3200x1800.jpg" aspect-ratio="1"></v-img> </v-col
+                                ><v-col cols="4" class="pa-1"> <v-img src="/images/portfolio/768x1080.jpg" aspect-ratio="1"></v-img> </v-col
+                                ><v-col cols="4" class="pa-1">
+                                    <v-img src="/images/portfolio/1920x1080.jpg" aspect-ratio="1"></v-img>
+                                </v-col>
+                            </v-row>
+                        </v-col>
+                        <!-- <v-col cols="1"></v-col> -->
+                    </v-row>
+                </v-card-text>
 
                 <v-divider></v-divider>
 
@@ -38,14 +46,23 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
-    </v-app>
+    </div>
 </template>
 
 <script>
+import Navbar from '../components/NavbarComponent'
 import Waterfall from 'vue-waterfall/lib/waterfall'
 import WaterfallSlot from 'vue-waterfall/lib/waterfall-slot'
 export default {
-    components: { Waterfall, WaterfallSlot },
+    components: { Navbar, Waterfall, WaterfallSlot },
+    async created () {
+        // 1) Fetch images
+        await this.$store.dispatch('images/fetchImages')
+        // await this.$store.dispatch("calendars/fetchCalendars", {
+        //         year: this.year,
+        //         quarter: this.quarter
+        //     });
+    },
     data() {
         return {
             dialog: false,
@@ -93,7 +110,11 @@ export default {
 </script>
 
 <style scoped>
-.v-image:hover {
+/* .v-image:hover {
+    cursor: pointer;
+    border: 2px solid red;
+} */
+.image:hover {
     cursor: pointer;
     border: 2px solid red;
 }
