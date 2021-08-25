@@ -1,5 +1,15 @@
 <template>
+    <!-- <v-container fluid class="pa-0"> -->
+    <!-- <v-layout> -->
     <v-main>
+        <!-- <v-row no-gutters>
+            <v-col cols="12">
+                <v-card> -->
+        <!-- <v-app-bar color="deep-purple accent-4" dark prominent> -->
+        <!-- <v-app-bar-nav-icon
+                @click.stop="drawer = !drawer"
+            ></v-app-bar-nav-icon> -->
+        <!-- drawer: {{ drawer }} -->
         <v-navigation-drawer
             fixed
             permanent
@@ -54,26 +64,27 @@
                     </v-list-item-icon>
                     <v-list-item-title>Fichiers</v-list-item-title>
                 </v-list-item>
-                <v-list-item to="/admin/portfolio">
-                    <v-list-item-icon>
-                        <v-icon>mdi-image-multiple</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-title>Portfolio</v-list-item-title>
-                </v-list-item>
-                <v-list-item href="/">
-                    <v-list-item-icon>
-                        <v-icon>mdi-arrow-left-circle</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-title>Retour au site</v-list-item-title>
-                </v-list-item>
             </v-list>
         </v-navigation-drawer>
+        <!-- </v-app-bar> -->
+        <!-- <v-icon large>mdi-menu</v-icon> -->
+
+        <!-- <div style="width: 200px; border: 1px solid red;">
+                        </div>-->
         <v-container
             fluid
             :class="[miniSidebar ? 'padding-left__small' : 'padding-left__big']"
         >
             <router-view></router-view>
         </v-container>
+        <!-- </v-card> -->
+        <!-- </v-col> -->
+        <!-- <v-col>
+                
+            </v-col> -->
+        <!-- </v-row> -->
+        <!-- </v-container> -->
+        <!-- </v-layout> -->
     </v-main>
 </template>
 
@@ -82,6 +93,9 @@ export default {
     name: "AdminIndex",
     data() {
         return {
+            // mini: true
+            // drawer: false,
+            // miniSidebar: false
         };
     },
     computed: {

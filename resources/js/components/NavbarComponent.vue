@@ -18,6 +18,7 @@
         <router-link to="/portfolio">Portfolio</router-link> |
         <a href="/">Home</a> | 
         <a href="/portfolio">Portfolio</a> |
+        <a href="/creatrice">Créatrice</a> |
         <a href="/admin">Admin</a>
     </v-app-bar>
     <!-- </div> -->

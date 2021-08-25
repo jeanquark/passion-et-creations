@@ -5,6 +5,9 @@ Vue.use(VueRouter)
 
 import AdminLayout from '../views/admin/layout'
 import AdminIndex from '../views/admin/index'
+import AdminPortfolio from '../views/admin/portfolio/layout'
+import AdminPortfolioIndex from '../views/admin/portfolio/index'
+import AdminPortfolioCreate from '../views/admin/portfolio/create'
 import AdminLawyers from '../views/admin/lawyers/layout'
 // import AdminLawyersHome from "../views/admin/lawyers/home"
 import AdminLawyersIndex from '../views/admin/lawyers/index'
@@ -23,6 +26,7 @@ import Permanences from '../views/permanences'
 import Slider from '../views/slider'
 import Portfolio from '../views/portfolio'
 import Home from '../views/index'
+import Creatrice from '../views/creatrice'
 
 import log from '../middleware/log'
 
@@ -73,6 +77,15 @@ const router = new VueRouter({
             }
         },
         {
+            path: '/creatrice',
+            name: 'creatrice',
+            component: Creatrice
+        },
+        
+
+
+
+        {
             path: '/admin',
             name: 'adminLayout',
             component: AdminLayout,
@@ -81,6 +94,27 @@ const router = new VueRouter({
                     path: 'index',
                     name: 'adminIndex',
                     component: AdminIndex
+                },
+                {
+                    path: 'portfolio',
+                    component: AdminPortfolio,
+                    children: [
+                        {
+                            path: '',
+                            name: 'adminPortfolioIndex',
+                            component: AdminPortfolioIndex
+                        },
+                        {
+                            path: 'create',
+                            name: 'adminPortfolioCreate',
+                            component: AdminPortfolioCreate
+                        },
+                        // {
+                        //     path: ':id/editer',
+                        //     name: 'adminLawyersEdit',
+                        //     component: AdminLawyersEdit
+                        // }
+                    ]
                 },
                 {
                     path: 'avocats',

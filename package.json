@@ -26,7 +26,10 @@
         "@mdi/font": "^5.9.55",
         "js-file-download": "^0.4.12",
         "moment": "^2.29.1",
+        "object-to-formdata": "^4.1.0",
+        "vform": "^2.1.1",
         "vue-meta": "^2.4.0",
+        "vue-sidebar-menu": "^4.8.1",
         "vue-waterfall": "^1.0.6",
         "vuetify": "^2.3.21",
         "vuex-router-sync": "^5.0.0"

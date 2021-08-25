@@ -14,7 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::apiResource('/v1/images', App\Http\Controllers\ImagesController::class);
+// Route::apiResource('/v1/images', App\Http\Controllers\ImagesController::class);
+// Route::post('/v1/images/destroy', [
+//     'as' => 'folders.destroy', 
+//     'uses' => 'App\Http\Controllers\FoldersController@destroy'
+// ]);
+Route::get('/v1/images', [App\Http\Controllers\ImagesController::class, 'index']);
+Route::post('/v1/images', [App\Http\Controllers\ImagesController::class, 'uploadImage']);
+Route::post('/v1/images/delete', [App\Http\Controllers\ImagesController::class, 'deleteImage']);
+
+
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();

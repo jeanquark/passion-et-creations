@@ -1,4 +1,6 @@
+import axios from 'axios'
 import Vue from 'vue'
+import { serialize } from 'object-to-formdata'
 
 export const state = () => ({
     images: []
@@ -63,6 +65,24 @@ export const actions = {
         } catch (error) {
             console.log('error: ', error)
             throw error
+        }
+    },
+    async uploadImage({}, form) {
+        try {
+            // await axios.post('/api/v1/images', {
+            //     payload
+            // })
+            console.log('[VUEX] images/uploadImage: ', form)
+            const { data } = await form.submit('post', `/api/v1/images`, {
+                transformRequest: [
+                    function(data, headers) {
+                        return serialize(data)
+                    }
+                ]
+            })
+            console.log('data: ', data)
+        } catch (error) {
+            console.log('error: ', error)
         }
     },
     async deleteImage({ }, payload) {

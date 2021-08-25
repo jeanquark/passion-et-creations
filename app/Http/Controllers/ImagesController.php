@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\File;
+// use App\Models\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Response;
+use File;
+// use Intervention\Image\ImageManagerStatic as Image;
+// use Intervention\Image\Facades\Image as Image;
+use Image;
 
 class ImagesController extends Controller
 {
@@ -16,26 +20,17 @@ class ImagesController extends Controller
      */
     public function index()
     {
-        // $images = Storage::disk('images')->get('Webstamps.pdf');
-
-        // $directories = Storage::disk('images')->allDirectories();
-        // $images = Storage::disk('files')->allFiles();
-        // $images = Storage::disk('portfolio')->exists('400x400.jpg');
         $files_with_size = array();
         $files = Storage::disk('portfolio')->allFiles();
         foreach ($files as $key => $file) {
             $files_with_size[$key]['name'] = $file;
             $files_with_size[$key]['size'] = Storage::disk('portfolio')->size($file);
-            // $files_with_size[$key]['size2'] = Storage::disk('portfolio')->getimagesize($file);
             list($width, $height, $type, $attr) = getimagesize('images/portfolio/' . $file);
             $files_with_size[$key]['width'] = $width;
             $files_with_size[$key]['height'] = $height;
         }
-        // dd($files_with_size);
 
         return response()->json([
-            // 'directories' => $directories,
-            // 'images' => $images,
             'images' => $files_with_size
         ]);
     }
@@ -46,9 +41,64 @@ class ImagesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function uploadImage(Request $request)
+    {
+        // return response()->json([
+        //     'success' => true,
+        //     'request' => $request,
+        //     'request->image' => $request->image,
+        //     'File::exists($request->image)' => File::exists($request->image)
+        // ], 200);
+
+        if (File::exists($request->image)) { // Upload single image
+
+            $request->validate([
+                'image' => 'required|image',
+            ]);
+
+            // $img = Image::make('foo.jpg')->resize(300, 200);
+            $img = Image::make($request->image)->resize(300, 200); 
+
+            Storage::disk('portfolio')->putFileAs('/', $request->image, 'abc.jpg');
+            Storage::disk('portfolio')->putFileAs('/thumbnails', $request->image, 'abc.jpg');
+
+            return response()->json([
+                'success' => true,
+                'request' => $request,
+                'request->file("image")' => $request->file('image'),
+                'img' => $img
+            ], 200);
+        }
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteImage(Request $request)
+    {
+        return response()->json([
+            'status' => 'success',
+            'function' => 'deleteImage'
+        ]);
+    }
+
+
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
-        //
+        return response()->json([
+            'status' => 'success',
+            'function' => 'store'
+        ]);
     }
 
     /**
