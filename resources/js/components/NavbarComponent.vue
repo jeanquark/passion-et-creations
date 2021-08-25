@@ -1,7 +1,7 @@
 <template>
 <!-- <div> -->
     <!-- <router-view><router-view> -->
-    <v-app-bar flat elevate-on-scroll class="">
+    <v-app-bar app fixed class="">
         <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
         <v-toolbar-title>Passion & Créations</v-toolbar-title>

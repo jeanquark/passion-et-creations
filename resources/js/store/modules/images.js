@@ -6,15 +6,7 @@ export const state = () => ({
 
 export const mutations = {
     SET_IMAGES(state, payload) {
-        const { year, quarter, data } = payload;
-        // state.images = payload
-        if (!state.images[year]) {
-            Vue.set(state.images, year, {});
-        }
-        if (!state.images[year][quarter]) {
-            Vue.set(state.images[year], quarter, {});
-        }
-        state.images[year][quarter] = data[year][quarter];
+        state.images = payload;
     }
 }
 
@@ -24,7 +16,8 @@ export const actions = {
             console.log('[VUEX] fetchImages: ', payload)
             const { data } = await axios.get(`/api/v1/images`)
             console.log('data: ', data)
-            return data
+            commit('SET_IMAGES', data)
+            // return data
         } catch (error) {
             console.log('error: ', error)
             throw error

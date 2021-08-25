@@ -28,11 +28,10 @@
 
 <body class="">
     {{-- <div id="app" v-cloak> --}}
-        <v-app id="app" v-cloak>
-            {{-- <router-view></router-view> --}}
-            <navbar-component></navbar-component>
-            <br />
-
+    <v-app id="app" v-cloak>
+        {{-- <router-view></router-view> --}}
+        <navbar-component></navbar-component>
+        <v-main>
             <h1>Passion et Créations</h1>
             <example-component></example-component>
             <v-row no-gutters>
@@ -94,7 +93,8 @@
                 </v-col>
             </v-row>
             <router-view></router-view>
-        </v-app>
+        </v-main>
+    </v-app>
     {{-- </div> --}}
     <script src="{{ mix('js/app.js') }}"></script>
 </body>

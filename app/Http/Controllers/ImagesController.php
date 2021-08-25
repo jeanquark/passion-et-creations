@@ -21,11 +21,22 @@ class ImagesController extends Controller
         // $directories = Storage::disk('images')->allDirectories();
         // $images = Storage::disk('files')->allFiles();
         // $images = Storage::disk('portfolio')->exists('400x400.jpg');
-        $images = Storage::disk('portfolio')->allFiles();
+        $files_with_size = array();
+        $files = Storage::disk('portfolio')->allFiles();
+        foreach ($files as $key => $file) {
+            $files_with_size[$key]['name'] = $file;
+            $files_with_size[$key]['size'] = Storage::disk('portfolio')->size($file);
+            // $files_with_size[$key]['size2'] = Storage::disk('portfolio')->getimagesize($file);
+            list($width, $height, $type, $attr) = getimagesize('images/portfolio/' . $file);
+            $files_with_size[$key]['width'] = $width;
+            $files_with_size[$key]['height'] = $height;
+        }
+        // dd($files_with_size);
 
         return response()->json([
             // 'directories' => $directories,
-            'images' => $images,
+            // 'images' => $images,
+            'images' => $files_with_size
         ]);
     }
 
