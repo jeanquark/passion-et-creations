@@ -57,16 +57,21 @@ class ImagesController extends Controller
             ]);
 
             // $img = Image::make('foo.jpg')->resize(300, 200);
-            $img = Image::make($request->image)->resize(300, 200); 
+            $img = Image::make($request->image)->resize(300, 200);
+            $img->save(public_path()."/images/miniature.jpg");
+            // Storage::disk('portfolio')->putFileAs('/', $img, 'abc.jpg');
 
-            Storage::disk('portfolio')->putFileAs('/', $request->image, 'abc.jpg');
-            Storage::disk('portfolio')->putFileAs('/thumbnails', $request->image, 'abc.jpg');
+            $img2 = Image::make($request->image)->encode();
+            Storage::disk('portfolio')->put( 'photo.jpg', $img2);
+
+            // Storage::disk('portfolio')->putFileAs('/', $request->image, 'abc.jpg');
+            // Storage::disk('portfolio')->putFileAs('/thumbnails', $request->image, 'abc.jpg');
 
             return response()->json([
                 'success' => true,
                 'request' => $request,
-                'request->file("image")' => $request->file('image'),
-                'img' => $img
+                // 'request->file("image")' => $request->file('image'),
+                // 'img' => $img
             ], 200);
         }
     }
