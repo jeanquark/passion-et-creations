@@ -2,6 +2,7 @@
     <v-main>
         <v-navigation-drawer
             fixed
+            dark
             permanent
             clipped
             :mini-variant.sync="miniSidebar"

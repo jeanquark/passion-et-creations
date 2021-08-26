@@ -1,7 +1,6 @@
 <template>
     <div>
         <p>Portfolio Layout</p>
-        <!-- <router-link :to="{ name: 'adminPortfolioIndex' }">Portfolio</router-link> -->
         <router-view></router-view>
     </div>
 </template>

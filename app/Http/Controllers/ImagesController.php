@@ -8,11 +8,25 @@ use Illuminate\Support\Facades\Storage;
 use Response;
 use File;
 // use Intervention\Image\ImageManagerStatic as Image;
-// use Intervention\Image\Facades\Image as Image;
-use Image;
+use Intervention\Image\Facades\Image as Intervention;
+use App\Models\Image;
 
 class ImagesController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getImages()
+    {
+        $images = Image::all();
+
+        return response()->json([
+            'images' => $images,
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -53,25 +67,36 @@ class ImagesController extends Controller
         if (File::exists($request->image)) { // Upload single image
 
             $request->validate([
-                'image' => 'required|image',
+                'image' => 'required|image|max:1024',
             ]);
 
-            // $img = Image::make('foo.jpg')->resize(300, 200);
-            $img = Image::make($request->image)->resize(300, 200);
-            $img->save(public_path()."/images/miniature.jpg");
-            // Storage::disk('portfolio')->putFileAs('/', $img, 'abc.jpg');
+            // 1) Store original image
+            $image = $request->image->getClientOriginalName();
+            $imageName = pathinfo($image, PATHINFO_FILENAME);
+            $imageExtension = pathinfo($image, PATHINFO_EXTENSION);
+            $originalImage = Intervention::make($request->image)->encode();
+            Storage::disk('portfolio')->put($image, $originalImage);
 
-            $img2 = Image::make($request->image)->encode();
-            Storage::disk('portfolio')->put( 'photo.jpg', $img2);
+            // 2) Store thumbnail
+            $thumbnailName = $imageName . '_thumbnail' . '.' . $imageExtension;
+            $small = Intervention::make($request->image)->fit(512)->encode();
+            Storage::disk('portfolio')->put($thumbnailName, $small);
 
-            // Storage::disk('portfolio')->putFileAs('/', $request->image, 'abc.jpg');
-            // Storage::disk('portfolio')->putFileAs('/thumbnails', $request->image, 'abc.jpg');
+            // 3) Store blurry image
+            // $blurryName = $imageName . '_blurred' . '.' . $imageExtension;
+            // $blurry = Image::make($request->image)->blur(15)->encode();
+            // Storage::disk('portfolio')->put($blurryName, $blurry);
+
+            // 4) Store blurry thumbnail
+            $thumbnailBlurryName = $imageName . '_thumbnail_blurred' . '.' . $imageExtension;
+            $smallBlurry = Intervention::make($request->image)->fit(512)->blur(25)->encode();
+            Storage::disk('portfolio')->put($thumbnailBlurryName, $smallBlurry);
 
             return response()->json([
                 'success' => true,
                 'request' => $request,
-                // 'request->file("image")' => $request->file('image'),
-                // 'img' => $img
+                'request->image' => $request->image,
+                '$imageName' => $imageName,
             ], 200);
         }
     }

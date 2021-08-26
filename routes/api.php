@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 //     'as' => 'folders.destroy', 
 //     'uses' => 'App\Http\Controllers\FoldersController@destroy'
 // ]);
-Route::get('/v1/images', [App\Http\Controllers\ImagesController::class, 'index']);
+Route::get('/v1/images', [App\Http\Controllers\ImagesController::class, 'getImages']);
 Route::post('/v1/images', [App\Http\Controllers\ImagesController::class, 'uploadImage']);
 Route::post('/v1/images/delete', [App\Http\Controllers\ImagesController::class, 'deleteImage']);
 

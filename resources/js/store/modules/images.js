@@ -18,8 +18,7 @@ export const actions = {
             console.log('[VUEX] fetchImages: ', payload)
             const { data } = await axios.get(`/api/v1/images`)
             console.log('data: ', data)
-            commit('SET_IMAGES', data)
-            // return data
+            commit('SET_IMAGES', data.images)
         } catch (error) {
             console.log('error: ', error)
             throw error

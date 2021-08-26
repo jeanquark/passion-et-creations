@@ -1,13 +1,26 @@
 <template>
-    <v-row no-gutters justify="start">
-        <v-col cols="6">
-            <v-form @submit.prevent="uploadImage">
-                <!-- image: {{ image }} -->
-                <v-file-input accept="image/*" label="Selectionner image" show-size truncate-length="15" v-model="form.image"></v-file-input>
-                <v-btn small color="primary" type="submit" :disabled="form.busy">Ajouter</v-btn>
-            </v-form>
-        </v-col>
-    </v-row>
+    <v-main>
+        <v-breadcrumbs large :items="items"></v-breadcrumbs>
+        <v-row no-gutters justify="start">
+            <v-col cols="6">
+                <v-form @submit.prevent="uploadImage">
+                    <!-- image: {{ image }} -->
+                    form.busy: {{ form.busy }}<br />
+                    form.errors: {{ form.errors }}<br />
+                    <v-file-input
+                        accept="image/*"
+                        label="Selectionner image"
+                        prepend-icon="mdi-camera"
+                        show-size
+                        truncate-length="15"
+                        :error-messages="form.errors.get('image')"
+                        v-model="form.image"
+                    ></v-file-input>
+                    <v-btn small color="primary" type="submit" :loading="form.busy">Ajouter</v-btn>
+                </v-form>
+            </v-col>
+        </v-row>
+    </v-main>
 </template>
 
 <script>
@@ -16,10 +29,21 @@ export default {
     name: 'AdminPortfolioCreate',
     data() {
         return {
+            items: [
+                {
+                    text: 'Portfolio',
+                    disabled: true,
+                    href: '/admin/portfolio',
+                },
+                {
+                    text: 'Ajouter2',
+                    disabled: false,
+                    to: '/admin/portfolio/create',
+                },
+            ],
             form: new Form({
                 image: null,
             }),
-            image: null
         }
     },
     computed: {},
