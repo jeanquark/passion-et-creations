@@ -54,6 +54,7 @@
                 <v-col cols="12">
                     {{-- <v-btn small color="blue" class="white--text" @click="incrementCounter">Increment</v-btn> --}}
                     <v-btn small color="orange" class="white--text" @click="getUser">Get user</v-btn>
+                    <v-btn small color="success" class="white--text" @click="login">Login</v-btn>
 
                 </v-col>
                 <v-col cols="12">

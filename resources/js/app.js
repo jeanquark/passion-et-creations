@@ -73,8 +73,8 @@ const app = new Vue({
                 console.log("response: ", response);
                 // Login...
                 const response2 = await axios.post("/login", {
-                    email: "lawyer@example.com",
-                    password: "password"
+                    email: "admin@example.com",
+                    password: "secret"
                 });
                 console.log("response2: ", response2);
             } catch (error) {
