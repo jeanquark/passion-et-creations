@@ -12,9 +12,9 @@ export const mutations = {
 }
 
 export const actions = {
-    async fetchPortfolios({ commit }, payload) {
+    async fetchPortfolios({ commit }) {
         try {
-            console.log('[VUEX] fetchPortfolios: ', payload)
+            console.log('[VUEX] fetchPortfolios')
             const { data } = await axios.get(`/api/v1/portfolios`)
             console.log('data: ', data)
             commit('SET_PORTFOLIOS', data.portfolios)

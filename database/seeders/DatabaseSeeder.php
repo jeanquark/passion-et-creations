@@ -26,7 +26,9 @@ class DatabaseSeeder extends Seeder
                 // CalendarsTableSeeder::class,
                 // PermanencesTableSeeder::class,
                 // SliderTableSeeder::class,
-                ImagesTableSeeder::class
+                CategoriesTableSeeder::class,
+                ImagesTableSeeder::class,
+                PortfoliosTableSeeder::class
             ]);
         }
     }

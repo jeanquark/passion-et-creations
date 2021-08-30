@@ -1,15 +1,7 @@
 <template>
-    <div>
-        <p>
-            <router-link :to="{ name: 'adminIndex' }">Admin</router-link> |
-            <router-link :to="{ name: 'adminLawyers' }">Lawyers</router-link> |
-            <router-link :to="{ name: 'adminUsersCreate' }">Create User</router-link> |
-            <router-link :to="{ name: 'adminUsersEdit' }">Edit User</router-link>
-        </p>
-        <router-view></router-view>
-        <!-- <v-btn elevation="2" color="pink">Click me</v-btn> -->
-        
-    </div>
+    <v-main>
+        <v-breadcrumbs large :items="items"></v-breadcrumbs>
+    </v-main>
 </template>
 
 <script>
@@ -17,6 +9,18 @@ export default {
     name: "AdminUsersIndex",
     data() {
         return {
+            items: [
+                {
+                    text: 'Utilisateurs',
+                    disabled: true,
+                    href: '/admin/users',
+                },
+                {
+                    text: 'Ajouter',
+                    disabled: false,
+                    to: '/admin/users/create',
+                },
+            ],
         };
     }
 };

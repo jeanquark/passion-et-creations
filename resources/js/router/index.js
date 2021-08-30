@@ -5,9 +5,14 @@ Vue.use(VueRouter)
 
 import AdminLayout from '../views/admin/layout'
 import AdminIndex from '../views/admin/index'
-import AdminPortfolio from '../views/admin/portfolio/layout'
-import AdminPortfolioIndex from '../views/admin/portfolio/index'
-import AdminPortfolioCreate from '../views/admin/portfolio/create'
+import AdminImages from '../views/admin/images/layout'
+import AdminImagesIndex from '../views/admin/images/index'
+import AdminImagesCreate from '../views/admin/images/create'
+import AdminPortfolios from '../views/admin/portfolios/layout'
+import AdminPortfoliosIndex from '../views/admin/portfolios/index'
+import AdminPortfoliosCreate from '../views/admin/portfolios/create'
+import AdminUsers from '../views/admin/users/layout'
+import AdminUsersIndex from '../views/admin/users/index'
 import AdminLawyers from '../views/admin/lawyers/layout'
 // import AdminLawyersHome from "../views/admin/lawyers/home"
 import AdminLawyersIndex from '../views/admin/lawyers/index'
@@ -27,6 +32,8 @@ import Slider from '../views/slider'
 import Portfolio from '../views/portfolio'
 import Home from '../views/index'
 import Creatrice from '../views/creatrice'
+import Login from '../views/login'
+
 
 import log from '../middleware/log'
 
@@ -37,6 +44,11 @@ const router = new VueRouter({
             path: '/',
             name: 'Home',
             component: Home
+        },
+        {
+            path: '/login',
+            name: 'Login',
+            component: Login
         },
         {
             path: '/student',
@@ -96,63 +108,85 @@ const router = new VueRouter({
                     component: AdminIndex
                 },
                 {
-                    path: 'portfolio',
-                    component: AdminPortfolio,
+                    path: 'images',
+                    component: AdminImages,
                     children: [
                         {
                             path: '',
-                            name: 'adminPortfolioIndex',
-                            component: AdminPortfolioIndex
+                            name: 'adminImagesIndex',
+                            component: AdminImagesIndex
                         },
                         {
                             path: 'create',
-                            name: 'adminPortfolioCreate',
-                            component: AdminPortfolioCreate
-                        },
-                        // {
-                        //     path: ':id/editer',
-                        //     name: 'adminLawyersEdit',
-                        //     component: AdminLawyersEdit
-                        // }
-                    ]
-                },
-                {
-                    path: 'avocats',
-                    // name: "adminLawyers",
-                    component: AdminLawyers,
-                    children: [
-                        {
-                            path: '',
-                            name: 'adminLawyersIndex',
-                            component: AdminLawyersIndex
-                        },
-                        {
-                            path: 'ajouter',
-                            name: 'adminLawyersCreate',
-                            component: AdminLawyersCreate
-                        },
-                        {
-                            path: ':id/editer',
-                            name: 'adminLawyersEdit',
-                            component: AdminLawyersEdit
+                            name: 'adminImagesCreate',
+                            component: AdminImagesCreate
                         }
                     ]
                 },
                 {
-                    path: 'stagiaires',
-                    name: 'adminTraineesIndex',
-                    component: AdminTraineesIndex
+                    path: 'portfolios',
+                    component: AdminPortfolios,
+                    children: [
+                        {
+                            path: '',
+                            name: 'adminPortfoliosIndex',
+                            component: AdminPortfoliosIndex
+                        },
+                        {
+                            path: 'create',
+                            name: 'adminPortfoliosCreate',
+                            component: AdminPortfoliosCreate
+                        }
+                    ]
                 },
                 {
-                    path: 'permanences',
-                    name: 'adminPermanencesIndex',
-                    component: AdminPermanencesIndex
-                },
-                {
-                    path: 'files',
-                    name: 'adminFilesIndex',
-                    component: AdminFilesIndex
+                    path: 'users',
+                    component: AdminUsers,
+                    children: [
+                        {
+                            path: '',
+                            name: 'adminUsersIndex',
+                            component: AdminUsersIndex
+                        }
+                    ]
                 }
+                // {
+                //     path: 'avocats',
+                //     // name: "adminLawyers",
+                //     component: AdminLawyers,
+                //     children: [
+                //         {
+                //             path: '',
+                //             name: 'adminLawyersIndex',
+                //             component: AdminLawyersIndex
+                //         },
+                //         {
+                //             path: 'ajouter',
+                //             name: 'adminLawyersCreate',
+                //             component: AdminLawyersCreate
+                //         },
+                //         {
+                //             path: ':id/editer',
+                //             name: 'adminLawyersEdit',
+                //             component: AdminLawyersEdit
+                //         }
+                //     ]
+                // },
+                // {
+                //     path: 'stagiaires',
+                //     name: 'adminTraineesIndex',
+                //     component: AdminTraineesIndex
+                // },
+                // {
+                //     path: 'permanences',
+                //     name: 'adminPermanencesIndex',
+                //     component: AdminPermanencesIndex
+                // },
+                // {
+                //     path: 'files',
+                //     name: 'adminFilesIndex',
+                //     component: AdminFilesIndex
+                // }
             ]
         }
     ]

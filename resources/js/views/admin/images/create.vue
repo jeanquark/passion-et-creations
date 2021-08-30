@@ -26,7 +26,7 @@
 <script>
 import Form from 'vform'
 export default {
-    name: 'AdminPortfolioCreate',
+    name: 'AdminImagesCreate',
     data() {
         return {
             items: [

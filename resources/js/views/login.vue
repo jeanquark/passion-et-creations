@@ -2,6 +2,7 @@
     <v-main>
         <navbar-component></navbar-component>
         <p>Login<br /><br /></p>
+        form.errors.has('email'): {{ form.errors }}
         <v-container>
             <v-row align="center" justify="center">
                 <v-col cols="12" sm="8" md="4">
@@ -11,14 +12,14 @@
                         </v-toolbar>
                         <v-card-text>
                             <v-form>
-                                <v-text-field prepend-icon="mdi-account" name="email" label="Email" type="text" v-model="form.email"></v-text-field>
-                                <v-text-field id="password" prepend-icon="mdi-lock" name="password" label="Password" type="password" v-model="form.password"></v-text-field>
+                                <v-text-field prepend-icon="mdi-account" name="email" label="Email" type="text" :error-messages="[]" v-model="form.email"></v-text-field>
+                                <v-text-field id="password" prepend-icon="mdi-lock" name="password" label="Password" type="password" :error-messages="form.errors.get('email')" v-model="form.password"></v-text-field>
                             </v-form>
                         </v-card-text>
                         <v-card-actions class="justify-center">
                             <!-- <v-spacer></v-spacer> -->
                             <!-- <div class="text-xs-center"> -->
-                                <v-btn color="primary" class="" @click="login">Login</v-btn>
+                                <v-btn color="primary" :loading="form.busy" @click="login">Login</v-btn>
                             <!-- </div> -->
                         </v-card-actions>
                     </v-card>
@@ -30,7 +31,7 @@
 
 <script>
 import Navbar from '../components/NavbarComponent'
-import Form from 'vForm'
+import Form from 'vform'
 
 export default {
     components: { Navbar },
@@ -38,8 +39,8 @@ export default {
     data() {
         return {
             form: new Form({
-                email: '',
-                password: ''
+                email: 'admin@example.com',
+                password: 'secret1'
             })
         }
     },
@@ -47,19 +48,11 @@ export default {
     methods: {
         async login() {
             try {
-                const response = await axios.post("/login", {
-                    email: "rodriguez.eleanora@example.com",
-                    password: "password"
-                });
+                const response = await this.form.post("/login");
                 console.log('response: ', response)
-                // Submit the form.
-                // this.$store.commit('loading/SET_LOADING', true)
-                // await this.$store.dispatch('auth/login', this.form)
-
-                
+                this.$router.push('/admin')
             } catch (error) {
                 console.log('error: ', error)
-                this.$store.commit('loading/SET_LOADING', false)
             }
         }
     }

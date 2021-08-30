@@ -31,7 +31,7 @@
             <v-divider></v-divider>
 
             <v-list nav dense>
-                <v-list-item to="/admin/avocats">
+                <!-- <v-list-item to="/admin/avocats">
                     <v-list-item-icon>
                         <v-icon>mdi-account-tie</v-icon>
                     </v-list-item-icon>
@@ -54,12 +54,24 @@
                         <v-icon>mdi-file</v-icon>
                     </v-list-item-icon>
                     <v-list-item-title>Fichiers</v-list-item-title>
-                </v-list-item>
-                <v-list-item to="/admin/portfolio">
+                </v-list-item> -->
+                <v-list-item to="/admin/images">
                     <v-list-item-icon>
-                        <v-icon>mdi-image-multiple</v-icon>
+                        <v-icon>mdi-file-image</v-icon>
                     </v-list-item-icon>
-                    <v-list-item-title>Portfolio</v-list-item-title>
+                    <v-list-item-title>Images</v-list-item-title>
+                </v-list-item>
+                <v-list-item to="/admin/portfolios">
+                    <v-list-item-icon>
+                        <v-icon>mdi-folder-multiple-image</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>Portfolios</v-list-item-title>
+                </v-list-item>
+                <v-list-item to="/admin/users">
+                    <v-list-item-icon>
+                        <v-icon>mdi-account-group</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>Utilisateurs</v-list-item-title>
                 </v-list-item>
                 <v-list-item href="/">
                     <v-list-item-icon>

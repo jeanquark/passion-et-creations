@@ -22,7 +22,7 @@
 
 <script>
 export default {
-    name: 'AdminPortfolioIndex',
+    name: 'AdminImagesIndex',
     async created() {
         await this.$store.dispatch('images/fetchImages')
     },

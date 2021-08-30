@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::apiResource('/v1/images', App\Http\Controllers\ImagesController::class);
+// Route::get('/v1/portfolios', [App\Http\Controllers\PortfoliosController::class, 'getPortfolios']);
+// Route::post('/v1/portfolios/delete', [App\Http\Controllers\PortfoliosController::class, 'deletePortfolio']);
+Route::apiResource('/v1/portfolios', App\Http\Controllers\PortfoliosController::class);
 // Route::post('/v1/images/destroy', [
 //     'as' => 'folders.destroy', 
 //     'uses' => 'App\Http\Controllers\FoldersController@destroy'
