@@ -11,6 +11,7 @@ import AdminImagesCreate from '../views/admin/images/create'
 import AdminPortfolios from '../views/admin/portfolios/layout'
 import AdminPortfoliosIndex from '../views/admin/portfolios/index'
 import AdminPortfoliosCreate from '../views/admin/portfolios/create'
+import AdminPortfoliosEdit from '../views/admin/portfolios/edit'
 import AdminUsers from '../views/admin/users/layout'
 import AdminUsersIndex from '../views/admin/users/index'
 import AdminLawyers from '../views/admin/lawyers/layout'
@@ -33,7 +34,6 @@ import Portfolio from '../views/portfolio'
 import Home from '../views/index'
 import Creatrice from '../views/creatrice'
 import Login from '../views/login'
-
 
 import log from '../middleware/log'
 
@@ -93,9 +93,6 @@ const router = new VueRouter({
             name: 'creatrice',
             component: Creatrice
         },
-        
-
-
 
         {
             path: '/admin',
@@ -136,6 +133,11 @@ const router = new VueRouter({
                             path: 'create',
                             name: 'adminPortfoliosCreate',
                             component: AdminPortfoliosCreate
+                        },
+                        {
+                            path: ':id/edit',
+                            name: 'adminPortfoliosEdit',
+                            component: AdminPortfoliosEdit
                         }
                     ]
                 },

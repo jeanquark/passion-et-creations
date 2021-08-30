@@ -5,11 +5,35 @@
             <v-col cols="11">
                 <!-- portfolios: {{ portfolios }}<br /><br /> -->
                 <v-expansion-panels>
-                    <v-expansion-panel v-for="(item, i) in portfolios" :key="i">
-                        <v-expansion-panel-header> Item </v-expansion-panel-header>
+                    <v-expansion-panel v-for="(portfolio, i) in portfolios" :key="i">
+                        <v-expansion-panel-header>
+                            <v-row no-gutters justify="start" align="center">
+                                <v-col>
+                                    <v-img :src="portfolio.front_image.path" max-width="80" aspect-ratio="1" class="mr-3"></v-img>
+                                </v-col>
+                                <v-col> 
+                                    {{ portfolio.front_image.name }}</v-col>
+                                <v-spacer></v-spacer>
+                                <v-col>
+                                    <v-btn small color="primary" @click.native.stop="goToPage(portfolio.id)">Editer</v-btn>
+                                    <v-btn small color="error" @click.native.stop="goToPage(portfolio.id)">Supprimer</v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-expansion-panel-header>
                         <v-expansion-panel-content>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                            <v-row no-gutters>
+                                <v-col cols="12" md="6" lg="4" class="px-2">
+                                    <v-img :src="portfolio.front_image.path"></v-img>
+                                </v-col>
+                                <v-col cols="12" md="6" lg="8" class="px-2">
+                                    <div v-html="portfolio.description"></div>
+                                </v-col>
+                            </v-row>
+                            <v-row no-gutters>
+                                <v-col cols="12" md="4" lg="3" v-for="image in portfolio.images" :key="image.id" class="pa-2">
+                                    <v-img :src="image.path"></v-img>
+                                </v-col>
+                            </v-row>
                         </v-expansion-panel-content>
                     </v-expansion-panel>
                 </v-expansion-panels>
@@ -28,26 +52,29 @@ export default {
         return {
             items: [
                 {
-                    text: 'Portfolio',
+                    text: 'Portfolios',
                     disabled: true,
-                    href: '/admin/portfolio',
+                    href: '/admin/portfolios'
                 },
                 {
                     text: 'Ajouter',
                     disabled: false,
-                    to: '/admin/portfolio/create',
-                },
-            ],
+                    to: '/admin/portfolios/create'
+                }
+            ]
         }
     },
     computed: {
         portfolios() {
             return this.$store.getters['portfolios/portfolios']
-        },
+        }
     },
-    methods: {},
+    methods: {
+        goToPage(id) {
+            this.$router.push(`/admin/portfolios/${id}/edit`)
+        }
+    }
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
