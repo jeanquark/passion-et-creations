@@ -1,72 +1,64 @@
 <template>
-<div>
-    <!-- formContent: {{ formContent }} -->
-    <v-form>
-        <v-btn color="primary" class="mx-.5" @click.prevent="formatDoc('bold')">
-            Gras
-            <!-- <font-awesome-icon size="1x" icon="bold" class="" /> -->
-        </v-btn>
+    <div style="border: 2px solid pink;">
+        <!-- formContent: {{ formContent }} -->
+        <v-form>
+            <v-btn color="primary" class="" @click.prevent="formatDoc('bold')">
+                <v-icon>mdi-format-bold</v-icon>
+            </v-btn>
 
-        <v-btn color="primary" class="mx-.5" @click.prevent="formatDoc('italic')">
-            Italique
-            <!-- <font-awesome-icon size="1x" icon="italic" class="" /> -->
-        </v-btn>
+            <v-btn color="primary" class="mx-.5" @click.prevent="formatDoc('italic')">
+                <v-icon>mdi-format-italic</v-icon>
+            </v-btn>
 
-        <v-btn color="primary" class="mx-.5" @click.prevent="formatDoc('underline')">
-            Souligné
-            <!-- <font-awesome-icon size="1x" icon="underline" class="" /> -->
-        </v-btn>
+            <v-btn color="primary" class="mx-.5" @click.prevent="formatDoc('underline')">
+                <v-icon>mdi-format-underline</v-icon>
+            </v-btn>
 
-        <v-btn color="primary" class="mx-.5" @click.prevent="formatDoc('justifyleft')">
-            Aligner à gauche
-            <!-- <font-awesome-icon size="1x" icon="align-left" class="" /> -->
-        </v-btn>
+            <v-btn color="primary" class="mx-.5" @click.prevent="formatDoc('justifyleft')">
+                <v-icon>mdi-format-align-left</v-icon>
+            </v-btn>
 
-        <v-btn color="primary" class="mx-.5" @click.prevent="formatDoc('justifycenter')">
-            Aligner au centre
-            <!-- <font-awesome-icon size="1x" icon="align-center" class="" /> -->
-        </v-btn>
+            <v-btn color="primary" class="mx-.5" @click.prevent="formatDoc('justifycenter')">
+                <v-icon>mdi-format-align-center</v-icon>
+            </v-btn>
 
-        <v-btn color="primary" class="mx-.5" @click.prevent="formatDoc('justifyright')">
-            Align à droite
-            <!-- <font-awesome-icon size="1x" icon="align-right" class="" /> -->
-        </v-btn>
+            <v-btn color="primary" class="mx-.5" @click.prevent="formatDoc('justifyright')">
+                <v-icon>mdi-format-align-right</v-icon>
+            </v-btn>
 
-        <v-btn color="primary" class="mx-.5" @click.prevent="formatDoc('insertUnorderedList')">Liste point            <!-- <font-awesome-icon size="1x" icon="list-ul" /> -->
-        </v-btn>
+            <v-btn color="primary" class="mx-.5" @click.prevent="formatDoc('insertUnorderedList')">
+                <v-icon>mdi-format-bold</v-icon>
+            </v-btn>
 
-        <v-btn color="primary" class="mx-.5" @click.prevent="formatDoc('insertOrderedList')">
-            Liste nombre
-            <!-- <font-awesome-icon size="1x" icon="list-ol" /> -->
-        </v-btn>
+            <v-btn color="primary" class="mx-.5" @click.prevent="formatDoc('insertOrderedList')">
+                <v-icon>mdi-format-list-bulleted</v-icon>
+            </v-btn>
 
-        <v-btn color="primary" class="mx-.5" @click.prevent="openCreateLinkModal">
-            Lien
-            <!-- <font-awesome-icon size="1x" icon="link" /> -->
-        </v-btn>
+            <v-btn color="primary" class="" @click.prevent="openCreateLinkModal">
+                <v-icon>mdi-link</v-icon>
+            </v-btn>
 
-        <v-btn color="dark" class="mx-.5" @click="toggleShowHTML">
-        Afficher le code/afficher le rendu
-            <!-- <font-awesome-icon size="1x" :icon="['fa', 'eye']" v-if="showHTML" /> -->
-            <!-- <font-awesome-icon size="1x" icon="code" v-else /> -->
-        </v-btn>
+            <v-btn color="dark" class="" @click="toggleShowHTML">
+                <v-icon v-if="showHTML">mdi-eye</v-icon>
+                <v-icon v-else>mdi-code-braces</v-icon>
+            </v-btn>
 
-        <v-row no-gutters class="justify-content-center my-2" v-if="selectedImageNode">
-            <v-col cols="12">
-                <!-- <image-properties :selectedImageProps="selectedImageProps" @updateSelectedImageProperties="updateSelectedImageProperties" /> -->
-            </v-col>
-        </v-row>
+            <v-row no-gutters class="justify-content-center my-2" v-if="selectedImageNode">
+                <v-col cols="12">
+                    <!-- <image-properties :selectedImageProps="selectedImageProps" @updateSelectedImageProperties="updateSelectedImageProperties" /> -->
+                </v-col>
+            </v-row>
 
-        <div contenteditable="true" id="textBox" v-html="content" @focus="focused = true" @blur="focused = false" @click="selectElement" class="mt-1" v-if="!showHTML"></div>
+            <div contenteditable="true" id="textBox" v-html="content" @focus="focused = true" @blur="focused = false" @click="selectElement" class="mt-1" v-if="!showHTML"></div>
 
-        <div contenteditable="true" id="textBox" @focus="focused = true" @blur="focused = false" class="mt-1" v-else>
-            <pre style="">{{ content }}</pre>
-        </div>
-    </v-form>
+            <div contenteditable="true" id="textBox" @focus="focused = true" @blur="focused = false" class="mt-1" v-else>
+                <pre style="">{{ content }}</pre>
+            </div>
+        </v-form>
 
-    <!-- <images-modal @insertImage="insertImage" @closeImagesModal="showImagesModal = false" v-if="showImagesModal" /> -->
-    <!-- <create-link-modal :selectedText="selectedText" @insertLink="insertLink" @closeLinkModal="showCreateLinkModal = false" v-if="showCreateLinkModal" /> -->
-</div>
+        <!-- <images-modal @insertImage="insertImage" @closeImagesModal="showImagesModal = false" v-if="showImagesModal" /> -->
+        <!-- <create-link-modal :selectedText="selectedText" @insertLink="insertLink" @closeLinkModal="showCreateLinkModal = false" v-if="showCreateLinkModal" /> -->
+    </div>
 </template>
 
 <script>
@@ -80,8 +72,7 @@ export default {
         // ImageProperties
     },
     props: ['formContent'],
-    created() {
-    },
+    created() {},
     mounted() {
         this.content = this.formContent
     },
@@ -97,11 +88,11 @@ export default {
             selectedImageProps: {
                 width: 0,
                 height: 0,
-                style: {}
+                style: {},
             },
             selectedText: '',
             focused: false,
-            selRange: null
+            selRange: null,
         }
     },
     computed: {},
@@ -181,10 +172,7 @@ export default {
             console.log('insertDocument', filePath, fileType, fileName)
             this.formatDoc('insertHTML', `<a href="/documents/${filePath}" type="${fileType}" title="${fileName}" target="_blank">${fileName}</a>`)
         },
-        insertLink({
-            linkType,
-            linkPage
-        }) {
+        insertLink({ linkType, linkPage }) {
             console.log('insertLink', linkType, linkPage)
             let link
             if (linkType === 'external') {
@@ -256,8 +244,8 @@ export default {
                 range.pasteHTML(text)
                 range.select()
             }
-        }
-    }
+        },
+    },
 }
 </script>
 

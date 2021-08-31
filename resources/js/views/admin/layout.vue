@@ -55,6 +55,12 @@
                     </v-list-item-icon>
                     <v-list-item-title>Fichiers</v-list-item-title>
                 </v-list-item> -->
+                <v-list-item to="/admin/medias">
+                    <v-list-item-icon>
+                        <v-icon>mdi-file-image</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>Medias</v-list-item-title>
+                </v-list-item>
                 <v-list-item to="/admin/images">
                     <v-list-item-icon>
                         <v-icon>mdi-file-image</v-icon>

@@ -64,6 +64,13 @@ return [
             'root' => public_path('images/portfolio'),
             'url' => env('APP_URL').'/images/portfolio',
             'visibility' => 'public',
+        ],
+
+        'medias' => [
+            'driver' => 'local',
+            'root' => public_path('medias'),
+            'url' => env('APP_URL').'/medias',
+            'visibility' => 'public',
         ]
     ],
 

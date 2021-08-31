@@ -21,6 +21,7 @@ Route::apiResource('/v1/portfolios', App\Http\Controllers\PortfoliosController::
 //     'as' => 'folders.destroy', 
 //     'uses' => 'App\Http\Controllers\FoldersController@destroy'
 // ]);
+Route::get('/v1/medias', [App\Http\Controllers\MediasController::class, 'getMedias']);
 Route::get('/v1/images', [App\Http\Controllers\ImagesController::class, 'getImages']);
 Route::post('/v1/images', [App\Http\Controllers\ImagesController::class, 'uploadImage']);
 Route::post('/v1/images/delete', [App\Http\Controllers\ImagesController::class, 'deleteImage']);

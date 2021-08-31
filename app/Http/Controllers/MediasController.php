@@ -11,35 +11,43 @@ use File;
 use Intervention\Image\Facades\Image as Intervention;
 use App\Models\Image;
 
-class ImagesController extends Controller
+class MediasController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function getImages()
+    public function getMedias()
     {
-        // $images = Image::all();
+        $files = array();
+        $allowedFileTypes = ['application/pdf', 'application/msword', 'application/vnd.ms-excel'];
 
-        // return response()->json([
-        //     'images' => $images,
-        // ]);
+        $rootDirectories = Storage::disk('medias')->directories();
+        $rootFiles = Storage::disk('medias')->files();
+        foreach ($rootFiles as $file) {
+            $array = array();
+            $fileType = Storage::disk('medias')->mimeType($file);
 
-        $files_with_size = array();
-        $files = Storage::disk('portfolio')->allFiles();
-        foreach ($files as $key => $file) {
-            $files_with_size[$key]['name'] = $file;
-            $files_with_size[$key]['size'] = Storage::disk('portfolio')->size($file);
-            list($width, $height, $type, $attr) = getimagesize('images/portfolio/' . $file);
-            $files_with_size[$key]['width'] = $width;
-            $files_with_size[$key]['height'] = $height;
-            $files_with_size[$key]['path'] = "/abc.jpg";
+            if (in_array($fileType, $allowedFileTypes)) {
+                array_push($array, $file);
+                array_push($array, $fileType);
+                array_push($array, Storage::disk('medias')->size($file));
+                array_push($array, Storage::disk('medias')->lastModified($file));
+                array_push($files, $array);
+            }
         }
+        $allFiles = Storage::disk('medias')->allFiles();
+        $allDirectories = Storage::disk('medias')->allDirectories();
 
         return response()->json([
-            'images' => $files_with_size
-        ]);
+            'success' => true,
+            'rootDirectories' => $rootDirectories,
+            'rootFiles' => $rootFiles,
+            'files' => $files,
+            'allFiles' => $allFiles,
+            'allDirectories' => $allDirectories
+        ], 200);
     }
 
     /**
