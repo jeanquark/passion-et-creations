@@ -18,8 +18,8 @@ export const actions = {
             console.log('[VUEX] fetchMedias: ', payload)
             const { data } = await axios.get(`/api/v1/medias`)
             console.log('[VUEX] data: ', data)
+            commit('SET_MEDIAS', data)
             return data
-            // commit('SET_MEDIAS', data.medias)
         } catch (error) {
             console.log('error: ', error)
             throw error
