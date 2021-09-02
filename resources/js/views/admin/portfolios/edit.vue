@@ -7,15 +7,26 @@
             <v-form @submit.prevent="editPortfolio">
                 <!-- <v-card-title>{{ portfolio.title }}</v-card-title> -->
                 <v-card-text>
+                    <v-row no-gutters class="my-4">
+                        <v-col cols="12">
                     <v-text-field label="Titre" v-model="portfolio.title"></v-text-field>
-                    <v-row no-gutters align="center" class="my-3">
-                        <v-col>Image</v-col>
-                        <v-col> <v-img :src="portfolio.front_image.path" max-width="200" class="image"></v-img></v-col>
-                        <v-col> <v-btn small color="error">Supprimer</v-btn></v-col>
+                        </v-col>
+                        <v-col cols="12">
+                        Description
+                        <text-editor @toggleShowHTML="toggleShowHTML" :formContent="portfolio.description" />
+                        </v-col>
                     </v-row>
-
-                    <v-row no-gutters justify="center" align="center">
-                        <v-col cols="3" v-for="image in portfolio.images" :key="image.id">
+                    <v-row no-gutters align="center" class="my-4">
+                        <v-col cols="12">
+                            Image principale
+                            <v-img :src="portfolio.front_image.path" max-width="200" class="image"></v-img>
+                            <v-btn small color="success">Nouvelle image</v-btn>
+                            <v-btn small color="error">Supprimer</v-btn>
+                        </v-col>
+                    </v-row>
+                    <v-row no-gutters justify="start" align="end" class="my-3">
+                        <v-col cols="12">Images annexes</v-col>
+                        <v-col cols="3" class="pr-2" v-for="image in portfolio.images" :key="image.id">
                             <v-hover v-slot="{ hover }">
                                 <v-img :src="image.path" class="">
                                     <v-expand-transition>
@@ -27,15 +38,13 @@
                                 </v-img>
                             </v-hover>
                         </v-col>
-                        <v-col cols="3" class="text-center">
+                        <v-col cols="3" class="d-flex justify-center align-center">
                             <v-btn elevation="2" fab color="pink" @click="addImage"><v-icon class="white--text">mdi-plus</v-icon></v-btn>
                             <!-- <v-icon large>mdi-plus</v-icon> -->
                         </v-col>
                     </v-row>
 
-                    <v-row no-gutters class="my-3">
-                        <text-editor @toggleShowHTML="toggleShowHTML" :formContent="portfolio.description" />
-                    </v-row>
+                    
                 </v-card-text>
                 <v-card-actions class="justify-center">
                     <v-btn small color="success" type="submit">Editer</v-btn>
@@ -65,7 +74,10 @@ export default {
                 {
                     text: 'Portfolios',
                     disabled: false,
-                    href: '/admin/portfolios',
+                    // href: '/admin/portfolios',
+                    to: '/admin/portfolios',
+                    exact: true,
+                    link: true
                 },
                 {
                     text: 'Editer',

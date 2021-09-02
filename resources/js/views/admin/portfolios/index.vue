@@ -8,15 +8,14 @@
                     <v-expansion-panel v-for="(portfolio, i) in portfolios" :key="i">
                         <v-expansion-panel-header>
                             <v-row no-gutters justify="start" align="center">
-                                <v-col>
+                                <v-col class="d-flex align-center">
                                     <v-img :src="portfolio.front_image.path" max-width="80" aspect-ratio="1" class="mr-3"></v-img>
+                                    {{ portfolio.front_image.name }}
                                 </v-col>
-                                <v-col> 
-                                    {{ portfolio.front_image.name }}</v-col>
                                 <v-spacer></v-spacer>
-                                <v-col>
-                                    <v-btn small color="primary" @click.native.stop="goToPage(portfolio.id)">Editer</v-btn>
-                                    <v-btn small color="error" @click.native.stop="goToPage(portfolio.id)">Supprimer</v-btn>
+                                <v-col class="d-flex justify-end">
+                                    <v-btn small color="primary" class="mx-1" @click.native.stop="goToPage(portfolio.id)">Editer</v-btn>
+                                    <v-btn small color="error" class="mx-1" @click.native.stop="goToPage(portfolio.id)">Supprimer</v-btn>
                                 </v-col>
                             </v-row>
                         </v-expansion-panel-header>

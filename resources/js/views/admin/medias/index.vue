@@ -1,62 +1,97 @@
 <template>
     <v-main>
-        <v-breadcrumbs large :items="items"></v-breadcrumbs>
+        <!-- <v-breadcrumbs large :items="items"></v-breadcrumbs> -->
         <v-row no-gutters>
             <v-col cols="12">
-                medias.allDirectories: {{ medias.allDirectories }}<br />
-                folders: {{ folders }}<br />
-                files: {{ files }}<br />
-                path: {{ path }}<br />
+                medias.allDirectories: {{ medias.allDirectories }}<br /><br />
+                medias.allFiles: {{ medias.allFiles }}<br /><br />
+                folders: {{ folders }}<br /><br />
+                files: {{ files }}<br /><br />
+                path: {{ path }}<br /><br />
+                items: {{ items }}<br /><br />
             </v-col>
-            <v-col>
-                <v-btn small color="primary" @click="goBack">Go back</v-btn>
+            <!-- <v-col>
+                <v-btn small color="primary" @click="goBack">Go back</v-btn><br />
+                Folders:<br />
                 <ul>
                     <li v-for="(folder, index) in folders" :key="index">
                         <div class="link" @click="goTo(folder.path, folder.name)">{{ folder }}</div>
                     </li>
                 </ul>
-            </v-col>
+                Files:<br />
+                <ul>
+                    <li v-for="(file, index) in files" :key="index">
+                        <div class="link">{{ file }}</div>
+                    </li>
+                </ul>
+            </v-col> -->
+        </v-row>
+
+        <v-row no-gutters>
+            tab: {{ tab }}
+            <v-tabs v-model="tab" align-with-title>
+                <v-tabs-slider color="yellow"></v-tabs-slider>
+                <v-tab href="#tab-1"> Médiathèque </v-tab>
+                <v-tab href="#tab-2"> Uploader un fichier </v-tab>
+                <v-tabs-items v-model="tab">
+                    <v-tab-item :value="'tab-1'">
+                        <v-row no-gutters class="my-4 mx-7" align="end">
+                            <v-col cols="12" class="ml-4 mb-3">
+                                <v-breadcrumbs large :items="items" id="breadcrumbs">
+                                    <template v-slot:item="{ item }">
+                                        <v-breadcrumbs-item class="link" :disabled="item.disabled" @click="goTo(item.path, item.name)">
+                                            {{ item.name }}
+                                        </v-breadcrumbs-item>
+                                    </template>
+                                    <template v-slot:divider>
+                                        <v-icon>mdi-chevron-right</v-icon>
+                                    </template>
+                                </v-breadcrumbs>
+                            </v-col>
+                            <v-col cols="6" md="3" lg="2" class="pa-2" v-for="(folder, index) of folders" :key="`folder_${index}`">
+                                <v-img src="/images/icons/folder.png" class="folder" @dblclick="goTo(folder.path, folder.name)"></v-img>
+                                <p class="text-center" style="word-break: break-word">{{ folder.name }}</p>
+                            </v-col>
+                            <v-col cols="6" md="3" lg="2" class="pa-2" v-for="(file, index) of files" :key="`file_${index}`">
+                                <v-img :src="`/medias${file.path}`" class="image"></v-img>
+                                <p class="text-center" style="word-break: break-word">{{ file.name }}</p>
+                            </v-col>
+                        </v-row>
+                    </v-tab-item>
+                    <v-tab-item :value="'tab-2'">
+                        <v-row no-gutters class="ml-7">
+                            <v-col cols="12" justify="center">
+                                <upload-multiple-files :items="items"></upload-multiple-files>
+                            </v-col>
+                        </v-row>
+                    </v-tab-item>
+                </v-tabs-items>
+            </v-tabs>
         </v-row>
     </v-main>
 </template>
 
 <script>
+import UploadMultipleFiles from '../../../components/UploadMultipleFiles'
 export default {
     name: 'AdminMediasIndex',
+    components: { UploadMultipleFiles },
     async created() {
         // if (this.$store.getters['medias/medias'].length < 1) {
         const data = await this.$store.dispatch('medias/fetchMedias')
         console.log('data: ', data)
+        // }
 
         this.goTo('/')
-        // this.files = data.files
-        // this.folders = data.rootDirectories
-        // this.path = [{ name: 'Dossier Racine', folder: '/', active: true }]
-        // const abc = data.allDirectories.map((directory) => directory.split('/'))
-        // console.log('abc: ', abc)
-        // const def = abc.filter((a) => a.length == 1)
-        // console.log('def: ', def)
-        // console.log('ghi: ', data.allDirectories[3].lastIndexOf('/'))
-        // const rootDirectories = data.allDirectories
-        //     .map((directory) => directory.split('/'))
-        //     .filter((path) => path.length === 1)
-        //     .map((folder) => folder[0])
-        // console.log('rootDirectories: ', rootDirectories)
-        // this.folders = rootDirectories
-        // }
     },
     data() {
         return {
+            tab: null,
+            tabs: ['Médiathèque', 'Uploader un fichier'],
             files: [],
             folders: [],
             path: '/',
-            items: [
-                {
-                    text: 'Medias',
-                    disabled: true,
-                    href: '/admin/medias',
-                },
-            ],
+            items: [],
         }
     },
     computed: {
@@ -66,11 +101,19 @@ export default {
     },
     methods: {
         goTo(folderPath, folderName) {
-            console.log('goTo path: ', folderPath)
-            console.log('goTo name: ', folderName)
+            console.log('goTo folderPath: ', folderPath)
+            console.log('goTo folderName: ', folderName)
+            this.items = []
             this.folders = []
-            
+            this.files = []
+
             if (folderPath === '/') {
+                this.path = '/'
+                this.items.push({
+                    name: 'Dossier racine',
+                    path: '/',
+                    disabled: true,
+                })
                 this.medias.allDirectories
                     .map((directory) => directory.split('/'))
                     .filter((path) => path.length === 1)
@@ -82,8 +125,31 @@ export default {
                             type: 'folder',
                         })
                     )
-                this.path = '/'
+                this.medias.allFiles
+                    .map((filePath) => filePath.split('/'))
+                    .filter((filePath) => filePath.length === 1)
+                    .map((file) => file[0])
+                    .forEach((file) =>
+                        this.files.push({
+                            name: file,
+                            path: '/' + file,
+                            extension: file.substring(file.lastIndexOf('.') + 1),
+                        })
+                    )
             } else {
+                this.path = folderPath
+                this.items = []
+                const paths = folderPath.split('/')
+                console.log('paths: ', paths)
+                let array = []
+                paths.forEach((folderName, index, paths) => {
+                    array.push(folderName)
+                    this.items.push({
+                        name: folderName ? folderName : 'Dossier Racine',
+                        path: folderName ? array.join('/') : '/',
+                        disabled: index === paths.length - 1 ? true : false,
+                    })
+                })
                 this.medias.allDirectories
                     .map((directory) => directory.split('/'))
                     .filter((a) => a[a.length - 2] === folderName)
@@ -94,64 +160,29 @@ export default {
                             type: 'folder',
                         })
                     )
-                // if (this.folders.length) {
-                //     this.path = this.folders[0]['path'].substring(0, this.folders[0]['path'].lastIndexOf('/'))
-                // }
-                this.path = folderPath
+                this.medias.allFiles
+                    .map((filePath) => filePath.split('/'))
+                    .filter((a) => a[a.length - 2] === folderName)
+                    .forEach((file) =>
+                        this.files.push({
+                            name: file[file.length - 1],
+                            path: '/' + file.join('/'),
+                            extension: file.join('/').substring(file.join('/').lastIndexOf('.') + 1),
+                        })
+                    )
             }
-        },
-        goTo2(folder) {
-            console.log('goTo folder: ', folder)
-            let path = this.medias.allDirectories.map((directory) => directory.split('/')).find((a) => a[a.length - 1] === folder)
-            if (path != undefined) {
-                console.log('join!')
-                path = path.join('/')
-            } else {
-                path = ''
-            }
-            console.log('path: ', path)
-            this.path = '/' + path
-            const folders = this.medias.allDirectories
-                .map((directory) => directory.split('/'))
-                .filter((path) => path[path.length - 2] === folder)
-                .map((path) => path[path.length - 1])
-            // .filter(path => path.length == 2)
-            // .map(path => path[path.length - 2])
-            console.log('folders: ', folders)
-            this.folders = folders
         },
         goBack() {
             console.log('goBack')
-            // const folderName = this.path.substring(this.path.indexOf('/') + 1, this.path.lastIndexOf('/'))
-            // console.log('folderName: ', folderName)
-            // this.goTo(this.path.substring(0, this.path.lastIndexOf('/')))
-            // this.goTo('images/Folder 1')
-            // this.goTo(this.path)
-            // this.goTo('/images')
-            // this.goTo({
-            //     name: 'images',
-            //     path: '/images',
-            //     type: 'folder'
-            // })
-            // this.goTo({
-            //     name: folderName,
-            //     path: this.path,
-            //     type: 'folder'
-            // })
-            const path = this.path.substring(0, this.path.lastIndexOf('/'))
+            let path = this.path.substring(0, this.path.lastIndexOf('/'))
+            if (path == '') {
+                path = '/'
+            }
             console.log('path: ', path)
+
             const name = path.substring(path.lastIndexOf('/') + 1, path.length)
             console.log('name: ', name)
             this.goTo(path, name)
-        },
-        goBack2() {
-            console.log('goBack')
-            // this.goTo('')
-            const lastIndex = this.path.lastIndexOf('/')
-            console.log('lastIndex: ', lastIndex)
-            const newPath = this.path.substring(0, lastIndex)
-            console.log('newPath: ', newPath)
-            this.goTo('newPath')
         },
         formatFileName(file) {
             const index = file.lastIndexOf('/')
@@ -168,5 +199,18 @@ export default {
 <style scoped>
 .link:hover {
     cursor: pointer;
+    color: red;
+}
+.folder:hover {
+    cursor: pointer;
+    background: red;
+}
+.image:hover {
+    cursor: pointer;
+    border: 2px solid red;
+}
+#breadcrumbs {
+    background-color: #e9ecef;
+    border-radius: 5px;
 }
 </style>
