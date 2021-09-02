@@ -12,7 +12,7 @@
                 <v-btn small color="primary" @click="goBack">Go back</v-btn>
                 <ul>
                     <li v-for="(folder, index) in folders" :key="index">
-                        <div class="link" @click="goTo(folder)">{{ folder }}</div>
+                        <div class="link" @click="goTo(folder.path, folder.name)">{{ folder }}</div>
                     </li>
                 </ul>
             </v-col>
@@ -65,10 +65,12 @@ export default {
         },
     },
     methods: {
-        goTo(path) {
-            console.log('goTo path: ', path)
+        goTo(folderPath, folderName) {
+            console.log('goTo path: ', folderPath)
+            console.log('goTo name: ', folderName)
             this.folders = []
-            if (path === '/') {
+            
+            if (folderPath === '/') {
                 this.medias.allDirectories
                     .map((directory) => directory.split('/'))
                     .filter((path) => path.length === 1)
@@ -84,7 +86,7 @@ export default {
             } else {
                 this.medias.allDirectories
                     .map((directory) => directory.split('/'))
-                    .filter((a) => a[a.length - 2] === path.name)
+                    .filter((a) => a[a.length - 2] === folderName)
                     .forEach((folder) =>
                         this.folders.push({
                             name: folder[folder.length - 1],
@@ -92,7 +94,10 @@ export default {
                             type: 'folder',
                         })
                     )
-                this.path = this.folders[0]['path'].substring(0, this.folders[0]['path'].lastIndexOf('/'))
+                // if (this.folders.length) {
+                //     this.path = this.folders[0]['path'].substring(0, this.folders[0]['path'].lastIndexOf('/'))
+                // }
+                this.path = folderPath
             }
         },
         goTo2(folder) {
@@ -117,17 +122,27 @@ export default {
         },
         goBack() {
             console.log('goBack')
-            const abc = this.path.substring(0, this.path.lastIndexOf('/'))
-            console.log('abc: ', abc)
+            // const folderName = this.path.substring(this.path.indexOf('/') + 1, this.path.lastIndexOf('/'))
+            // console.log('folderName: ', folderName)
             // this.goTo(this.path.substring(0, this.path.lastIndexOf('/')))
             // this.goTo('images/Folder 1')
             // this.goTo(this.path)
             // this.goTo('/images')
-            this.goTo({
-                name: 'images',
-                path: '/images',
-                type: 'folder'
-            })
+            // this.goTo({
+            //     name: 'images',
+            //     path: '/images',
+            //     type: 'folder'
+            // })
+            // this.goTo({
+            //     name: folderName,
+            //     path: this.path,
+            //     type: 'folder'
+            // })
+            const path = this.path.substring(0, this.path.lastIndexOf('/'))
+            console.log('path: ', path)
+            const name = path.substring(path.lastIndexOf('/') + 1, path.length)
+            console.log('name: ', name)
+            this.goTo(path, name)
         },
         goBack2() {
             console.log('goBack')
