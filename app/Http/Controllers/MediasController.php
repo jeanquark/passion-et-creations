@@ -55,22 +55,22 @@ class MediasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $files_with_size = array();
-        $files = Storage::disk('portfolio')->allFiles();
-        foreach ($files as $key => $file) {
-            $files_with_size[$key]['name'] = $file;
-            $files_with_size[$key]['size'] = Storage::disk('portfolio')->size($file);
-            list($width, $height, $type, $attr) = getimagesize('images/portfolio/' . $file);
-            $files_with_size[$key]['width'] = $width;
-            $files_with_size[$key]['height'] = $height;
-        }
+    // public function index()
+    // {
+    //     $files_with_size = array();
+    //     $files = Storage::disk('portfolio')->allFiles();
+    //     foreach ($files as $key => $file) {
+    //         $files_with_size[$key]['name'] = $file;
+    //         $files_with_size[$key]['size'] = Storage::disk('portfolio')->size($file);
+    //         list($width, $height, $type, $attr) = getimagesize('images/portfolio/' . $file);
+    //         $files_with_size[$key]['width'] = $width;
+    //         $files_with_size[$key]['height'] = $height;
+    //     }
 
-        return response()->json([
-            'images' => $files_with_size
-        ]);
-    }
+    //     return response()->json([
+    //         'images' => $files_with_size
+    //     ]);
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -78,19 +78,69 @@ class MediasController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function uploadImage(Request $request)
+    public function uploadMedias(Request $request)
     {
         // return response()->json([
         //     'success' => true,
         //     'request' => $request,
-        //     'request->image' => $request->image,
-        //     'File::exists($request->image)' => File::exists($request->image)
+        //     'request->medias' => $request->medias,
+        //     'request->files' => $request->files,
+        //     // 'File::exists($request->files)' => File::exists($request->files),
+        //     'request->hasfile(files)' => $request->hasfile('files')
         // ], 200);
+        
+        $request->validate([
+            'files' => 'required|max:1024',
+            'files.*' => 'mimes:doc,pdf,docx,jpg,jpeg,png'
+        ]);
+
+        if ($request->hasfile('files')) {
+            foreach($request->file('files') as $file)
+            {
+                // $name = time().'.'.$file->extension();
+                // $file->move(public_path().'/medias/', $name);  
+                // $data[] = $name;
+                $fileFullName = $file->getClientOriginalName();
+                $fileName = pathinfo($fileFullName, PATHINFO_FILENAME);
+                $fileExtension = pathinfo($fileFullName, PATHINFO_EXTENSION);
+                $filePath = $file->getPath();
+
+                $fileType = $file->getClientMimeType();
+                if( $fileType == 'image/jpeg' || $fileType == 'image/png') {
+
+                    // 1) Store original image
+                    $originalFile = Intervention::make($file)->encode();
+                    Storage::disk('medias')->put($request->path . '/' . $fileFullName, $originalFile);
+
+                    // 2) Store thumbnail
+                    $thumbnailName = $fileName . '_thumbnail' . '.' . $fileExtension;
+                    $thumbnailImage = Intervention::make($file)->fit(512)->encode();
+                    Storage::disk('medias')->put($request->path . '/' .$thumbnailName, $thumbnailImage);
+
+                    // 3) Store blurred thumbnail
+                    $thumbnailBlurryName = $fileName . '_thumbnail_blurred' . '.' . $fileExtension;
+                    $thumbnailImageBlurry = Intervention::make($file)->fit(512)->blur(25)->encode();
+                    Storage::disk('medias')->put($request->path . '/' .$thumbnailBlurryName, $thumbnailImageBlurry);
+                }
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'file' => $file,
+            'fileFullName' => $fileFullName,
+            'fileName' => $fileName,
+            'fileExtension' => $fileExtension,
+            'fileType' => $fileType,
+            'filePath' => $filePath,
+            'request->path' => $request->path,
+            // 'originalFile' => $originalFile
+        ], 200);
 
         if (File::exists($request->image)) { // Upload single image
 
             $request->validate([
-                'image' => 'required|image|max:1024',
+                'image' => 'required|image|max:1024'
             ]);
 
             // 1) Store original image

@@ -1,6 +1,6 @@
 <template>
     <v-row no-gutters class="my-4 mx-7" align="end">
-        <v-col cols="12" class="mb-4">
+        <v-col cols="12" class="mb-8">
             <!-- <v-breadcrumbs large id="breadcrumbs">
                 <v-breadcrumbs-item> Uploader une image </v-breadcrumbs-item>
             </v-breadcrumbs> -->
@@ -15,9 +15,26 @@
                 </template>
             </v-breadcrumbs>
         </v-col>
-        <v-col cols="12" md="8" lg="6" class="mx-4">
-            <v-file-input label="Sélectionner un fichier" filled prepend-icon="mdi-camera"></v-file-input>
-            <v-btn small color="success">Uploader</v-btn>
+        <v-col cols="12" class="mx-0">
+            <v-form @submit.prevent="uploadMedias">
+                items: {{ items }}<br /><br />
+                form.path: {{ form.path }}<br /><br />
+                form.files: {{ form.files }}<br /><br />
+                <span v-if="form.files">
+                form.files[0][size]: {{ form.files[0]['size'] }}<br /><br /></span>
+                <v-file-input label="Sélectionner un ou des fichiers" filled :multiple="true" :clearable="false" show-size @change="onFileChange" v-model="form.files"></v-file-input>
+                <div id="preview">
+                    previewImages: {{ previewImages }}<br />
+                    <v-row no-gutters class="my-2">
+                        <v-col cols="12" md="6" lg="4" class="pa-2" v-for="(previewImage, index) in previewImages" :key="index">
+                            <v-img :src="previewImage"></v-img>
+                        </v-col>
+                    </v-row>
+                </div>
+                <div class="text-center">
+                    <v-btn color="success" type="submit" :loading="form.busy">Uploader</v-btn>
+                </div>
+            </v-form>
         </v-col>
     </v-row>
 </template>
@@ -27,21 +44,43 @@ import Form from 'vform'
 import axios from 'axios'
 export default {
     props: ['items'],
-    async created() {
-        this.$store.dispatch('medias/fetchMedias')
-    },
+    async created() {},
     async mounted() {},
     data() {
         return {
-            dialog: true,
+            form: new Form({
+                files: null,
+                path: ''
+            }),
+            url: null,
+            previewImages: [],
         }
     },
-    computed: {
-        medias() {
-            return this.$store.getters['medias/medias']
+    computed: {},
+    methods: {
+        onFileChange(files) {
+            console.log('onFileChange: ', files)
+            // console.log(files[0].mozFullPath);
+            this.form.path = this.items[this.items.length - 1]['path']
+            this.previewImages = []
+            for (let i = 0; i < files.length; i++) {
+                if (files[i]['type'].startsWith('image/')) {
+                    this.previewImages.push(URL.createObjectURL(files[i]))
+                }
+            }
+            // const file = e.target;
+            // console.log('file: ', file)
+            // this.url = URL.createObjectURL(file);
+            // const file = e.target.files[0]
+            // this.url = URL.createObjectURL(e[0])
+            // if (file) {
+            //     blah.src = URL.createObjectURL(file)
+            // }
+        },
+        uploadMedias() {
+            this.$store.dispatch('medias/uploadMedias', this.form)
         },
     },
-    methods: {},
 }
 </script>
 

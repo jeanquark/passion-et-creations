@@ -9,6 +9,7 @@
                 files: {{ files }}<br /><br />
                 path: {{ path }}<br /><br />
                 items: {{ items }}<br /><br />
+                showUploadFile: {{ showUploadFile }}<br /><br />
             </v-col>
             <!-- <v-col>
                 <v-btn small color="primary" @click="goBack">Go back</v-btn><br />
@@ -29,7 +30,10 @@
 
         <v-row no-gutters>
             tab: {{ tab }}
-            <v-navigation-drawer v-model="showSidebar" app bottom right temporary>
+            <v-navigation-drawer app bottom right temporary :width="showUploadFile ? 512 : 256" v-model="showSidebar">
+                <div v-if="showUploadFile">
+                    <upload-multiple-files :items="items"></upload-multiple-files>
+                </div>
                 <v-list nav dense>
                     <v-list-item-group active-class="deep-purple--text text--accent-4">
                         <v-list-item>
@@ -70,21 +74,24 @@
                                 </v-breadcrumbs>
                             </v-col>
                         </v-row>
-                        <v-row no-gutters align="end" class="mx-6" style="border: 2px solid green;" @click="handleClick">
-                            <v-col cols="6" md="3" lg="2" class="pa-2" v-for="(folder, index) of folders" :key="`folder_${index}`" >
-                                <v-img src="/images/icons/folder.png" class="link" id="clickableElement" :data-value='{"name": folder.name, "path": folder.path}' data-type="folder" :data-name="folder.name" :data-path="folder.path"></v-img>
-                                <p class="text-center" style="word-break: break-word">{{ folder.name }}</p>
+                        <v-row no-gutters align="end" class="mx-7" style="border: 2px solid green" @click="handleClick">
+                            <v-col cols="6" md="3" lg="2" class="pa-3" v-for="(folder, index) of folders" :key="`folder_${index}`">
+                                <v-img
+                                    src="/images/icons/folder.png"
+                                    class="link"
+                                    id="clickableElement"
+                                    :data-value="{ name: folder.name, path: folder.path }"
+                                    data-type="folder"
+                                    :data-name="folder.name"
+                                    :data-path="folder.path"
+                                ></v-img>
+                                <p class="text-center" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ folder.name }}</p>
                             </v-col>
-                            <v-col
-                                cols="6"
-                                md="3"
-                                lg="2"
-                                class="pa-2"
-                                v-for="(file, index) of files"
-                                :key="`file_${index}`"
-                            >
-                                <v-img :src="`/medias${file.path}`" class="link" id="clickableElement"></v-img>
-                                <p class="text-center" style="word-break: break-word">{{ file.name }}</p>
+                            <v-col cols="6" md="3" lg="2" class="pa-3" v-for="(file, index) of files" :key="`file_${index}`">
+                                <div v-if="getFileType(file.name) === 'image'">
+                                    <v-img :src="`/medias${file.path}`" id="clickableElement" aspect-ratio="1" class="link" data-type="file"></v-img>
+                                    <p class="text-center" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ file.name }}</p>
+                                </div>
                             </v-col>
                         </v-row>
                     </v-tab-item>
@@ -117,6 +124,7 @@ export default {
     data() {
         return {
             showSidebar: false,
+            showUploadFile: false,
             tab: null,
             tabs: ['Médiathèque', 'Uploader un fichier'],
             files: [],
@@ -124,13 +132,13 @@ export default {
             path: '/',
             items: [],
             clicksCount: 0,
-            clicksTimer: null
+            clicksTimer: null,
         }
     },
     computed: {
         medias() {
             return this.$store.getters['medias/medias']
-        }
+        },
     },
     methods: {
         goTo(folderPath, folderName) {
@@ -145,28 +153,28 @@ export default {
                 this.items.push({
                     name: 'Dossier racine',
                     path: '/',
-                    disabled: true
+                    disabled: true,
                 })
                 this.medias.allDirectories
-                    .map(directory => directory.split('/'))
-                    .filter(path => path.length === 1)
-                    .map(folder => folder[0])
-                    .forEach(folder =>
+                    .map((directory) => directory.split('/'))
+                    .filter((path) => path.length === 1)
+                    .map((folder) => folder[0])
+                    .forEach((folder) =>
                         this.folders.push({
                             name: folder,
                             path: '/' + folder,
-                            type: 'folder'
+                            type: 'folder',
                         })
                     )
                 this.medias.allFiles
-                    .map(filePath => filePath.split('/'))
-                    .filter(filePath => filePath.length === 1)
-                    .map(file => file[0])
-                    .forEach(file =>
+                    .map((filePath) => filePath.split('/'))
+                    .filter((filePath) => filePath.length === 1)
+                    .map((file) => file[0])
+                    .forEach((file) =>
                         this.files.push({
                             name: file,
                             path: '/' + file,
-                            extension: file.substring(file.lastIndexOf('.') + 1)
+                            extension: file.substring(file.lastIndexOf('.') + 1),
                         })
                     )
             } else {
@@ -180,27 +188,27 @@ export default {
                     this.items.push({
                         name: folderName ? folderName : 'Dossier Racine',
                         path: folderName ? array.join('/') : '/',
-                        disabled: index === paths.length - 1 ? true : false
+                        disabled: index === paths.length - 1 ? true : false,
                     })
                 })
                 this.medias.allDirectories
-                    .map(directory => directory.split('/'))
-                    .filter(a => a[a.length - 2] === folderName)
-                    .forEach(folder =>
+                    .map((directory) => directory.split('/'))
+                    .filter((a) => a[a.length - 2] === folderName)
+                    .forEach((folder) =>
                         this.folders.push({
                             name: folder[folder.length - 1],
                             path: '/' + folder.join('/'),
-                            type: 'folder'
+                            type: 'folder',
                         })
                     )
                 this.medias.allFiles
-                    .map(filePath => filePath.split('/'))
-                    .filter(a => a[a.length - 2] === folderName)
-                    .forEach(file =>
+                    .map((filePath) => filePath.split('/'))
+                    .filter((a) => a[a.length - 2] === folderName)
+                    .forEach((file) =>
                         this.files.push({
                             name: file[file.length - 1],
                             path: '/' + file.join('/'),
-                            extension: file.join('/').substring(file.join('/').lastIndexOf('.') + 1)
+                            extension: file.join('/').substring(file.join('/').lastIndexOf('.') + 1),
                         })
                     )
             }
@@ -219,25 +227,26 @@ export default {
         },
         handleClick(e) {
             console.log('handleClick e: ', e)
-            console.log('e.target: ', e.target)
-            console.log('e.target.parentNode: ', e.target.parentNode)
-            console.log('e.target.parentNode.id: ', e.target.parentNode.id)
-            console.log('e.target.parentNode[data-value]: ', e.target.parentNode.getAttribute('data-value'))
-            // console.log('abc: ', abc)
-            // console.log('def: ', def)
-            // var target = e.target || e.srcElement
-            // var text = target.textContent || target.innerText
-            // console.log('target: ', target)
-            // console.log('text: ', text)
+            // console.log('e.target: ', e.target)
+            // console.log('e.target.parentNode: ', e.target.parentNode)
+            // console.log('e.target.parentNode.id: ', e.target.parentNode.id)
+            // console.log('e.target.parentNode[data-value]: ', e.target.parentNode.getAttribute('data-value'))
+            this.showUploadFile = false
             this.clicksCount++
             if (this.clicksCount === 1) {
-                var self = this
                 this.clicksTimer = setTimeout(() => {
-                    console.log('Click!')
+                    console.log('Single click!')
                     this.clicksCount = 0
-                    // this.selectFolder(folder)
                     this.showSidebar = !this.showSidebar
-                }, 200)
+                    if (e.target.parentNode.getAttribute('data-type') === 'folder') {
+                        console.log('Clicked on folder')
+                    } else if (e.target.parentNode.getAttribute('data-type') === 'file') {
+                        console.log('Clicked on file')
+                    } else {
+                        console.log('Clicked on blank')
+                        this.showUploadFile = true
+                    }
+                }, 350)
             } else {
                 clearTimeout(this.clicksTimer)
                 console.log('Double click!')
@@ -250,6 +259,17 @@ export default {
                 }
             }
         },
+        getFileType(fileName) {
+            const fileExtension = fileName.substring(fileName.lastIndexOf('.'))
+            switch (fileExtension) {
+                case '.jpg' || '.JPG' || '.png' || '.PNG':
+                    return 'image'
+                case '.pdf' || '.PDF':
+                    return 'file'
+                default:
+                    return null
+            }
+        },
         formatFileName(file) {
             const index = file.lastIndexOf('/')
             return file.substring(index + 1)
@@ -257,8 +277,8 @@ export default {
         formatRemoveFileExtension(file) {
             const index = file.lastIndexOf('.')
             return file.substring(0, index)
-        }
-    }
+        },
+    },
 }
 </script>
 

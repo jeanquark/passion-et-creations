@@ -25,48 +25,23 @@ export const actions = {
             throw error
         }
     },
-    async fetchImage({ }, payload) {
-        try {
-            const { imagePath } = payload
-            console.log('imagePath: ', imagePath)
-            const data = await axios.get(`/api/v1/images/${imagePath}`, {
-                responseType: 'blob'
-            });
-            // const data = await axios.get(`/api/v1/images/${imagePath}`);
-            console.log('data: ', data)
-            return data
-        } catch (error) {
-            console.log("error: ", error);
-            throw error
-        }
-    },
-    async fetchImageSize({ }, payload) {
-        try {
-            const { imagePath } = payload
-            console.log('imagePath: ', imagePath)
-            // const data = await axios.get(`/api/v1/images/size/${imagePath}`);
-            // const data = await axios.get(`/api/v1/images/action/getSize?path=${imagePath}`);
-            const { data } = await axios.post(`/api/v1/images/size`, { imagePath });
-            console.log('data: ', data)
-            return data
-        } catch (error) {
-            console.log('error: ', error)
-            throw error
-        }
-    },
-    async fetchImageLastModified({ }, payload) {
-        try {
-            const { imagePath } = payload
-            console.log('imagePath: ', imagePath)
-            // const data = await axios.get(`/api/v1/images/last-modified/${imagePath}`);
-            const { data } = await axios.post(`/api/v1/images/last-modified`, { imagePath });
-            console.log('data: ', data)
-            return data
-        } catch (error) {
-            console.log('error: ', error)
-            throw error
-        }
-    },
+    async uploadMedias({}, form) {
+		try {
+			console.log('[VUEX] uploadFiles: ', form)
+			const { data } = await form.submit('post', '/api/v1/medias', {
+				transformRequest: [
+					function (data, headers) {
+						return serialize(data)
+					}
+				]
+			})
+			console.log('data: ', data)
+		} catch (error) {
+			console.log('error: ', error)
+			throw error
+		}
+	},
+    
     async uploadImage({}, form) {
         try {
             // await axios.post('/api/v1/images', {
