@@ -16,6 +16,8 @@ import AdminPortfoliosCreate from '../views/admin/portfolios/create'
 import AdminPortfoliosEdit from '../views/admin/portfolios/edit'
 import AdminUsers from '../views/admin/users/layout'
 import AdminUsersIndex from '../views/admin/users/index'
+import AdminUsersEdit from '../views/admin/users/edit'
+import AdminUsersShow from '../views/admin/users/show'
 import AdminLawyers from '../views/admin/lawyers/layout'
 // import AdminLawyersHome from "../views/admin/lawyers/home"
 import AdminLawyersIndex from '../views/admin/lawyers/index'
@@ -162,6 +164,16 @@ const router = new VueRouter({
                             path: '',
                             name: 'adminUsersIndex',
                             component: AdminUsersIndex
+                        },
+                        {
+                            path: ':id/edit',
+                            name: 'adminUsersEdit',
+                            component: AdminUsersEdit
+                        },
+                        {
+                            path: ':id',
+                            name: 'adminUsersShow',
+                            component: AdminUsersShow
                         }
                     ]
                 }

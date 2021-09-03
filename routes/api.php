@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::apiResource('/v1/users', App\Http\Controllers\UsersController::class);
+
 // Route::get('/v1/portfolios', [App\Http\Controllers\PortfoliosController::class, 'getPortfolios']);
 // Route::post('/v1/portfolios/delete', [App\Http\Controllers\PortfoliosController::class, 'deletePortfolio']);
 Route::apiResource('/v1/portfolios', App\Http\Controllers\PortfoliosController::class);

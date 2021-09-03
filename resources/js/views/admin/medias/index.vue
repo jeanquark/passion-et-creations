@@ -92,6 +92,7 @@
                                     <v-img :src="`/medias${file.path}`" id="clickableElement" aspect-ratio="1" class="link" data-type="file"></v-img>
                                     <p class="text-center" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ file.name }}</p>
                                 </div>
+                                <div v-else>Not an image</div>
                             </v-col>
                         </v-row>
                     </v-tab-item>
@@ -261,10 +262,17 @@ export default {
         },
         getFileType(fileName) {
             const fileExtension = fileName.substring(fileName.lastIndexOf('.'))
+            console.log('fileExtension: ', fileExtension)
             switch (fileExtension) {
-                case '.jpg' || '.JPG' || '.png' || '.PNG':
+                case '.jpg':
+                case '.JPG':
+                case '.jpeg':
+                case '.JPEG':
+                case '.png':
+                case '.PNG':
                     return 'image'
-                case '.pdf' || '.PDF':
+                case '.pdf':
+                case '.PDF':
                     return 'file'
                 default:
                     return null

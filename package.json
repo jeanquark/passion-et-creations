@@ -29,6 +29,7 @@
         "object-to-formdata": "^4.1.0",
         "vform": "^2.1.1",
         "vue-meta": "^2.4.0",
+        "vue-moment": "^4.1.0",
         "vue-sidebar-menu": "^4.8.1",
         "vue-waterfall": "^1.0.6",
         "vuetify": "^2.3.21",
