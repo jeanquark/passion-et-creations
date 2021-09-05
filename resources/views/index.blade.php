@@ -50,7 +50,7 @@
                 </v-col>
             </v-row>
             {{-- <login-component></login-component> --}}
-            <v-row no-gutters justify-center>
+            <v-row no-gutters justify-center style="border: 2px solid green;">
                 <v-col cols="12">
                     {{-- <v-btn small color="blue" class="white--text" @click="incrementCounter">Increment</v-btn> --}}
                     <v-btn small color="orange" class="white--text" @click="getUser">Get user</v-btn>
@@ -58,6 +58,7 @@
 
                 </v-col>
                 <v-col cols="12">
+                    Auth::check(): {{ Auth::check() }}<br />
                     {{-- <v-btn small color="pink" class="white--text" @click="login">Login</v-btn> --}}
                     {{-- <v-btn small color="success" class="white--text" @click="register">Register</v-btn> --}}
                     <a href="/forgot-password">Forgot password</a>
@@ -93,7 +94,33 @@
                     @endrole
                 </v-col>
             </v-row>
-            <router-view></router-view>
+            <v-row no-gutters class="my-0" id="slider">
+                <slider-component></slider-component>
+            </v-row>
+            <a href="#welcome"></a>
+            <v-row no-gutters id="welcome">
+                <v-col cols="12" sm="6">Bienvenue
+                    Désireuse de m’inspirer des éléments qui m’entourent (matériaux, formes), je crée du mobilier d’intérieur pour meubler l’espace de votre habitat et lui conférer un caractère particulier. Chacune de mes œuvres est unique, soigneusement élaborée avec un design élégant et des finitions de qualité. Des objets qui s’intégreront parfaitement à votre intérieur confortable, aux formes douces et à l’ambiance apaisée.
+                    
+                    Pour un aperçu de mes créations, se référer au portfolio. Rendez-vous également sur ma page personnelle Pinterest. Vous ne trouvez pas votre bonheur? Vous changeriez un motif sur une commode? N’hésitez pas à m’en parler, ou mieux encore: venez me trouver à mon atelier. Je serai ravie d’en discuter avec vous, et voir dans quelle mesure je peux vous aider à obtenir l’objet qui comblera toutes vos attentes.
+                    
+                    </v-col>
+                <v-col cols="12" sm="6">
+                    <v-img src="/images/welcome.jpg" width="100%"></v-img>
+                </v-col>
+            </v-row>
+            {{-- <v-row no-gutters id="portfolio"></v-row> --}}
+            {{-- <a href="#portfolio"></a> --}}
+            <portfolio-component></portfolio-component>
+            {{-- <v-row no-gutters id="about"></v-row> --}}
+            {{-- <a href="#about"></a> --}}
+                <about-component></about-component>
+            {{-- <v-row no-gutters id="contact"> --}}
+                {{-- <a href="#contact"></a> --}}
+                <contact-component></contact-component>
+            {{-- </v-row> --}}
+            <footer-component></footer-component>
+            {{-- <router-view></router-view> --}}
         </v-main>
     </v-app>
     {{-- </div> --}}

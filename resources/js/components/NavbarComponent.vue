@@ -2,10 +2,8 @@
     <!-- <div> -->
     <div>
         <!-- <router-view><router-view> -->
-            <!-- <v-system-bar color="deep-purple darken-3"></v-system-bar> -->
-        <v-app-bar app flat fixed class="">
-            <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-
+        <!-- <v-system-bar color="deep-purple darken-3"></v-system-bar> -->
+        <v-app-bar app flat fixed class="hidden-sm-and-down">
             <v-toolbar-title><a href="/" class="link">Passion & Créations</a></v-toolbar-title>
 
             <v-spacer></v-spacer>
@@ -13,7 +11,13 @@
             <v-toolbar-title class="nav-link mx-2"><a href="/login" class="link">Login</a></v-toolbar-title>
 
             <v-toolbar-title class="nav-link mx-2"><a href="/admin" class="link">Admin</a></v-toolbar-title>
-
+            <v-toolbar-title class="link mx-2" @click="$vuetify.goTo('#welcome', options)">Bienvenue</v-toolbar-title>
+            <v-toolbar-title class="link mx-2" @click="$vuetify.goTo('#portfolio', options)">Portfolio</v-toolbar-title>
+            <v-toolbar-title class="link mx-2" @click="$vuetify.goTo('#about', options)">Portrait</v-toolbar-title>
+            <v-toolbar-title class="link mx-2" @click="$vuetify.goTo('#contact', options)">Contact</v-toolbar-title>
+            auth: {{ auth }} | 
+            authUser: {{ authUser ? authUser.name : ''  }} | 
+            <v-btn small @click="logout">Logout</v-btn>
             <v-btn icon>
                 <v-icon>mdi-heart</v-icon>
             </v-btn>
@@ -24,8 +28,12 @@
             <router-link to="/portfolio">Portfolio</router-link> | <a href="/">Home</a> | <a href="/portfolio">Portfolio</a> | <a href="/creatrice">Créatrice</a> |
             <v-btn small>Logout</v-btn>
         </v-app-bar>
+
+        <v-app-bar app flat fixed class="hidden-md-and-up">
+            <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+        </v-app-bar>
         <!-- </div> -->
-        <v-navigation-drawer v-model="drawer" absolute bottom temporary>
+        <v-navigation-drawer absolute bottom temporary class="" v-model="drawer">
             <v-list nav dense>
                 <v-list-item-group v-model="group" active-class="deep-purple--text text--accent-4">
                     <v-list-item>
@@ -55,16 +63,49 @@ export default {
         return {
             drawer: false,
             group: null,
+            duration: 1200,
+            offset: 0,
+            easing: 'easeInOutCubic'
         }
     },
+    computed: {
+        auth(){
+            return this.$store.getters['auth/auth']
+        },
+        authUser () {
+            return this.$store.getters['auth/user']
+        },
+        target() {
+            const value = this[this.type]
+            if (!isNaN(value)) return Number(value)
+            else return value
+        },
+        options() {
+            return {
+                duration: this.duration,
+                offset: this.offset,
+                easing: this.easing
+            }
+        }
+    },
+    methods: {
+        async logout() {
+            await this.$store.dispatch('auth/logout')
+            location.href = '/'
+        }
+    }
 }
 </script>
 
 <style scoped>
-    .nav-link :hover {
-        color: yellow;
-    }
-    .link {
-        text-decoration: none;
-    }
+/* .nav-link :hover {
+    color: yellow;
+} */
+.link {
+    color: #000;
+}
+.link:hover {
+    cursor: pointer;
+    color: yellow;
+}
 </style>

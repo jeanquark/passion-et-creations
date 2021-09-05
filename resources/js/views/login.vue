@@ -1,7 +1,7 @@
 <template>
     <v-main>
         <navbar-component></navbar-component>
-        <p>Login<br /><br /></p>
+        <p>Login 2<br /><br /></p>
         form.errors.has('email'): {{ form.errors }}
         <v-container>
             <v-row align="center" justify="center">
@@ -48,9 +48,11 @@ export default {
     methods: {
         async login() {
             try {
-                const response = await this.form.post("/login");
-                console.log('response: ', response)
-                this.$router.push('/admin')
+                const data = await this.$store.dispatch('auth/login', this.form)
+                // console.log('data: ', data)
+                // const response = await this.form.post("/login");
+                // console.log('response: ', response)
+                // this.$router.push('/admin')
             } catch (error) {
                 console.log('error: ', error)
             }
