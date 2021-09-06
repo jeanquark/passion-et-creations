@@ -1,4 +1,4 @@
-# JBNE - Laravel 8 Vue.js
+# Passion & Créations - Laravel 8 Vue.js
 
 ## Build Setup
 
@@ -14,4 +14,6 @@ $ npm run hot
 
 ```
 
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+## Authentication
+
+This application makes use of Laravel Sanctum and Laravel fortify for the authentication logic. Fortify's resources can be inspected in the <code>app/Actions</code> directory.

@@ -16,7 +16,7 @@
                     </v-list-item-avatar>
                 </v-list-item>
 
-                <v-list-item link>
+                <v-list-item link to="/admin/profile">
                     <v-list-item-content>
                         <v-list-item-title class="title">
                             Sandra Adams
@@ -79,6 +79,12 @@
                     </v-list-item-icon>
                     <v-list-item-title>Utilisateurs</v-list-item-title>
                 </v-list-item>
+                <v-list-item @click="logout">
+                    <v-list-item-icon>
+                        <v-icon>mdi-account-group</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>Logout</v-list-item-title>
+                </v-list-item>
                 <v-list-item href="/">
                     <v-list-item-icon>
                         <v-icon>mdi-arrow-left-circle</v-icon>
@@ -97,6 +103,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     name: "AdminIndex",
     data() {
@@ -117,6 +124,14 @@ export default {
                 case "xl":
                     return false;
             }
+        }
+    },
+    methods: {
+        async logout () {
+            console.log('logout')
+            await axios.post('/logout')
+            // this.$router.push('/')
+            location.href = '/'
         }
     }
 };

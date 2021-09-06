@@ -1,7 +1,7 @@
 <template>
     <v-main>
         <navbar-component></navbar-component>
-        <p>Login 2<br /><br /></p>
+        <p>Login<br /><br /></p>
         form.errors.has('email'): {{ form.errors }}
         <v-container>
             <v-row align="center" justify="center">

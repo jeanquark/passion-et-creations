@@ -16,17 +16,8 @@
             <v-toolbar-title class="link mx-2" @click="$vuetify.goTo('#about', options)">Portrait</v-toolbar-title>
             <v-toolbar-title class="link mx-2" @click="$vuetify.goTo('#contact', options)">Contact</v-toolbar-title>
             auth: {{ auth }} | 
-            authUser: {{ authUser ? authUser.name : ''  }} | 
+            authUser.name: {{ authUser ? authUser.name : ''  }} | 
             <v-btn small @click="logout">Logout</v-btn>
-            <v-btn icon>
-                <v-icon>mdi-heart</v-icon>
-            </v-btn>
-
-            <v-btn icon>
-                <v-icon>mdi-magnify</v-icon>
-            </v-btn>
-            <router-link to="/portfolio">Portfolio</router-link> | <a href="/">Home</a> | <a href="/portfolio">Portfolio</a> | <a href="/creatrice">Créatrice</a> |
-            <v-btn small>Logout</v-btn>
         </v-app-bar>
 
         <v-app-bar app flat fixed class="hidden-md-and-up">

@@ -52,7 +52,9 @@ class UsersController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        return response()->json([
+            'success' => true
+        ], 200);
     }
 
     /**

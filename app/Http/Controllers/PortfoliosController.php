@@ -14,7 +14,7 @@ class PortfoliosController extends Controller
      */
     public function index()
     {
-        $portfolios = Portfolio::with('images')->with('front_image')->with('category')->get();
+        $portfolios = Portfolio::with('images')->with('front_image')->with('category')->orderBy('order', 'asc')->get();
         
         return response()->json([
             'portfolios' => $portfolios

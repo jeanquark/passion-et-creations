@@ -33,6 +33,7 @@
         "vue-sidebar-menu": "^4.8.1",
         "vue-waterfall": "^1.0.6",
         "vue2-google-maps": "^0.10.7",
+        "vuedraggable": "^2.24.3",
         "vuetify": "^2.3.21",
         "vuex-router-sync": "^5.0.0"
     }

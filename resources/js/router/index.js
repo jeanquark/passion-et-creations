@@ -5,6 +5,8 @@ Vue.use(VueRouter)
 
 import AdminLayout from '../views/admin/layout'
 import AdminIndex from '../views/admin/index'
+import AdminProfile from '../views/admin/profile/layout'
+import AdminProfileIndex from '../views/admin/profile/index'
 import AdminMedias from '../views/admin/medias/layout'
 import AdminMediasIndex from '../views/admin/medias/index'
 import AdminImages from '../views/admin/images/layout'
@@ -107,6 +109,18 @@ const router = new VueRouter({
                     path: 'index',
                     name: 'adminIndex',
                     component: AdminIndex
+                },
+                {
+                    path: 'profile',
+                    name: 'profile',
+                    component: AdminProfile,
+                    children: [
+                        {
+                            path: '',
+                            name: 'adminProfileIndex',
+                            component: AdminProfileIndex
+                        }
+                    ]
                 },
                 {
                     path: 'medias',

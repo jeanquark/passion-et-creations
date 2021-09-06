@@ -43,18 +43,29 @@ export const actions = {
 			throw error
         }
     },
-    async fetchUser({ commit }) {
+    async resetPassword({ commit }, form) {
         try {
-            const { data } = await axios.get('/api/user')
-            console.log('data from fetchUser: ', data)
-
-            // commit(types.FETCH_USER_SUCCESS, { user: data })
-            commit('SET_USER', { user: data })
+            // const { data } = await form.put(`/api/v1/users/1`)
+            console.log('[VUEX] resetPassword form: ', form)
+            const data = await form.put(`/user/password`)
+            console.log('data: ', data)
         } catch (error) {
-            // commit(types.FETCH_USER_FAILURE)
             console.log('error: ', error)
+            throw error
         }
     }
+    // async fetchUser({ commit }) {
+    //     try {
+    //         const { data } = await axios.get('/api/user')
+    //         console.log('data from fetchUser: ', data)
+
+    //         // commit(types.FETCH_USER_SUCCESS, { user: data })
+    //         commit('SET_USER', { user: data })
+    //     } catch (error) {
+    //         // commit(types.FETCH_USER_FAILURE)
+    //         console.log('error: ', error)
+    //     }
+    // }
 }
 
 export const getters = {
