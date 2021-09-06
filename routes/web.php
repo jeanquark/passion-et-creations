@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 // composer update
 // php artisan migrate
 // php artisan db:seed
+// php artisan migrate:refresh --seed
 // composer dump-autoload
 /*
 |--------------------------------------------------------------------------

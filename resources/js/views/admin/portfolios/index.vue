@@ -4,7 +4,7 @@
         <v-row no-gutters justify="center">
             <v-col cols="12">
                 updatedOrder: {{ updatedOrder }}<br />
-                <v-btn small color="success" :disabled="!updatedOrder">Enregistrer le nouvel ordre</v-btn>
+                <v-btn small color="success" :disabled="!updatedOrder" @click="updateOrder">Enregistrer le nouvel ordre</v-btn>
             </v-col>
             <v-col cols="11">
                 <!-- portfolios: {{ portfolios }}<br /><br /> -->
@@ -15,11 +15,13 @@
                                 <v-row no-gutters justify="start" align="center">
                                     <v-col class="d-flex align-center">
                                         index: {{ i }} id: {{ portfolio.id }} order: {{ portfolio.order }}
+                                        
                                         <v-img :src="portfolio.front_image.path" max-width="80" aspect-ratio="1" class="mr-3"></v-img>
                                         {{ portfolio.front_image.name }}
                                     </v-col>
                                     <v-spacer></v-spacer>
                                     <v-col class="d-flex justify-end">
+                                        {{ portfolio.title }}
                                         <v-btn small color="primary" class="mx-1" @click.native.stop="goToPage(portfolio.id)">Editer</v-btn>
                                         <v-btn small color="error" class="mx-1" @click.native.stop="goToPage(portfolio.id)">Supprimer</v-btn>
                                     </v-col>
@@ -101,6 +103,13 @@ export default {
         goToPage(id) {
             this.$router.push(`/admin/portfolios/${id}/edit`)
         },
+        updateOrder () {
+            try {
+                this.$store.dispatch('portfolios/updateOrder', this.portfolios.map((portfolio, index) => ({ id: portfolio.id, order: index + 1 })))
+            } catch (error) {
+                console.log('error: ', error)
+            }
+        }
     },
 }
 </script>

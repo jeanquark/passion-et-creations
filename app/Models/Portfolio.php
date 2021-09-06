@@ -13,9 +13,9 @@ class Portfolio extends Model
      *
      * @var array
      */
-    // protected $fillable = [
-    //     'name', 'slug', 'image', 'contribution', 'start_date', 'end_date', 'is_partner', 'is_supporter', 'is_active'
-    // ];
+    protected $fillable = [
+        'category_id', 'front_image_id', 'name', 'description', 'order', 'is_active'
+    ];
 
     /**
      * Get the post that owns the comment.

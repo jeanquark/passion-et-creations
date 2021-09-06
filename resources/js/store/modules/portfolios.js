@@ -38,6 +38,24 @@ export const actions = {
             throw error
         }
     },
+    async createPortfolio({}, form) {
+        try {
+            const data = await form.post(`/api/v1/portfolios`, form)
+            console.log('data: ', data)
+        } catch (error) {
+            console.log('error: ', error)
+            throw error
+        }
+    },
+    async updateOrder({}, payload) {
+        try {
+            console.log('[VUEX] updateOrder payload: ', payload)
+            const data = await axios.post('/api/v1/portfolios/update-order', payload)
+            console.log('data: ', data)
+        } catch (error) {
+            throw error
+        }
+    },
     async deletePortfolio({ }, payload) {
         try {
             const { path } = payload

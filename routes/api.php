@@ -19,6 +19,7 @@ Route::apiResource('/v1/users', App\Http\Controllers\UsersController::class);
 // Route::get('/v1/portfolios', [App\Http\Controllers\PortfoliosController::class, 'getPortfolios']);
 // Route::post('/v1/portfolios/delete', [App\Http\Controllers\PortfoliosController::class, 'deletePortfolio']);
 Route::apiResource('/v1/portfolios', App\Http\Controllers\PortfoliosController::class);
+Route::post('/v1/portfolios/update-order', [App\Http\Controllers\PortfoliosController::class, 'updateOrder']);
 // Route::post('/v1/images/destroy', [
 //     'as' => 'folders.destroy', 
 //     'uses' => 'App\Http\Controllers\FoldersController@destroy'

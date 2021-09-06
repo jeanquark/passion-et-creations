@@ -39,7 +39,30 @@ class PortfoliosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return response()->json([
+            'success' => true
+        ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function updateOrder(Request $request)
+    {
+        $portfolios = $request->all();
+        foreach($portfolios as $portfolio) {
+            Portfolio::where('id', $portfolio['id'])->update(['order' => $portfolio['order']]);
+        }
+        // $portfolios = Portfolio::update(['order' => 1]);
+
+        return response()->json([
+            'success' => true,
+            'request->all()' => $request->all(),
+            'portfolios' => $portfolios
+        ]);
     }
 
     /**

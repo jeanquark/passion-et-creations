@@ -21,7 +21,7 @@ class CreatePortfoliosTable extends Migration
             $table->foreign('front_image_id')->references('id')->on('images');
             $table->string('title');
             $table->text('description');
-            $table->integer('order')->unsigned()->unique();
+            $table->integer('order')->unsigned();
             $table->boolean('is_active')->default(1);
             $table->timestamps();
         });

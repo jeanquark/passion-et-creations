@@ -1,6 +1,10 @@
 <template>
+<!-- <div>
+    showModal: {{ showModal }}
+</div> -->
     <v-dialog v-model="dialog" width="500">
         <v-card>
+            showModal: {{ showModal }}
             <v-card-title></v-card-title>
             <v-card-text> medias: {{ medias }} </v-card-text>
             <v-card-actions></v-card-actions>
@@ -12,6 +16,7 @@
 import Form from 'vform'
 import axios from 'axios'
 export default {
+    props: [ 'showModal' ],
     async created() {
         this.$store.dispatch('medias/fetchMedias')
     },
@@ -26,7 +31,14 @@ export default {
             return this.$store.getters['medias/medias']
         },
     },
-    methods: {},
+    methods: {
+        def () {
+            console.log('def')
+        }
+        // showModal () {
+        //     console.log('showModal')
+        // }
+    },
 }
 </script>
 

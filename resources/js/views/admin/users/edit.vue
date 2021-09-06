@@ -6,35 +6,35 @@
         user: {{ user }}<br /><br />
         <v-row no-gutters>
             <v-col cols="12">
-        <v-form @submit.prevent="resetPassword">
-            <v-text-field
-                prepend-icon="mdi-lock"
-                name="current_password"
-                label="Mot de passe actuel"
-                type="password"
-                :error-messages="form.errors.get('current_password')"
-                v-model="form.current_password"
-            ></v-text-field>
-            <v-text-field
-                prepend-icon="mdi-lock"
-                name="password"
-                label="Nouveau mot de passe"
-                type="password"
-                :error-messages="form.errors.get('password')"
-                v-model="form.password"
-            ></v-text-field>
-            <v-text-field prepend-icon="mdi-lock" name="password_confirmation" label="Confirmation nouveau mot de passe" type="password" v-model="form.password_confirmation"></v-text-field>
-            <div class="text-center">
-                <v-btn type="submit" color="success" :loading="form.busy">Changer mot de passe</v-btn>
-            </div>
-        </v-form>
+                <v-form @submit.prevent="resetPassword">
+                    <v-text-field
+                        prepend-icon="mdi-lock"
+                        name="current_password"
+                        label="Mot de passe actuel"
+                        type="password"
+                        :error-messages="form.errors.get('current_password')"
+                        v-model="form.current_password"
+                    ></v-text-field>
+                    <v-text-field
+                        prepend-icon="mdi-lock"
+                        name="password"
+                        label="Nouveau mot de passe"
+                        type="password"
+                        :error-messages="form.errors.get('password')"
+                        v-model="form.password"
+                    ></v-text-field>
+                    <v-text-field prepend-icon="mdi-lock" name="password_confirmation" label="Confirmation nouveau mot de passe" type="password" v-model="form.password_confirmation"></v-text-field>
+                    <div class="text-center">
+                        <v-btn type="submit" color="success" :loading="form.busy">Changer mot de passe</v-btn>
+                    </div>
+                </v-form>
             </v-col>
         </v-row>
     </v-main>
 </template>
 
 <script>
-import Form  from 'vform'
+import Form from 'vform'
 export default {
     name: 'AdminUsersEdit',
     data() {
@@ -49,21 +49,21 @@ export default {
                 {
                     text: 'Editer',
                     disabled: true,
-                    to: `/admin/users/${this.$route.params.id}/edit`,
-                },
+                    to: `/admin/users/${this.$route.params.id}/edit`
+                }
             ],
             form: new Form({
                 current_password: 'secret1',
                 password: 'password',
-                password_confirmation: 'password',
-            }),
+                password_confirmation: 'password'
+            })
         }
     },
     computed: {
-        users () {
+        users() {
             return this.$store.getters['users/users']
         },
-        user () {
+        user() {
             return this.users.find(user => user.id == this.$route.params.id)
         }
     },
@@ -75,8 +75,8 @@ export default {
             } catch (error) {
                 console.log('error: ', error)
             }
-        },
-    },
+        }
+    }
 }
 </script>
 
