@@ -25,20 +25,33 @@ class MediasController extends Controller
 
         $rootDirectories = Storage::disk('medias')->directories();
         $rootFiles = Storage::disk('medias')->files();
-        foreach ($rootFiles as $file) {
+        
+        
+        $allFiles = Storage::disk('medias')->allFiles();
+        $allDirectories = Storage::disk('medias')->allDirectories();
+
+        foreach ($allFiles as $file) {
             $array = array();
             $fileType = Storage::disk('medias')->mimeType($file);
 
-            if (in_array($fileType, $allowedFileTypes)) {
+            // if (in_array($fileType, $allowedFileTypes)) {
                 array_push($array, $file);
                 array_push($array, $fileType);
                 array_push($array, Storage::disk('medias')->size($file));
                 array_push($array, Storage::disk('medias')->lastModified($file));
                 array_push($files, $array);
-            }
+            // }
         }
-        $allFiles = Storage::disk('medias')->allFiles();
-        $allDirectories = Storage::disk('medias')->allDirectories();
+
+        $files_with_size = array();
+        foreach ($allFiles as $key => $file) {
+            $files_with_size[$key]['path'] = $file;
+            $files_with_size[$key]['size'] = Storage::disk('medias')->size($file);
+            $files_with_size[$key]['last_updated'] = Storage::disk('medias')->lastModified($file);
+            list($width, $height, $type, $attr) = getimagesize(Storage::disk('medias')->path($file));
+            $files_with_size[$key]['width'] = $width;
+            $files_with_size[$key]['height'] = $height;
+        }
 
         return response()->json([
             'success' => true,
@@ -46,7 +59,9 @@ class MediasController extends Controller
             'rootFiles' => $rootFiles,
             'files' => $files,
             'allFiles' => $allFiles,
-            'allDirectories' => $allDirectories
+            'allDirectories' => $allDirectories,
+            'array' => $array,
+            'files_with_size' => $files_with_size
         ], 200);
     }
 

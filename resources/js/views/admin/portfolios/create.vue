@@ -7,23 +7,25 @@
                     <v-text-field prepend-icon="mdi-lock" name="title" label="Titre" type="text" :error-messages="form.errors.get('title')" v-model="form.title"></v-text-field>
                     <v-text-field prepend-icon="mdi-lock" name="description" label="Description" type="text" :error-messages="form.errors.get('description')" v-model="form.description"></v-text-field>
 
+                    <v-dialog v-model="dialog" width="800">
+                        <medias-component @addFile="onAddFile"></medias-component>
+                    </v-dialog>
                     <v-row no-gutters>
-                        <!-- <v-col cols="12" md="4" style="border: 1px solid green;">
-                            image titre
-                        </v-col> -->
-                        <v-tabs v-model="tab">
-                            <v-tab key="tab-1">Image principale</v-tab>
-                            <v-tab key="tab-2">Images annexes</v-tab>
-                        </v-tabs>
-                        <v-tabs-items v-model="tab">
-                            <v-tab-item key="tab-1">
-                                <medias-modal :showModal="'abc'"></medias-modal>
-                                <v-btn small color="primary" @click="$emit('showModal')">Ajouter image</v-btn>
-                            </v-tab-item>
-                            <v-tab-item key="tab-2">
-                                the rest
-                            </v-tab-item>
-                        </v-tabs-items>
+                        <v-col cols="12" md="4" lg="3" class="" style="border: 0px solid green" v-for="(image, index) in form.images" :key="index">
+                            <v-card height="200" elevation="3" style="border: 2px dashed #ccc">
+                                <v-card-text class="text-center">
+                                    <v-img :src="`/medias/${image.path}`" width="100%"></v-img>
+                                    {{ image.name }}
+                                </v-card-text>
+                            </v-card>
+                        </v-col>
+                        <v-col cols="12" md="4" lg="3" class="" style="border: 0px solid green">
+                            <v-card min-height="200" elevation="3" style="border: 2px dashed #ccc">
+                                <v-card-text class="text-center">
+                                    <v-btn small color="primary" @click="dialog = !dialog">Ajouter image</v-btn>
+                                </v-card-text>
+                            </v-card>
+                        </v-col>
                     </v-row>
 
                     <div class="text-center">
@@ -36,16 +38,7 @@
                     <!-- image: {{ image }} -->
                     form.busy: {{ form.busy }}<br />
                     form.errors: {{ form.errors }}<br />
-                    <v-file-input
-                        accept="image/*"
-                        label="Selectionner image"
-                        prepend-icon="mdi-camera"
-                        show-size
-                        truncate-length="15"
-                        :error-messages="form.errors.get('image')"
-                        v-model="form.image"
-                    ></v-file-input>
-                    <v-btn small color="primary" type="submit" :loading="form.busy">Ajouter</v-btn>
+                    form.images: {{ form.image }}<br />
                 </v-form>
             </v-col>
         </v-row>
@@ -54,10 +47,10 @@
 
 <script>
 import Form from 'vform'
-import MediasModal from '../../../components/MediasModal'
+import MediasComponent from '../../../components/MediasComponent'
 export default {
     name: 'AdminPortfoliosCreate',
-    components: { MediasModal },
+    components: { MediasComponent },
     data() {
         return {
             items: [
@@ -65,42 +58,48 @@ export default {
                     text: 'Portfolios',
                     disabled: false,
                     to: '/admin/portfolios',
-                    exact: true
+                    exact: true,
                 },
                 {
                     text: 'Ajouter',
                     disabled: true,
-                    to: '/admin/portfolio/create'
-                }
+                    to: '/admin/portfolio/create',
+                },
             ],
             form: new Form({
                 title: '',
-                description: ''
+                description: '',
+                front_image_id: '',
+                images: [],
             }),
             tab: null,
-            showModal: false
+            showModal: false,
+            dialog: false,
         }
     },
     computed: {},
     methods: {
-        abc () {
-            this.$emit('showModal')
-        },
         selectFile(e) {
             console.log('selectFile e: ', e)
             this.form.image = e.File
             // this.form.image = e.target.files[0]
             this.image = e.File
         },
+        onAddFile(file) {
+            this.dialog = false
+            console.log('onAddFile file: ', file)
+            // this.form.front_image_id = file.id
+            this.form.images.push(file)
+        },
         async createPortfolio() {
             try {
                 console.log('createPortfolio form: ', this.form)
-                await this.$store.dispatch('portfolios/createPortfolio', this.form)
+                // await this.$store.dispatch('portfolios/createPortfolio', this.form)
             } catch (error) {
                 console.log('error: ', error)
             }
-        }
-    }
+        },
+    },
 }
 </script>
 

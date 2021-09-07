@@ -51,16 +51,16 @@
                 </v-card-actions>
             </v-form>
         </v-card>
-        <medias-modal v-if="showMediasModal" />
+        <medias-component v-if="showMediasModal" />
     </v-main>
 </template>
 
 <script>
 import TextEditor from '../../../components/TextEditor'
-import MediasModal from '../../../components/MediasModal'
+import MediasComponent from '../../../components/MediasComponent'
 export default {
     name: 'AdminPortfoliosEdit',
-    components: { TextEditor, MediasModal },
+    components: { TextEditor, MediasComponent },
     async created() {
         if (this.portfolios.length < 1) {
             await this.$store.dispatch('portfolios/fetchPortfolios')
