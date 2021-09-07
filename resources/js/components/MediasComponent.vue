@@ -20,9 +20,7 @@
                     <!-- selectedFile: {{ selectedFile }}<br /> -->
                     selectedFolder: {{ selectedFolder }}<br />
                     <div v-if="selectedFile" class="ma-4">
-                        <v-img
-                            :src="`/medias/${selectedFile.path}`"
-                        ></v-img>
+                        <v-img :src="`/medias/${selectedFile.path}`"></v-img>
                         <p class="text-center" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap">{{ selectedFile.name }}</p>
                         <p class="text-left">
                             Size: {{ selectedFile.size }}KB<br />
@@ -31,7 +29,7 @@
                             Last updated: {{ selectedFile.last_updated | moment('DD-MM-YYYY HH:mm') }}<br />
                         </p>
                         <div class="text-center">
-                        <v-btn small color="primary" @click="addFile(selectedFile)">Ajouter</v-btn>
+                            <v-btn small color="primary" @click="addFile(selectedFile)">Ajouter</v-btn>
                         </div>
                     </div>
                     <div v-if="showUploadFile">
@@ -86,8 +84,8 @@ export default {
     components: { UploadMultipleFiles },
     async created() {
         // if (this.$store.getters['medias/medias'].length < 1) {
-            const data = await this.$store.dispatch('medias/fetchMedias')
-            console.log('data: ', data)
+        const data = await this.$store.dispatch('medias/fetchMedias')
+        console.log('data: ', data)
         // }
 
         this.goTo('/')
@@ -105,13 +103,13 @@ export default {
             path: '/',
             items: [],
             clicksCount: 0,
-            clicksTimer: null,
+            clicksTimer: null
         }
     },
     computed: {
         medias() {
             return this.$store.getters['medias/medias']
-        },
+        }
     },
     methods: {
         goTo(folderPath, folderName) {
@@ -126,17 +124,17 @@ export default {
                 this.items.push({
                     name: 'Dossier racine',
                     path: '/',
-                    disabled: true,
+                    disabled: true
                 })
                 this.medias.allDirectories
-                    .map((directory) => directory.split('/'))
-                    .filter((path) => path.length === 1)
-                    .map((folder) => folder[0])
-                    .forEach((folder) =>
+                    .map(directory => directory.split('/'))
+                    .filter(path => path.length === 1)
+                    .map(folder => folder[0])
+                    .forEach(folder =>
                         this.folders.push({
                             name: folder,
                             path: '/' + folder,
-                            type: 'folder',
+                            type: 'folder'
                         })
                     )
                 // this.medias.allFiles
@@ -152,8 +150,8 @@ export default {
                 //     )
 
                 this.medias.files_with_size
-                    .filter((file) => file.path.split('/').length === 1)
-                    .forEach((file) => {
+                    .filter(file => file.path.split('/').length === 1)
+                    .forEach(file => {
                         const fileName = file.path.substring(file.path.lastIndexOf('/') + 1)
                         this.files.push({
                             name: fileName,
@@ -162,10 +160,9 @@ export default {
                             width: file.width,
                             height: file.height,
                             last_updated: file.last_updated,
-                            extension: fileName.substring(fileName.lastIndexOf('.') + 1),
+                            extension: fileName.substring(fileName.lastIndexOf('.') + 1)
                         })
-                    }   
-                    )
+                    })
             } else {
                 this.path = folderPath
                 this.items = []
@@ -177,29 +174,46 @@ export default {
                     this.items.push({
                         name: folderName ? folderName : 'Dossier Racine',
                         path: folderName ? array.join('/') : '/',
-                        disabled: index === paths.length - 1 ? true : false,
+                        disabled: index === paths.length - 1 ? true : false
                     })
                 })
                 this.medias.allDirectories
-                    .map((directory) => directory.split('/'))
-                    .filter((a) => a[a.length - 2] === folderName)
-                    .forEach((folder) =>
+                    .map(directory => directory.split('/'))
+                    .filter(a => a[a.length - 2] === folderName)
+                    .forEach(folder =>
                         this.folders.push({
                             name: folder[folder.length - 1],
                             path: '/' + folder.join('/'),
-                            type: 'folder',
+                            type: 'folder'
                         })
                     )
-                this.medias.allFiles
-                    .map((filePath) => filePath.split('/'))
-                    .filter((a) => a[a.length - 2] === folderName)
-                    .forEach((file) =>
-                        this.files.push({
-                            name: file[file.length - 1],
-                            path: '/' + file.join('/'),
-                            extension: file.join('/').substring(file.join('/').lastIndexOf('.') + 1),
-                        })
-                    )
+                // this.medias.allFiles
+                //     .map(filePath => filePath.split('/'))
+                //     .filter(a => a[a.length - 2] === folderName)
+                //     .forEach(file =>
+                //         this.files.push({
+                //             name: file[file.length - 1],
+                //             path: '/' + file.join('/'),
+                //             extension: file.join('/').substring(file.join('/').lastIndexOf('.') + 1)
+                //         })
+                //     )
+                this.medias.files_with_size
+                    .filter(file => file.path.split('/').length > 1)
+                    .forEach(file => {
+                        const pathArray = file.path.split('/')
+                        if (pathArray[pathArray.length - 2] === folderName) {
+                            const fileName = file.path.substring(file.path.lastIndexOf('/') + 1)
+                            this.files.push({
+                                name: fileName,
+                                path: '/' + file.path,
+                                size: file.size,
+                                width: file.width,
+                                height: file.height,
+                                last_updated: file.last_updated,
+                                extension: fileName.substring(fileName.lastIndexOf('.') + 1)
+                            })
+                        }
+                    })
             }
         },
         goBack() {
@@ -214,7 +228,7 @@ export default {
             console.log('name: ', name)
             this.goTo(path, name)
         },
-        clickOnFile (file) {
+        clickOnFile(file) {
             console.log('clickOnFile file: ', file)
             this.selectedFile = file
             this.showUploadFile = false
@@ -286,8 +300,8 @@ export default {
         formatRemoveFileExtension(file) {
             const index = file.lastIndexOf('.')
             return file.substring(0, index)
-        },
-    },
+        }
+    }
 }
 </script>
 

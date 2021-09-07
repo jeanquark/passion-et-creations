@@ -11,18 +11,18 @@
                         <medias-component @addFile="onAddFile"></medias-component>
                     </v-dialog>
                     <v-row no-gutters>
-                        <v-col cols="12" md="4" lg="3" class="" style="border: 0px solid green" v-for="(image, index) in form.images" :key="index">
-                            <v-card height="200" elevation="3" style="border: 2px dashed #ccc">
+                        <v-col cols="12" md="4" lg="3" class="pa-2" style="border: 0px solid green" v-for="(image, index) in form.images" :key="index">
+                            <v-card height="200" elevation="3" class="d-flex justify-center align-center" style="border: 0px dashed #ccc">
                                 <v-card-text class="text-center">
                                     <v-img :src="`/medias/${image.path}`" width="100%"></v-img>
                                     {{ image.name }}
                                 </v-card-text>
                             </v-card>
                         </v-col>
-                        <v-col cols="12" md="4" lg="3" class="" style="border: 0px solid green">
-                            <v-card min-height="200" elevation="3" style="border: 2px dashed #ccc">
-                                <v-card-text class="text-center">
-                                    <v-btn small color="primary" @click="dialog = !dialog">Ajouter image</v-btn>
+                        <v-col cols="12" md="4" lg="3" class="pa-2" style="">
+                            <v-card height="200" elevation="3" class="d-flex justify-center align-center" style="border: 2px dashed #ccc;" @click="dialog = !dialog">
+                                <v-card-text class="text-center" style="">
+                                    <v-icon x-large >mdi-plus</v-icon>
                                 </v-card-text>
                             </v-card>
                         </v-col>
@@ -58,23 +58,23 @@ export default {
                     text: 'Portfolios',
                     disabled: false,
                     to: '/admin/portfolios',
-                    exact: true,
+                    exact: true
                 },
                 {
                     text: 'Ajouter',
                     disabled: true,
-                    to: '/admin/portfolio/create',
-                },
+                    to: '/admin/portfolio/create'
+                }
             ],
             form: new Form({
-                title: '',
-                description: '',
-                front_image_id: '',
-                images: [],
+                title: 'New title',
+                description: 'New description',
+                // front_image_id: '',
+                images: []
             }),
             tab: null,
             showModal: false,
-            dialog: false,
+            dialog: false
         }
     },
     computed: {},
@@ -89,17 +89,22 @@ export default {
             this.dialog = false
             console.log('onAddFile file: ', file)
             // this.form.front_image_id = file.id
+            if (this.form.images.length < 1) {
+                file['is_front_image'] = true
+            } else {
+                file['is_front_image'] = false
+            }
             this.form.images.push(file)
         },
         async createPortfolio() {
             try {
                 console.log('createPortfolio form: ', this.form)
-                // await this.$store.dispatch('portfolios/createPortfolio', this.form)
+                await this.$store.dispatch('portfolios/createPortfolio', this.form)
             } catch (error) {
                 console.log('error: ', error)
             }
-        },
-    },
+        }
+    }
 }
 </script>
 

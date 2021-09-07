@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Portfolio;
+use App\Models\Image;
 
 class PortfoliosController extends Controller
 {
@@ -14,7 +15,7 @@ class PortfoliosController extends Controller
      */
     public function index()
     {
-        $portfolios = Portfolio::with('images')->with('front_image')->with('category')->orderBy('order', 'asc')->get();
+        $portfolios = Portfolio::with('images')->with('category')->orderBy('order', 'asc')->get();
         
         return response()->json([
             'portfolios' => $portfolios
@@ -39,8 +40,31 @@ class PortfoliosController extends Controller
      */
     public function store(Request $request)
     {
+        // 1) Save portfolios
+        $newPortfolio = new Portfolio();
+        $newPortfolio->title = $request['title'];
+        $newPortfolio->description = $request['description'];
+        // $newPortfolio->front_image_id = $request['images'][0]['id'];
+        $newPortfolio->save();
+
+        // 2) Save images
+        foreach($request->images as $image) {
+            $newImage = new Image();
+            $newImage->portfolio_id = $newPortfolio['id'];
+            $newImage->name = $image['name'];
+            $newImage->path = $image['path'];
+            $newImage->height = $image['height'];
+            $newImage->width = $image['width'];
+            $newImage->size = $image['size'];
+            $newImage->is_front_image = $image['is_front_image'];
+            $newImage->save();
+        }
+
+        
+
         return response()->json([
-            'success' => true
+            'success' => true,
+            'request->all()' => $request->all()
         ]);
     }
 

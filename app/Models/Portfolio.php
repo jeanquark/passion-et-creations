@@ -36,9 +36,16 @@ class Portfolio extends Model
     /**
      * The roles that belong to the user.
      */
+    // public function images()
+    // {
+    //     return $this->belongsToMany('App\Models\Image', 'portfolio_image', 'portfolio_id', 'image_id')->withTimestamps();
+    // }
+
+    /**
+     * Get the comments for the blog post.
+     */
     public function images()
     {
-        // return $this->belongsToMany(Image::class);
-        return $this->belongsToMany('App\Models\Image', 'portfolio_image', 'portfolio_id', 'image_id')->withTimestamps();
+        return $this->hasMany(Image::class);
     }
 }

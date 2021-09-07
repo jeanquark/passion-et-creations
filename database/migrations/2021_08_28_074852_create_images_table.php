@@ -15,11 +15,15 @@ class CreateImagesTable extends Migration
     {
         Schema::create('images', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('portfolio_id');
+            $table->foreign('portfolio_id')->references('id')->on('portfolios');
             $table->string('name');
-            $table->text('description');
+            // $table->text('description');
             $table->string('path');
-            $table->string('height');
-            $table->string('width');
+            $table->integer('size');
+            $table->integer('height');
+            $table->integer('width');
+            $table->boolean('is_front_image')->default(0);
             $table->timestamps();
         });
     }

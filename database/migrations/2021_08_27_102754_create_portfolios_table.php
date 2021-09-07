@@ -17,8 +17,8 @@ class CreatePortfoliosTable extends Migration
             $table->id();
             $table->unsignedBigInteger('category_id')->nullable();
             $table->foreign('category_id')->references('id')->on('categories');
-            $table->unsignedBigInteger('front_image_id')->nullable();
-            $table->foreign('front_image_id')->references('id')->on('images');
+            // $table->unsignedBigInteger('front_image_id')->nullable();
+            // $table->foreign('front_image_id')->references('id')->on('images');
             $table->string('title');
             $table->text('description');
             $table->integer('order')->unsigned();

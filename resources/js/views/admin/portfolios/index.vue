@@ -16,8 +16,8 @@
                                     <v-col class="d-flex align-center">
                                         index: {{ i }} id: {{ portfolio.id }} order: {{ portfolio.order }}
                                         
-                                        <v-img :src="portfolio.front_image.path" max-width="80" aspect-ratio="1" class="mr-3"></v-img>
-                                        {{ portfolio.front_image.name }}
+                                        <!-- <v-img :src="portfolio.front_image.path" max-width="80" aspect-ratio="1" class="mr-3"></v-img> -->
+                                        <!-- {{ portfolio.front_image.name }} -->
                                     </v-col>
                                     <v-spacer></v-spacer>
                                     <v-col class="d-flex justify-end">
@@ -30,11 +30,17 @@
                             <v-expansion-panel-content>
                                 <v-row no-gutters>
                                     <v-col cols="12" md="6" lg="4" class="px-2">
+                                        {{ frontImage(portfolio.images) }}
+                                    </v-col>
+                                    <v-col cols="12" md="6" lg="8" class="px-2">
+                                        {{ portfolio.images }}
+                                    </v-col>
+                                    <!-- <v-col cols="12" md="6" lg="4" class="px-2">
                                         <v-img :src="portfolio.front_image.path"></v-img>
                                     </v-col>
                                     <v-col cols="12" md="6" lg="8" class="px-2">
                                         <div v-html="portfolio.description"></div>
-                                    </v-col>
+                                    </v-col> -->
                                 </v-row>
                                 <v-row no-gutters>
                                     <v-col cols="12" md="4" lg="3" v-for="image in portfolio.images" :key="image.id" class="pa-2">
@@ -90,6 +96,7 @@ export default {
                 // this.portfolios = value
             },
         },
+        
         updatedOrder() {
             for (let i = 0; i < this.portfolios.length; i++) {
                 if (this.portfolios[i]['order'] != i + 1) {
@@ -100,6 +107,9 @@ export default {
         },
     },
     methods: {
+        frontImage (images) {
+            return images.filter(image => image.is_front_image == true)
+        },
         goToPage(id) {
             this.$router.push(`/admin/portfolios/${id}/edit`)
         },
