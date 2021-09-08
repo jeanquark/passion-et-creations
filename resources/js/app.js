@@ -45,7 +45,7 @@ const app = new Vue({
             console.log('error: ', error)
         }
     },
-    mounted() { },
+    mounted() {},
     data() {
         return {
             // count: 0

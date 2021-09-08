@@ -12,19 +12,30 @@
                     </v-dialog>
                     <v-row no-gutters>
                         <v-col cols="12" md="4" lg="3" class="pa-2" style="border: 0px solid green" v-for="(image, index) in form.images" :key="index">
-                            <v-card height="200" elevation="3" class="d-flex justify-center align-center" style="border: 0px dashed #ccc">
-                                <v-card-text class="text-center">
-                                    <v-img :src="`/medias/${image.path}`" width="100%"></v-img>
-                                    {{ image.name }}
-                                </v-card-text>
-                            </v-card>
+                            <v-hover v-slot="{ hover }">
+                                <v-card height="200" :elevation="hover ? 12 : 2" :class="{ 'on-hover': hover }" class="d-flex justify-center align-center" style="border: 0px dashed #ccc">
+                                    <v-card-text class="text-center">
+                                        <v-img :src="`/medias/${image.path}`" width="100%"></v-img>
+                                        {{ image.name }}
+                                    </v-card-text>
+                                </v-card>
+                            </v-hover>
                         </v-col>
                         <v-col cols="12" md="4" lg="3" class="pa-2" style="">
-                            <v-card height="200" elevation="3" class="d-flex justify-center align-center" style="border: 2px dashed #ccc;" @click="dialog = !dialog">
-                                <v-card-text class="text-center" style="">
-                                    <v-icon x-large >mdi-plus</v-icon>
-                                </v-card-text>
-                            </v-card>
+                            <v-hover v-slot="{ hover }">
+                                <v-card
+                                    height="200"
+                                    :elevation="hover ? 12 : 2"
+                                    :class="{ 'on-hover': hover }"
+                                    class="d-flex justify-center align-center"
+                                    style="border: 2px dashed #ccc"
+                                    @click="dialog = !dialog"
+                                >
+                                    <v-card-text class="text-center" style="">
+                                        <v-icon x-large>mdi-plus</v-icon>
+                                    </v-card-text>
+                                </v-card>
+                            </v-hover>
                         </v-col>
                     </v-row>
 
@@ -58,23 +69,23 @@ export default {
                     text: 'Portfolios',
                     disabled: false,
                     to: '/admin/portfolios',
-                    exact: true
+                    exact: true,
                 },
                 {
                     text: 'Ajouter',
                     disabled: true,
-                    to: '/admin/portfolio/create'
-                }
+                    to: '/admin/portfolio/create',
+                },
             ],
             form: new Form({
                 title: 'New title',
                 description: 'New description',
                 // front_image_id: '',
-                images: []
+                images: [],
             }),
             tab: null,
             showModal: false,
-            dialog: false
+            dialog: false,
         }
     },
     computed: {},
@@ -103,8 +114,8 @@ export default {
             } catch (error) {
                 console.log('error: ', error)
             }
-        }
-    }
+        },
+    },
 }
 </script>
 

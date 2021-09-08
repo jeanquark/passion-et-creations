@@ -567,10 +567,10 @@ class PortfoliosTableSeeder extends Seeder
         );
         DB::table('portfolios')->insert($portfolios);
 
-        DB::table('portfolio_image')->delete();
+        // DB::table('portfolio_image')->delete();
 
         // Get all the roles attaching up to 3 random roles to each user
-        $images = Image::all();
+        // $images = Image::all();
 
         // Populate the pivot table
         // Portfolio::all()->each(function ($portfolio) use ($images) {

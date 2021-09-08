@@ -5,7 +5,7 @@
                 <GmapMarker :key="index" v-for="(m, index) in markers" :position="m.position" :clickable="true" :draggable="true" @click="center = m.position" />
             </GmapMap>
         </v-col>
-        <v-col cols="12" md="4"
+        <v-col cols="12" md="3"
             ><h3>Informations de contact</h3>
             <ul>
                 <li>Téléphone: 079 124 64 71</li>

@@ -27,8 +27,8 @@ class DatabaseSeeder extends Seeder
                 // PermanencesTableSeeder::class,
                 // SliderTableSeeder::class,
                 CategoriesTableSeeder::class,
-                // ImagesTableSeeder::class,
-                PortfoliosTableSeeder::class
+                PortfoliosTableSeeder::class,
+                ImagesTableSeeder::class,
             ]);
         }
     }
