@@ -130,7 +130,7 @@ class ImagesTableSeeder extends Seeder
                 'portfolio_id' => 11, 'name' => 'meuble_table_basse_marie_christine_02.jpg', 'path' => '/images/meuble_table_basse_marie_christine_02.jpg', 'size' => 783000, 'width' => 2040, 'height' => 1530, 'is_front_image' => false, 'created_at' => new DateTime, 'updated_at' => new DateTime
             ],
             [
-                'portfolio_id' => 12, 'name' => 'lampes damier_029_01.jpg', 'path' => '/images/lampes damier_029_01.jpg', 'size' => 640000, 'width' => 2560, 'height' => 1920, 'is_front_image' => false, 'created_at' => new DateTime, 'updated_at' => new DateTime
+                'portfolio_id' => 12, 'name' => 'lampes damier_029_01.jpg', 'path' => '/images/lampes damier_029_01.jpg', 'size' => 640000, 'width' => 2560, 'height' => 1920, 'is_front_image' => true, 'created_at' => new DateTime, 'updated_at' => new DateTime
             ],
             [
                 'portfolio_id' => 12, 'name' => 'lampes damier_029_02.jpg', 'path' => '/images/lampes damier_029_02.jpg', 'size' => 807000, 'width' => 2560, 'height' => 1920, 'is_front_image' => false, 'created_at' => new DateTime, 'updated_at' => new DateTime

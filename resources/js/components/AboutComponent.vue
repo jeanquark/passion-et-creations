@@ -1,5 +1,5 @@
 <template>
-    <v-row no-gutters justify="center" id="about" class="px-0">
+    <v-row no-gutters justify="center" id="about" class="my-10 px-0">
         <v-col cols="12" md="3">
             <v-carousel cycle hide-delimiters :show-arrows="false" :interval="2000">
                 <v-carousel-item v-for="(image, i) in images" :key="i" :src="image"></v-carousel-item>

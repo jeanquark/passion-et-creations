@@ -15,7 +15,7 @@
     </v-carousel> -->
     <v-carousel hide-delimiters>
         <!-- <v-carousel-item v-for="(item, i) in items" :key="i" :src="item.src"></v-carousel-item> -->
-        <v-carousel-item v-for="(image, i) in images" :key="i" :src="`/images/portfolio/${image}`"></v-carousel-item>
+        <v-carousel-item v-for="(image, i) in images" :key="i" :src="`/medias/images/sliders/${image}`"></v-carousel-item>
     </v-carousel>
 </template>
 
@@ -25,7 +25,7 @@ export default {
         return {
             model: 0,
             colors: ['primary', 'secondary', 'yellow darken-2', 'red', 'orange'],
-            images: ['1920x1200.jpg', '1920x1600.jpg'],
+            images: ['slider_01.jpg', 'slider_02.jpg', 'slider_03.jpg', 'slider_04.jpg'],
             items: [
                 {
                     src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg'

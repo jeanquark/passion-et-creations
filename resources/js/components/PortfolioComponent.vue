@@ -1,13 +1,20 @@
 <template>
-    <v-row no-gutters justify="center" id="portfolio">
+    <v-row no-gutters justify="center" id="portfolio" class="my-10">
         <v-col cols="12" md="10">
             <!-- Start of page<br /> -->
             <!-- Images: {{ images }}<br /> -->
             <!-- selectedImage: {{ selectedImage }} -->
             <!-- portfolios: {{ portfolios }}<br /> -->
-            <waterfall :line-gap="250" :watch="items">
+            <waterfall :line-gap="250" :watch="portfolios">
                 <waterfall-slot v-for="(portfolio, index) in portfolios" :width="frontImage(portfolio)['width']" :height="frontImage(portfolio)['height']" :order="index" :key="index">
-                    <v-img :lazy-src="`/medias/${frontImage(portfolio)['path']}`" :src="`/medias/${frontImage(portfolio)['path']}`" class="image" style="margin: 5px" @click="selectImage(portfolio)"></v-img>
+                    <v-img
+                        :lazy-src="`/medias${frontImage(portfolio)['path']}`"
+                        :src="`/medias${frontImage(portfolio)['path']}`"
+                        class="image"
+                        style="margin: 5px"
+                        @click="selectPortfolio(portfolio, index)"
+                        v-if="frontImage(portfolio)"
+                    ></v-img>
                     <!-- {{ portfolio.images[0]['path'] }} -->
                     <!-- <v-img :lazy-src="`/medias/${portfolio.images[0]['path']}`" :src="`/medias/${portfolio.images[0]['path']}`" class="image" style="margin: 5px" @click="selectImage(portfolio)"></v-img> -->
                 </waterfall-slot>
@@ -16,33 +23,30 @@
                 </waterfall-slot> -->
             </waterfall>
             <!-- <p>End of page</p> -->
-            <v-dialog v-model="dialog" max-width="60%">
+            <v-dialog v-model="dialog" max-width="60%" v-if="selectedPortfolio">
                 <v-card>
                     <v-card-title class="text-h5 grey lighten-2">
+                        <div v-html="selectedPortfolio.title"></div>
+                        <v-spacer></v-spacer>
                         <v-btn small @click="moveLeft">Left</v-btn>
                         <v-btn small @click="moveRight">Right</v-btn>
-                        <v-spacer></v-spacer>
                         <v-btn small @click="dialog = false">Close</v-btn>
                     </v-card-title>
                     <v-card-text>
                         <v-row no-gutters>
-                            <!-- <v-col cols="1"></v-col> -->
-                            <v-col cols="8" class="pa-2">
-                                <v-img :src="selectedImage.src"></v-img>
+                            <!-- selectedPortfolio: {{ selectedPortfolio }}<br /><br /> -->
+                            <!-- selectedImage: {{ selectedImage }}<br /><br /> -->
+                            <v-col cols="8" class="pa-2" v-if="selectedImage">
+                                <v-img :src="`/medias${selectedImage.path}`"></v-img>
                             </v-col>
                             <v-col cols="4" class="px-4 py-1">
                                 <v-row no-gutters>
-                                    <v-col cols="4" class="pa-1">
-                                        <v-img src="/images/portfolio/1920x1200.jpg" aspect-ratio="1"></v-img>
-                                    </v-col>
-                                    <v-col cols="4" class="pa-1"> <v-img src="/images/portfolio/3200x1080.jpg" aspect-ratio="1"></v-img> </v-col
-                                    ><v-col cols="4" class="pa-1"> <v-img src="/images/portfolio/768x1080.jpg" aspect-ratio="1"></v-img> </v-col
-                                    ><v-col cols="4" class="pa-1">
-                                        <v-img src="/images/portfolio/1920x1080.jpg" aspect-ratio="1"></v-img>
+                                    <v-col cols="4" class="pa-1" v-for="(image, index) in selectedPortfolio.images" :key="index">
+                                        <!-- image: {{ image }} -->
+                                        <v-img :src="`/medias${image.path}`" aspect-ratio="1" class="image" @click="selectImage(image)"></v-img>
                                     </v-col>
                                 </v-row>
                             </v-col>
-                            <!-- <v-col cols="1"></v-col> -->
                         </v-row>
                     </v-card-text>
 
@@ -50,7 +54,7 @@
 
                     <v-card-text>
                         <v-spacer></v-spacer>
-                        Description image
+                        <div v-html="selectedPortfolio.description"></div>
                     </v-card-text>
                 </v-card>
             </v-dialog>
@@ -71,12 +75,12 @@ export default {
         } catch (error) {
             console.log('error: ', error)
         }
-        await this.$store.dispatch('images/fetchImages')
     },
     data() {
         return {
             dialog: false,
-            selectedImage: '',
+            selectedPortfolio: null,
+            selectedImage: null,
             items: [
                 { index: 0, name: '1920x1080.jpg', src: '/images/portfolio/1920x1080.jpg', height: 1080, width: 1920 },
                 { index: 1, name: '1920x1200.jpg', src: '/images/portfolio/1920x1200.jpg', height: 1200, width: 1920 },
@@ -100,7 +104,7 @@ export default {
                 { index: 19, name: '3200x1080.jpg', src: '/images/portfolio/3200x1080.jpg', height: 1080, width: 3200 },
                 { index: 20, name: '768x1080.jpg', src: '/images/portfolio/768x1080.jpg', height: 1080, width: 768 },
                 { index: 21, name: '768x1080.jpg', src: '/images/portfolio/768x1080.jpg', height: 1080, width: 768 },
-                { index: 22, name: '1920x1080.jpg', src: '/images/portfolio/1920x1080.jpg', height: 1080, width: 1920 },
+                { index: 22, name: '1920x1080.jpg', src: '/images/portfolio/1920x1080.jpg', height: 1080, width: 1920 }
                 // { id: 1, src: 'https://raw.githubusercontent.com/SUNbrightness/my-img/master/test/pic.jpg', height: 300, width: 300 },
                 // { id: 2, src: 'https://raw.githubusercontent.com/SUNbrightness/my-img/master/test/pic0.jpg', height: 300, width: 300 },
                 // { id: 3, src: 'https://raw.githubusercontent.com/SUNbrightness/my-img/master/test/pic1.jpg', height: 100, width: 100 },
@@ -114,7 +118,7 @@ export default {
                 // { id: 11, src: 'https://raw.githubusercontent.com/SUNbrightness/my-img/master/test/pic9.jpg', height: 2315, width: 2315 },
                 // { id: 12, src: 'https://raw.githubusercontent.com/SUNbrightness/my-img/master/test/pavlova.jpg', height: 853, width: 1280 },
                 // { id: 13, src: 'https://raw.githubusercontent.com/SUNbrightness/my-img/master/test/pic.jpg', height: 300, width: 300 },
-            ],
+            ]
         }
     },
     computed: {
@@ -122,11 +126,11 @@ export default {
             return this.$store.getters['images/images']
         },
         portfolios() {
-            return this.$store.getters['portfolios/portfolios'].splice(0, 8)
+            return this.$store.getters['portfolios/portfolios'].splice(0, 16)
         }
     },
     methods: {
-        frontImage (portfolio) {
+        frontImage(portfolio) {
             try {
                 return portfolio.images.find(image => image.is_front_image == true)
             } catch (error) {
@@ -156,24 +160,31 @@ export default {
         //         console.log('error: ', error)
         //     }
         // },
+        selectPortfolio(portfolio, index) {
+            console.log('selectPortfolio portfolio: ', portfolio)
+            this.selectedPortfolio = portfolio
+            this.selectedPortfolio['index'] = index
+            this.selectedImage = this.selectedPortfolio.images[0]
+            this.dialog = true
+        },
         selectImage(image) {
             console.log('selectImage image: ', image)
             this.selectedImage = image
-            this.dialog = true
         },
         moveLeft() {
-            console.log('moveLeft index: ', this.selectedImage.index)
-            if (this.selectedImage.index > 0) {
-                this.selectedImage = this.items[this.selectedImage.index - 1]
+            console.log('moveLeft index: ', this.selectedPortfolio.index)
+            if (this.selectedPortfolio.index > 0) {
+                // this.selectedPortfolio = this.portfolios[this.selectedPortfolio.index - 1]
+                this.selectPortfolio(this.portfolios[this.selectedPortfolio.index - 1], this.selectedPortfolio.index - 1)
             }
         },
         moveRight() {
-            console.log('moveRight index: ', this.selectedImage.index)
-            if (this.selectedImage.index < this.items.length - 1) {
-                this.selectedImage = this.items[this.selectedImage.index + 1]
+            console.log('moveRight index: ', this.selectedPortfolio.index)
+            if (this.selectedPortfolio.index < this.portfolios.length - 1) {
+                this.selectPortfolio(this.portfolios[this.selectedPortfolio.index + 1], this.selectedPortfolio.index + 1)
             }
-        },
-    },
+        }
+    }
 }
 </script>
 
