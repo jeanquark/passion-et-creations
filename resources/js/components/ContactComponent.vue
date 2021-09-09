@@ -1,44 +1,56 @@
 <template>
     <v-row no-gutters justify="center" id="contact" class="ma-5 px-0">
         <v-col cols="12" md="4" class="pa-3">
+            <v-tooltip bottom :open-on-hover="false">
+                <template #activator="{ on }">
+                    <v-btn @click="on.click" @blur="on.blur" retain-focus-on-click>Copy</v-btn>
+                </template>
+                <span>Copy</span>
+            </v-tooltip>
+
             <GmapMap :center="{ lat: 46.4776, lng: 6.4272 }" :zoom="14" map-type-id="terrain" style="width: 100%; height: 300px">
                 <GmapMarker :key="index" v-for="(m, index) in markers" :position="m.position" :clickable="true" :draggable="true" @click="center = m.position" />
             </GmapMap>
         </v-col>
         <v-col cols="12" md="3" class="pa-3">
+            <v-icon small @click="copyEmailAddress">mdi-content-copy</v-icon>
             <v-list dense>
                 <v-subheader class="text-center text-h5">Informations de contact</v-subheader>
-                <v-list-item-group>
-                    <v-list-item>
-                        <v-list-item-icon>
-                            <v-icon>mdi-phone</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                            <v-list-item-title class="text-subtitle-2">079 124 64 71</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                    <v-list-item>
-                        <v-list-item-icon>
-                            <v-icon>mdi-email</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                            <v-list-item-title class="text-subtitle-2">info@passionetcreations.ch</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                    <v-list-item>
-                        <v-list-item-icon>
-                            <v-icon>mdi-map-marker</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                            <v-list-item-title class="text-subtitle-2" style="line-height: 1.5em;">
-                                Passion & Créations<br />
-                                Les Ateliers de la Côte<br />
-                                Rte de Pallatex 5<br />
-                                1163 Etoy
-                            </v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list-item-group>
+                <v-list-item>
+                    <v-list-item-icon>
+                        <v-icon>mdi-phone</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title class="text-subtitle-2">079 124 64 71</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+                <v-list-item>
+                    <v-list-item-icon>
+                        <v-icon>mdi-email</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <!-- <v-list-item-title class="text-subtitle-2">info@passionetcreations.ch </v-list-item-title> -->
+                        <v-tooltip bottom :open-on-hover="false" v-model="abc">
+                            <template #activator={}>
+                                <v-btn @click="copyEmailAddress" retain-focus-on-click>Copy</v-btn>
+                            </template>
+                            <span>Adresse copiée</span>
+                        </v-tooltip>
+                    </v-list-item-content>
+                </v-list-item>
+                <v-list-item>
+                    <v-list-item-icon>
+                        <v-icon>mdi-map-marker</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title class="text-subtitle-2" style="line-height: 1.5em;">
+                            Passion & Créations<br />
+                            Les Ateliers de la Côte<br />
+                            Rte de Pallatex 5<br />
+                            1163 Etoy
+                        </v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
             </v-list>
         </v-col>
         <v-col cols="12" md="4" class="pa-3">
@@ -62,16 +74,22 @@ export default {
             form: new Form({
                 name: '',
                 email: '',
-                message: '',
+                message: ''
             }),
             markers: [],
+            showTooltip: false,
+            abc: null
         }
     },
     methods: {
         sendContactForm() {
             console.log('sendContactForm')
         },
-    },
+        copyEmailAddress() {
+            this.showTooltip = true
+            navigator.clipboard.writeText('info@passionetcreations.ch')
+        }
+    }
 }
 </script>
 
