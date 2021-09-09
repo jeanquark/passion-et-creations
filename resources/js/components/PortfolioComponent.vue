@@ -1,7 +1,7 @@
 <template>
     <v-row no-gutters justify="center" id="portfolio" class="my-10">
         <v-col cols="12" md="10">
-            <h2 class="text-center my-2">Portfolio</h2>
+            <h2 class="text-center my-2" style="color: #c49a6c;">Portfolio</h2>
             <!-- Start of page<br /> -->
             <!-- Images: {{ images }}<br /> -->
             <!-- selectedImage: {{ selectedImage }} -->
@@ -23,6 +23,11 @@
                     <v-img :lazy-src="item.src" :src="item.src" class="image" style="margin: 5px" @click="selectImage(item)"></v-img>
                 </waterfall-slot> -->
             </waterfall>
+
+            <div class="text-center">
+                <v-icon size="60" @click="showMore">mdi-plus</v-icon>
+            </div>
+            <!-- <v-btn small color="primary" class="text-center">Afficher plus</v-btn> -->
             <!-- <p>End of page</p> -->
             <v-dialog v-model="dialog" max-width="60%" v-if="selectedPortfolio">
                 <v-card>
@@ -53,8 +58,8 @@
 
                     <v-divider></v-divider>
 
-                    <v-card-text>
-                        <v-spacer></v-spacer>
+                    <v-card-text class="mt-3">
+                        <!-- <v-spacer></v-spacer> -->
                         <div v-html="selectedPortfolio.description"></div>
                     </v-card-text>
                 </v-card>
@@ -128,9 +133,13 @@ export default {
         },
         portfolios() {
             return this.$store.getters['portfolios/portfolios'].splice(0, 16)
-        }
+        },
+        
     },
     methods: {
+        showMore() {
+            console.log('showMore')
+        },
         frontImage(portfolio) {
             try {
                 return portfolio.images.find(image => image.is_front_image == true)

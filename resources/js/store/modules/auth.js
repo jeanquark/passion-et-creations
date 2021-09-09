@@ -23,6 +23,7 @@ export const actions = {
             return data
 		} catch (error) {
 			console.log('error: ', error)
+            throw error
 		}
 	},
 	async logout ({ commit }) {

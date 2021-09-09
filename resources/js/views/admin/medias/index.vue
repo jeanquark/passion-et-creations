@@ -3,13 +3,13 @@
         <!-- <v-breadcrumbs large :items="items"></v-breadcrumbs> -->
         <v-row no-gutters>
             <v-col cols="12">
-                medias.allDirectories: {{ medias.allDirectories }}<br /><br />
-                medias.allFiles: {{ medias.allFiles }}<br /><br />
-                folders: {{ folders }}<br /><br />
-                files: {{ files }}<br /><br />
-                path: {{ path }}<br /><br />
-                items: {{ items }}<br /><br />
-                showUploadFile: {{ showUploadFile }}<br /><br />
+                <!-- medias.allDirectories: {{ medias.allDirectories }}<br /><br /> -->
+                <!-- medias.allFiles: {{ medias.allFiles }}<br /><br /> -->
+                <!-- folders: {{ folders }}<br /><br /> -->
+                <!-- files: {{ files }}<br /><br /> -->
+                <!-- path: {{ path }}<br /><br /> -->
+                <!-- items: {{ items }}<br /><br /> -->
+                <!-- showUploadFile: {{ showUploadFile }}<br /><br /> -->
             </v-col>
             <!-- <v-col>
                 <v-btn small color="primary" @click="goBack">Go back</v-btn><br />

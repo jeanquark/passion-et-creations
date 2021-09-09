@@ -12,10 +12,9 @@
         <v-container class="pa-0" style="">
             <v-row no-gutters align="center" justify="center" class="mt-10 mb-3" style="border: 0px solid blue">
                 <v-col cols="12" class="mt-15 mb-5 d-flex justify-center">
-                    <a href="http://google.ch" target="_blank" class="link"><v-img src="/images/facebook.png" onmouseover="this.src='/images/facebook2.png'" max-width="30" class="mx-2"></v-img></a>
-                    <a href="http://google.ch" target="_blank" class="link"><v-img src="/images/pinterest.png" max-width="30" class="mx-2"></v-img></a>
-                    <a href="http://google.ch" target="_blank" class="link"><v-img src="/images/instagram.png" max-width="30" class="mx-2"></v-img></a>
-                    
+                    <a href="https://www.facebook.com/passioncreationsch" target="_blank" class="link"><v-img src="/images/facebook.png" onmouseover="this.src='/images/facebook2.png'" max-width="30" class="mx-2"></v-img></a>
+                    <a href="https://www.pinterest.fr/passioncrea_ch/" target="_blank" class="link"><v-img src="/images/pinterest.png" max-width="30" class="mx-2"></v-img></a>
+                    <a href="https://www.instagram.com/passionetcreationsch/?hl=fr" target="_blank" class="link"><v-img src="/images/instagram.png" max-width="30" class="mx-2"></v-img></a>
                 </v-col>
                 <v-col cols="12" align-self="end" class="text-center white--text">
                     <br />
