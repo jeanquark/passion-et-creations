@@ -106,7 +106,13 @@
                     <p class="text-justify">Pour un aperçu de mes créations, se référer au portfolio. Rendez-vous également sur ma page personnelle Pinterest. Vous ne trouvez pas votre bonheur? Vous changeriez un motif sur une commode? N’hésitez pas à m’en parler, ou mieux encore: venez me trouver à mon atelier. Je serai ravie d’en discuter avec vous, et voir dans quelle mesure je peux vous aider à obtenir l’objet qui comblera toutes vos attentes.</p>    
                 </v-col>
                 <v-col cols="12" sm="6" md="4" class="px-4">
-                    <v-img src="/medias/images/welcome.jpg" width="100%"></v-img>
+                    {{-- <v-img src="/medias/images/welcome.jpg" width="100%"></v-img> --}}
+                    <iframe width="100%" height="300" src="https://www.rts.ch/play/embed?urn=urn:rts:video:12405396&subdivisions=false" allowfullscreen allow="geolocation *; autoplay; encrypted-media"></iframe>
+                    {{-- <video width="320" height="240" controls>
+                        
+                        <source src="https://www.rts.ch/play/tv/bon-debarras-/video/belmont-broye-fr--avec-sabine-pirat-et-romain-buchs?urn=urn:rts:video:12405396">
+                      Your browser does not support the video tag.
+                      </video> --}}
                 </v-col>
             </v-row>
             {{-- <v-row no-gutters id="portfolio"></v-row> --}}

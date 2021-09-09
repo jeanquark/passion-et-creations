@@ -1,6 +1,7 @@
 <template>
     <v-row no-gutters justify="center" id="portfolio" class="my-10">
         <v-col cols="12" md="10">
+            <h2 class="text-center my-2">Portfolio</h2>
             <!-- Start of page<br /> -->
             <!-- Images: {{ images }}<br /> -->
             <!-- selectedImage: {{ selectedImage }} -->
@@ -28,9 +29,9 @@
                     <v-card-title class="text-h5 grey lighten-2">
                         <div v-html="selectedPortfolio.title"></div>
                         <v-spacer></v-spacer>
-                        <v-btn small @click="moveLeft">Left</v-btn>
-                        <v-btn small @click="moveRight">Right</v-btn>
-                        <v-btn small @click="dialog = false">Close</v-btn>
+                        <v-icon large @click="moveLeft" class="mx-1 icon">mdi-arrow-left-bold-circle-outline</v-icon>
+                        <v-icon large class="mx-1 icon" @click="moveRight">mdi-arrow-right-bold-circle-outline</v-icon>
+                        <v-icon large class="ml-2 icon" @click="dialog = false">mdi-close</v-icon>
                     </v-card-title>
                     <v-card-text>
                         <v-row no-gutters>
@@ -195,6 +196,9 @@ export default {
 } */
 .image:hover {
     cursor: pointer;
-    border: 2px solid red;
+    border: 2px solid #c49a6c;
+}
+.icon:hover {
+    color: #c49a6c;
 }
 </style>

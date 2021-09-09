@@ -4,20 +4,24 @@
         <!-- <router-view><router-view> -->
         <!-- <v-system-bar color="deep-purple darken-3"></v-system-bar> -->
         <v-app-bar app flat fixed class="hidden-sm-and-down">
-            <v-toolbar-title><a href="/" class="link">Passion & Créations</a></v-toolbar-title>
+            <!-- <v-toolbar-title><a href="/" class="link">Passion & Créations</a></v-toolbar-title> -->
+            <v-toolbar-title>
+                <v-img src="/images/logo.png" max-width="100"></v-img>
+            </v-toolbar-title>
 
             <v-spacer></v-spacer>
 
-            <v-toolbar-title class="nav-link mx-2"><a href="/login" class="link">Login</a></v-toolbar-title>
+            <!-- <v-toolbar-title class="nav-link mx-2"><a href="/login" class="link">Login</a></v-toolbar-title> -->
 
-            <v-toolbar-title class="nav-link mx-2"><a href="/admin" class="link">Admin</a></v-toolbar-title>
+            <!-- <v-toolbar-title class="nav-link mx-2"><a href="/admin" class="link">Admin</a></v-toolbar-title> -->
             <v-toolbar-title class="link mx-2" @click="$vuetify.goTo('#welcome', options)">Bienvenue</v-toolbar-title>
             <v-toolbar-title class="link mx-2" @click="$vuetify.goTo('#portfolio', options)">Portfolio</v-toolbar-title>
             <v-toolbar-title class="link mx-2" @click="$vuetify.goTo('#about', options)">Portrait</v-toolbar-title>
             <v-toolbar-title class="link mx-2" @click="$vuetify.goTo('#contact', options)">Contact</v-toolbar-title>
-            auth: {{ auth }} | 
+            <v-toolbar-title class="link mx-2" @click="logout" v-if="authUser">Logout</v-toolbar-title>
+            <!-- <span>auth: {{ auth }} | 
             authUser.name: {{ authUser ? authUser.name : ''  }} | 
-            <v-btn small @click="logout">Logout</v-btn>
+            <v-btn small @click="logout">Logout</v-btn></span> -->
         </v-app-bar>
 
         <v-app-bar app flat fixed class="hidden-md-and-up">
@@ -97,6 +101,6 @@ export default {
 }
 .link:hover {
     cursor: pointer;
-    color: yellow;
+    color: #c49a6c;
 }
 </style>

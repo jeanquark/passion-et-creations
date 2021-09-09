@@ -17,8 +17,10 @@ export const mutations = {
 export const actions = {
 	async login ({ dispatch }, form) {
 		try {
-			await form.post('/login')
-			dispatch('setAuthUser')
+			const data = await form.post('/login')
+            console.log('[VUEX] login: ', data)
+			await dispatch('setAuthUser')
+            return data
 		} catch (error) {
 			console.log('error: ', error)
 		}

@@ -1,14 +1,13 @@
 <template>
     <v-main>
-        <navbar-component></navbar-component>
-        <p>Login<br /><br /></p>
-        form.errors.has('email'): {{ form.errors }}
-        <v-container>
+        <!-- <navbar-component></navbar-component> -->
+        <!-- form.errors.has('email'): {{ form.errors }} -->
+        <v-container fill-height>
             <v-row align="center" justify="center">
                 <v-col cols="12" sm="8" md="4">
                     <v-card class="elevation-12">
-                        <v-toolbar dark color="primary">
-                            <v-toolbar-title>Login admin</v-toolbar-title>
+                        <v-toolbar dark color="#c49a6c">
+                            <v-toolbar-title>Login</v-toolbar-title>
                         </v-toolbar>
                         <v-card-text>
                             <v-form>
@@ -19,7 +18,9 @@
                         <v-card-actions class="justify-center">
                             <!-- <v-spacer></v-spacer> -->
                             <!-- <div class="text-xs-center"> -->
-                                <v-btn color="primary" :loading="form.busy" @click="login">Login</v-btn>
+                                <v-btn color="#c49a6c" class="white--text" href="/">
+                                <v-icon>mdi-arrow-left</v-icon>Retour</v-btn>
+                                <v-btn color="#c49a6c" class="white--text" :loading="form.busy" @click="login">Login</v-btn>
                             <!-- </div> -->
                         </v-card-actions>
                     </v-card>
@@ -49,10 +50,12 @@ export default {
         async login() {
             try {
                 const data = await this.$store.dispatch('auth/login', this.form)
+                console.log('data2: ', data)
                 // console.log('data: ', data)
                 // const response = await this.form.post("/login");
                 // console.log('response: ', response)
-                // this.$router.push('/admin')
+                this.$router.push('/admin')
+                // location.href = '/admin'
             } catch (error) {
                 console.log('error: ', error)
             }
