@@ -73,6 +73,7 @@
             fluid
             :class="[miniSidebar ? 'padding-left__small' : 'padding-left__big']"
         >
+            auth: {{ auth }}
             <router-view></router-view>
         </v-container>
     </v-main>
@@ -100,7 +101,10 @@ export default {
                 case "xl":
                     return false;
             }
-        }
+        },
+        auth(){
+            return this.$store.getters['auth/auth']
+        },
     },
     methods: {
         async logout () {

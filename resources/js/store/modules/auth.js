@@ -1,8 +1,10 @@
 import Vue from 'vue'
+import Cookies from 'js-cookie'
 
 export const state = () => ({
     auth: false,
-    user: null
+    user: null,
+    token: Cookies.get('token')
 })
 
 export const mutations = {
@@ -77,5 +79,8 @@ export const getters = {
     },
     user(state) {
         return state.user
+    },
+    token(state) {
+        return state.token
     }
 }

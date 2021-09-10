@@ -42,6 +42,7 @@ import Creatrice from '../views/creatrice'
 import Login from '../views/login'
 
 import log from '../middleware/log'
+import auth from '../middleware/auth'
 
 const router = new VueRouter({
     mode: 'history',
@@ -104,6 +105,10 @@ const router = new VueRouter({
             path: '/admin',
             name: 'adminLayout',
             component: AdminLayout,
+            meta: {
+                middleware: auth
+            },
+            // middleware: auth,
             children: [
                 {
                     path: 'index',
@@ -281,7 +286,22 @@ function nextFactory(context, middleware, index) {
     }
 }
 
+router.beforeEach( async (to, from, next) => {
+    console.log('beforeEach 1')
+    console.log("beforeEach store.getters['auth/auth']: ", store.getters['auth/auth'])
+    console.log("beforeEach store.getters['auth/token']: ", store.getters['auth/token'])
+    // Check auth
+    if (!store.getters['auth/auth']) {
+    	try {
+      		await store.dispatch('auth/setAuthUser')
+    	} catch (e) {}
+  	}
+    console.log('beforeEach next()')
+    return next()
+})
+
 router.beforeEach((to, from, next) => {
+    console.log('beforeEach 2')
     if (to.meta.middleware) {
         const middleware = Array.isArray(to.meta.middleware) ? to.meta.middleware : [to.meta.middleware]
 
@@ -298,5 +318,7 @@ router.beforeEach((to, from, next) => {
 
     return next()
 })
+
+
 
 export default router

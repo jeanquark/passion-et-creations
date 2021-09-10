@@ -11,14 +11,16 @@
             </v-toolbar-title>
 
             <v-spacer></v-spacer>
-
+            auth: {{ auth }}
             <!-- <v-toolbar-title class="nav-link mx-2"><a href="/login" class="link">Login</a></v-toolbar-title> -->
 
             <!-- <v-toolbar-title class="nav-link mx-2"><a href="/admin" class="link">Admin</a></v-toolbar-title> -->
             <v-toolbar-title class="link mx-2" @click="$vuetify.goTo('#welcome', options)">Accueil</v-toolbar-title> |
+            <v-toolbar-title class="link mx-2" @click="$vuetify.goTo('#info', options)">Info</v-toolbar-title> |
             <v-toolbar-title class="link mx-2" @click="$vuetify.goTo('#portfolio', options)">Portfolio</v-toolbar-title> |
             <v-toolbar-title class="link mx-2" @click="$vuetify.goTo('#about', options)">Portrait</v-toolbar-title> |
-            <v-toolbar-title class="link mx-2" @click="$vuetify.goTo('#contact', options)">Contact</v-toolbar-title>
+            <v-toolbar-title class="link mx-2" @click="$vuetify.goTo('#contact', options)">Contact</v-toolbar-title> |
+            <v-toolbar-title class="link mx-2" @click="navigateTo('/admin')">Admin</v-toolbar-title>
             <v-toolbar-title class="link mx-2" @click="logout" v-if="authUser"> | Logout</v-toolbar-title>
             <!-- <span>auth: {{ auth }} | 
             authUser.name: {{ authUser ? authUser.name : ''  }} | 
@@ -88,6 +90,10 @@ export default {
         async logout() {
             await this.$store.dispatch('auth/logout')
             location.href = '/'
+        },
+        navigateTo (path) {
+            // this.$router.push(path)
+            location.href = path
         }
     }
 }

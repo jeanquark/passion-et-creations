@@ -38,7 +38,7 @@ const app = new Vue({
     async created() {
         try {
             console.log("created() from app.js")
-            await this.$store.dispatch('auth/setAuthUser')
+            // await this.$store.dispatch('auth/setAuthUser')
             // this.$store.commit("INCREMENT");
             // console.log("count: ", this.count);
         } catch (error) {

@@ -9,6 +9,11 @@ use App\Models\User;
 
 class UsersController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('role:admin')->except(['index']);
+    }
+
     /**
      * Display a listing of the resource.
      *

@@ -9,42 +9,48 @@
                 <v-card-text>
                     <v-row no-gutters class="my-4">
                         <v-col cols="12">
-                    <v-text-field label="Titre" v-model="portfolio.title"></v-text-field>
+                            <v-text-field label="Titre" v-model="portfolio.title"></v-text-field>
                         </v-col>
                         <v-col cols="12">
-                        Description
-                        <text-editor @toggleShowHTML="toggleShowHTML" :formContent="portfolio.description" />
+                            <text-editor @toggleShowHTML="toggleShowHTML" :formContent="portfolio.description" />
                         </v-col>
                     </v-row>
-                    <v-row no-gutters align="center" class="my-4">
-                        <v-col cols="12">
-                            Image principale
-                            <v-img :src="portfolio.front_image.path" max-width="200" class="image"></v-img>
+                    <v-row no-gutters align="start" class="my-4">
+                        <v-col cols="12" md="4" style="border: 1px solid pink;">
+                            <div class="text-center">
+                            <v-chip small class="text-center">Image principale</v-chip></div>
+                            <v-img :src="`/medias/${frontImage(portfolio.images)['path']}`" max-width="200" class="image"></v-img>
                             <v-btn small color="success">Nouvelle image</v-btn>
                             <v-btn small color="error">Supprimer</v-btn>
+                        </v-col>
+                        <v-col cols="12" md="8" style="border: 1px solid pink;">
+                            <v-row no-gutters>
+                                <div class="text-center">
+                                <v-chip small class="text-center">Images annexes</v-chip></div>
+                                <v-col cols="12" md="4" class="pr-2" v-for="image in backImages(portfolio.images)" :key="image.id">
+                                    
+                                    <v-hover v-slot="{ hover }">
+                                        <v-img :src="`/medias/${image.path}`" class="">
+                                            <v-expand-transition>
+                                                <div v-if="hover" class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal text-h2 white--text" style="height: 100%">
+                                                    <v-btn small color="error" @click="deleteImage(image)">Supprimer</v-btn>
+                                                    <v-btn small color="success" @click="restoreImage(image)">Restaurer</v-btn>
+                                                </div>
+                                            </v-expand-transition>
+                                        </v-img>
+                                    </v-hover>
+                                </v-col>
+                            </v-row>
                         </v-col>
                     </v-row>
                     <v-row no-gutters justify="start" align="end" class="my-3">
                         <v-col cols="12">Images annexes</v-col>
-                        <v-col cols="3" class="pr-2" v-for="image in portfolio.images" :key="image.id">
-                            <v-hover v-slot="{ hover }">
-                                <v-img :src="image.path" class="">
-                                    <v-expand-transition>
-                                        <div v-if="hover" class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal text-h2 white--text" style="height: 100%">
-                                            <v-btn small color="error" @click="deleteImage(image)">Supprimer</v-btn>
-                                            <v-btn small color="success" @click="restoreImage(image)">Restaurer</v-btn>
-                                        </div>
-                                    </v-expand-transition>
-                                </v-img>
-                            </v-hover>
-                        </v-col>
+
                         <v-col cols="3" class="d-flex justify-center align-center">
                             <v-btn elevation="2" fab color="pink" @click="addImage"><v-icon class="white--text">mdi-plus</v-icon></v-btn>
                             <!-- <v-icon large>mdi-plus</v-icon> -->
                         </v-col>
                     </v-row>
-
-                    
                 </v-card-text>
                 <v-card-actions class="justify-center">
                     <v-btn small color="success" type="submit">Editer</v-btn>
@@ -77,7 +83,7 @@ export default {
                     // href: '/admin/portfolios',
                     to: '/admin/portfolios',
                     exact: true,
-                    link: true
+                    link: true,
                 },
                 {
                     text: 'Editer',
@@ -105,16 +111,23 @@ export default {
             console.log('toggleShowHTML2: ', value)
             this.showHTML = value
         },
+        frontImage(images) {
+            return images.find((image) => image.is_front_image == true)
+        },
+        backImages(images) {
+            return images.filter((image) => image.is_front_image == false)
+        },
+        addImage() {
+            console.log('addImage')
+            this.showMediasModal = true
+        },
         deleteImage(image) {
             console.log('deleteImage image: ', image)
         },
         restoreImage(image) {
             console.log('restoreImage image: ', image)
         },
-        addImage() {
-            console.log('addImage')
-            this.showMediasModal = true
-        },
+
         editPortfolio() {
             console.log('editPortfolio')
             console.log('portfolio: ', this.portfolio)

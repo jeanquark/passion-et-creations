@@ -1,8 +1,8 @@
 <template>
     <v-main>
         <v-breadcrumbs large :items="items"></v-breadcrumbs>
-        <v-row no-gutters justify="start">
-            <v-col cols="12">
+        <v-row no-gutters justify="center">
+            <v-col cols="12" md="8">
                 <v-form @submit.prevent="createPortfolio">
                     <v-text-field prepend-icon="mdi-lock" name="title" label="Titre" type="text" :error-messages="form.errors.get('title')" v-model="form.title"></v-text-field>
                     <v-text-field prepend-icon="mdi-lock" name="description" label="Description" type="text" :error-messages="form.errors.get('description')" v-model="form.description"></v-text-field>
@@ -10,8 +10,8 @@
                     <v-dialog v-model="dialog" width="800">
                         <medias-component @addFile="onAddFile"></medias-component>
                     </v-dialog>
-                    <v-row no-gutters>
-                        <v-col cols="12" md="4" lg="3" class="pa-2" style="border: 0px solid green" v-for="(image, index) in form.images" :key="index">
+                    <v-row no-gutters class="px-5">
+                        <v-col cols="12" md="6" lg="4" class="pa-2" style="border: 0px solid green" v-for="(image, index) in form.images" :key="index">
                             <v-hover v-slot="{ hover }">
                                 <v-card height="200" :elevation="hover ? 12 : 2" :class="{ 'on-hover': hover }" class="d-flex justify-center align-center" style="border: 0px dashed #ccc">
                                     <v-card-text class="text-center">
@@ -24,7 +24,7 @@
                         <v-col cols="12" md="4" lg="3" class="pa-2" style="">
                             <v-hover v-slot="{ hover }">
                                 <v-card
-                                    height="200"
+                                    height="150"
                                     :elevation="hover ? 12 : 2"
                                     :class="{ 'on-hover': hover }"
                                     class="d-flex justify-center align-center"
