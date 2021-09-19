@@ -1,10 +1,9 @@
 <template>
     <v-row no-gutters justify="center" id="contact" class="ma-5 px-0">
-
         <v-col cols="12" md="3" class="pa-3">
-            <GmapMap :center="{ lat: 46.4776, lng: 6.4272 }" :zoom="14" map-type-id="terrain" style="width: 100%; height: 300px">
+            <!-- <GmapMap :center="{ lat: 46.4776, lng: 6.4272 }" :zoom="14" map-type-id="terrain" style="width: 100%; height: 300px">
                 <GmapMarker :key="index" v-for="(m, index) in markers" :position="m.position" :clickable="true" :draggable="true" @click="center = m.position" />
-            </GmapMap>
+            </GmapMap> -->
         </v-col>
         <v-col cols="12" md="4" class="pa-3">
             <v-list dense>
@@ -33,9 +32,7 @@
                         <v-list-item-title class="text-subtitle-2">
                             <v-tooltip v-model="showTooltip" top :open-on-hover="false" :open-on-focus="false" :open-on-click="false">
                                 <template v-slot:activator="{ on, attrs }">
-                                    <span v-bind="attrs" v-on="on" class="no-click2">
-                                        <a href="mailto:info@passionetcreations.ch">info@passionetcreations.ch</a>&nbsp;
-                                    </span>
+                                    <span v-bind="attrs" v-on="on" class="no-click2" @click="abc"> <a href="mailto:info@passionetcreations.ch">info@passionetcreations.ch</a>&nbsp; </span>
                                 </template>
                                 <span>Adresse e-mail copiée</span>
                             </v-tooltip>
@@ -65,7 +62,7 @@
                 <v-text-field prepend-icon="mdi-lock" name="email" label="E-mail" type="email" :error-messages="form.errors.get('email')" v-model="form.email"></v-text-field>
                 <v-textarea prepend-icon="mdi-message" name="message" label="Votre message" rows="4" counter hint="Max. 1000 caractères" v-model="form.message"></v-textarea>
                 <div class="text-center">
-                    <v-btn type="submit" color="success">Envoyer</v-btn>
+                    <v-btn small type="submit" color="success" :loading="form.busy">Envoyer</v-btn>
                 </div>
             </v-form>
         </v-col>
@@ -78,19 +75,29 @@ export default {
     data() {
         return {
             form: new Form({
-                name: '',
-                email: '',
-                message: '',
+                name: 'John Doe',
+                email: 'john.doe@example.com',
+                message: 'This is my message.'
             }),
             markers: [],
             showTooltip: false,
-            abc: null,
-            show: false,
+            // abc: null,
+            show: false
         }
     },
     methods: {
-        sendContactForm() {
-            console.log('sendContactForm')
+        abc() {
+            console.log('abc')
+            this.showTooltip = false
+        },
+        async sendContactForm() {
+            try {
+                console.log('sendContactForm')
+                // await this.form.post(`/api/v1/send-contact-form`)
+                this.$store.commit('snackbars/SET_SNACKBAR', { color: 'success', text: 'Message envoyé avec succès.', show: true, timeout: 3000 })
+            } catch (error) {
+                console.log('error: ', error)
+            }
         },
         copyEmailAddress() {
             this.showTooltip = true
@@ -104,13 +111,13 @@ export default {
             setTimeout(() => {
                 this.show = false
             }, 3000)
-        },
-    },
+        }
+    }
 }
 </script>
 
 <style scoped>
-    .no-click {
-        pointer-events: none;
-    }
+.no-click {
+    pointer-events: none;
+}
 </style>

@@ -18,8 +18,8 @@
                 </v-col>
                 <v-col cols="12" align-self="end" class="text-center white--text">
                     <br />
-                    {{ new Date().getFullYear() }} — <strong>&copy;passionetcreations.ch</strong>
-                    <span class="text-right">
+                    {{ new Date().getFullYear() }} — <strong>&copy;passionetcreations.ch</strong> |
+                    <span class="text-right" v-if="!auth">
                         <a href="/login" style="text-decoration: none;">Login</a>
                     </span>
                     <br />
@@ -35,6 +35,11 @@ export default {
         return {}
     },
     methods: {},
+    computed: {
+        auth () {
+            return this.$store.getters['auth/auth']
+        }
+    }
 }
 </script>
 

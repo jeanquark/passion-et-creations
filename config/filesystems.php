@@ -52,17 +52,24 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
         ],
 
-        'files' => [
-            'driver' => 'local',
-            'root' => storage_path('app/files'),
-            'url' => env('APP_URL').'/files',
-            'visibility' => 'private',
-        ],
+        // 'files' => [
+        //     'driver' => 'local',
+        //     'root' => storage_path('app/files'),
+        //     'url' => env('APP_URL').'/files',
+        //     'visibility' => 'private',
+        // ],
 
-        'portfolio' => [
+        // 'portfolio' => [
+        //     'driver' => 'local',
+        //     'root' => public_path('images/portfolio'),
+        //     'url' => env('APP_URL').'/images/portfolio',
+        //     'visibility' => 'public',
+        // ],
+
+        'images' => [
             'driver' => 'local',
-            'root' => public_path('images/portfolio'),
-            'url' => env('APP_URL').'/images/portfolio',
+            'root' => public_path('images'),
+            'url' => env('APP_URL').'/images',
             'visibility' => 'public',
         ],
 

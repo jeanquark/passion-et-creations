@@ -13,4 +13,6 @@ class Image extends Model
     {
         return $this->belongsTo(Portfolio::class);
     }
+
+    
 }

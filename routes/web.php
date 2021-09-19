@@ -17,9 +17,13 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::get('/', function () {
-    return view('index');
-});
+// Route::get('/', function () {
+//     return view('index');
+// });
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
+// Route::get('/', function () {
+//     return view('index', ['name' => 'Samantha']);
+// });
 
 // Route::group(['middleware' => ['role:student']], function () {
 //     Route::get('/student', function () {
@@ -33,26 +37,26 @@ Route::get('/', function () {
 //     });
 // });
 
-Route::get('/permanences', function () {
-    return view('permanences');
-});
+// Route::get('/permanences', function () {
+//     return view('permanences');
+// });
 // Route::get('/permanences', [App\Http\Controllers\PermanencesController::class, 'index'])->where('any', '.*');
 
-Route::get('/fichiers', function () {
-    return view('files');
-});
+// Route::get('/fichiers', function () {
+//     return view('files');
+// });
 
-Route::group(['middleware' => ['role:lawyer']], function () {
-    Route::get('/about', function () {
-        return view('about');
-    });
-});
+// Route::group(['middleware' => ['role:lawyer']], function () {
+//     Route::get('/about', function () {
+//         return view('about');
+//     });
+// });
 
-Route::group(['middleware' => ['auth']], function () {
-    Route::get('/home', function () {
-        return view('home');
-    });
-});
+// Route::group(['middleware' => ['auth']], function () {
+//     Route::get('/home', function () {
+//         return view('home');
+//     });
+// });
 
 // Route::get('/login', function () {
 //     return view('auth.login');

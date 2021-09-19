@@ -16,26 +16,38 @@ import AdminPortfolios from '../views/admin/portfolios/layout'
 import AdminPortfoliosIndex from '../views/admin/portfolios/index'
 import AdminPortfoliosCreate from '../views/admin/portfolios/create'
 import AdminPortfoliosEdit from '../views/admin/portfolios/edit'
+
+import AdminContents from '../views/admin/contents/layout'
+import AdminContentsIndex from '../views/admin/contents/index'
+import AdminContentsShow from '../views/admin/contents/show'
+import AdminContentsCreate from '../views/admin/contents/create'
+import AdminContentsEdit from '../views/admin/contents/edit'
+
+import AdminSliders from '../views/admin/sliders/layout'
+import AdminSlidersIndex from '../views/admin/sliders/index'
+import AdminSlidersEdit from '../views/admin/sliders/edit'
+
 import AdminUsers from '../views/admin/users/layout'
 import AdminUsersIndex from '../views/admin/users/index'
-import AdminUsersEdit from '../views/admin/users/edit'
+import AdminUsersCreate from '../views/admin/users/create'
 import AdminUsersShow from '../views/admin/users/show'
-import AdminLawyers from '../views/admin/lawyers/layout'
+import AdminUsersEdit from '../views/admin/users/edit'
+// import AdminLawyers from '../views/admin/lawyers/layout'
 // import AdminLawyersHome from "../views/admin/lawyers/home"
-import AdminLawyersIndex from '../views/admin/lawyers/index'
-import AdminLawyersCreate from '../views/admin/lawyers/create'
-import AdminLawyersEdit from '../views/admin/lawyers/edit'
-import AdminTraineesIndex from '../views/admin/trainees/index'
-import AdminPermanencesIndex from '../views/admin/permanences/index'
+// import AdminLawyersIndex from '../views/admin/lawyers/index'
+// import AdminLawyersCreate from '../views/admin/lawyers/create'
+// import AdminLawyersEdit from '../views/admin/lawyers/edit'
+// import AdminTraineesIndex from '../views/admin/trainees/index'
+// import AdminPermanencesIndex from '../views/admin/permanences/index'
 // import AdminUsersIndex from "../views/admin/users/index";
 // import AdminUsersCreate from "../views/admin/users/create";
 // import AdminUsersEdit from "../views/admin/users/edit";
 // import AdminLawyers from "../views/admin/lawyers";
-import AdminFilesIndex from '../views/admin/files/index'
-import Student from '../views/student'
-import Lawyer from '../views/lawyer'
-import Permanences from '../views/permanences'
-import Slider from '../views/slider'
+// import AdminFilesIndex from '../views/admin/files/index'
+// import Student from '../views/student'
+// import Lawyer from '../views/lawyer'
+// import Permanences from '../views/permanences'
+// import Slider from '../views/slider'
 import Portfolio from '../views/portfolio'
 import Home from '../views/index'
 import Creatrice from '../views/creatrice'
@@ -57,36 +69,36 @@ const router = new VueRouter({
             name: 'Login',
             component: Login
         },
-        {
-            path: '/student',
-            name: 'student',
-            component: Student,
-            beforeEnter: (to, from, next) => {
-                console.log('to: ', to)
-                console.log('from: ', from)
-                console.log('store.state.auth.auth: ', store.state.auth.auth)
-                // if (store.state.auth.auth == 'student') {
-                //     next()
-                // } else {
-                //     alert('Not authorized!')
-                // }
-                next()
-            }
-        },
-        {
-            path: '/lawyer',
-            name: 'lawyer',
-            component: Lawyer
-        },
-        {
-            path: '/slider',
-            name: 'slider',
-            component: Slider,
-            meta: {
-                layout: 'no-sidebar',
-                middleware: log
-            }
-        },
+        // {
+        //     path: '/student',
+        //     name: 'student',
+        //     component: Student,
+        //     beforeEnter: (to, from, next) => {
+        //         console.log('to: ', to)
+        //         console.log('from: ', from)
+        //         console.log('store.state.auth.auth: ', store.state.auth.auth)
+        //         // if (store.state.auth.auth == 'student') {
+        //         //     next()
+        //         // } else {
+        //         //     alert('Not authorized!')
+        //         // }
+        //         next()
+        //     }
+        // },
+        // {
+        //     path: '/lawyer',
+        //     name: 'lawyer',
+        //     component: Lawyer
+        // },
+        // {
+        //     path: '/slider',
+        //     name: 'slider',
+        //     component: Slider,
+        //     meta: {
+        //         layout: 'no-sidebar',
+        //         middleware: log
+        //     }
+        // },
         {
             path: '/portfolio',
             name: 'portfolio',
@@ -95,12 +107,11 @@ const router = new VueRouter({
                 middleware: log
             }
         },
-        {
-            path: '/creatrice',
-            name: 'creatrice',
-            component: Creatrice
-        },
-
+        // {
+        //     path: '/creatrice',
+        //     name: 'creatrice',
+        //     component: Creatrice
+        // },
         {
             path: '/admin',
             name: 'adminLayout',
@@ -176,6 +187,43 @@ const router = new VueRouter({
                     ]
                 },
                 {
+                    path: 'contents',
+                    component: AdminContents,
+                    children: [
+                        {
+                            path: '',
+                            name: 'adminContentsIndex',
+                            component: AdminContentsIndex
+                        },
+                        {
+                            path: ':id',
+                            name: 'adminContentsShow',
+                            component: AdminContentsShow
+                        },
+                        {
+                            path: ':id/edit',
+                            name: 'adminContentsEdit',
+                            component: AdminContentsEdit
+                        }
+                    ]
+                },
+                {
+                    path: 'sliders',
+                    component: AdminSliders,
+                    children: [
+                        {
+                            path: '',
+                            name: 'adminSlidersIndex',
+                            component: AdminSlidersIndex
+                        },
+                        {
+                            path: ':id/edit',
+                            name: 'adminSlidersEdit',
+                            component: AdminSlidersEdit
+                        }
+                    ]
+                },
+                {
                     path: 'users',
                     component: AdminUsers,
                     children: [
@@ -183,6 +231,11 @@ const router = new VueRouter({
                             path: '',
                             name: 'adminUsersIndex',
                             component: AdminUsersIndex
+                        },
+                        {
+                            path: 'create',
+                            name: 'adminUsersCreate',
+                            component: AdminUsersCreate
                         },
                         {
                             path: ':id/edit',
@@ -286,16 +339,17 @@ function nextFactory(context, middleware, index) {
     }
 }
 
-router.beforeEach( async (to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     console.log('beforeEach 1')
     console.log("beforeEach store.getters['auth/auth']: ", store.getters['auth/auth'])
     console.log("beforeEach store.getters['auth/token']: ", store.getters['auth/token'])
     // Check auth
+    // if (!store.getters['auth/auth'] && store.getters['auth/token']) {
     if (!store.getters['auth/auth']) {
-    	try {
-      		await store.dispatch('auth/setAuthUser')
-    	} catch (e) {}
-  	}
+        try {
+            await store.dispatch('auth/setAuthUser')
+        } catch (e) {}
+    }
     console.log('beforeEach next()')
     return next()
 })
@@ -318,7 +372,5 @@ router.beforeEach((to, from, next) => {
 
     return next()
 })
-
-
 
 export default router

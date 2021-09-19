@@ -29,6 +29,8 @@ class DatabaseSeeder extends Seeder
                 CategoriesTableSeeder::class,
                 PortfoliosTableSeeder::class,
                 ImagesTableSeeder::class,
+                ContentsTableSeeder::class,
+                SlidersTableSeeder::class,
             ]);
         }
     }

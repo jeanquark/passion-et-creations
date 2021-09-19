@@ -17,46 +17,7 @@ export default {
     },
     data() {
         return {
-            collapsed: false,
-            menu: [
-                {
-                    header: true,
-                    title: 'P&C Admin',
-                    hiddenOnCollapse: true,
-                },
-                {
-                    href: '/admin/users',
-                    title: 'Users',
-                    icon: {
-                        element: 'font-awesome-icon',
-                        attributes: {
-                            icon: 'users',
-                            size: 'xs',
-                        },
-                    },
-                },
-                {
-                    href: '/admin/activities',
-                    title: 'Activities',
-                    icon: {
-                        element: 'font-awesome-icon',
-                        attributes: {
-                            icon: 'calendar-day',
-                            size: '6x',
-                        },
-                    },
-                },
-                {
-                    href: '/admin/sponsors',
-                    title: 'Sponsors',
-                    icon: {
-                        element: 'font-awesome-icon',
-                        attributes: {
-                            icon: 'briefcase',
-                        },
-                    },
-                },
-            ],
+            
         }
     },
     computed: {

@@ -4,7 +4,9 @@ import Cookies from 'js-cookie'
 export const state = () => ({
     auth: false,
     user: null,
-    token: Cookies.get('token')
+    token: Cookies.get('XSRF-TOKEN')
+    // token: document.cookie
+    // token: Cookies.get()
 })
 
 export const mutations = {
@@ -13,7 +15,11 @@ export const mutations = {
     },
     SET_USER(state, payload) {
         state.user = payload
-    }
+    },
+    // SAVE_TOKEN (state, { token, remember }) {
+    //     state.token = token
+    //     Cookies.set('token', token, { expires: remember ? 365 : null })
+    // },
 }
 
 export const actions = {
@@ -40,7 +46,7 @@ export const actions = {
     async setAuthUser({ commit }, form) {
         try {
 			const { data } = await axios.get('/api/user')
-            console.log('[VUEX] data: ', data)
+            console.log('[VUEX] setAuthUser: ', data)
 			commit('SET_AUTH', true)
 			commit('SET_USER', data)
         } catch (error) {

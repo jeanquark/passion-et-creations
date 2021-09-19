@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use App\Models\User;
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image as Intervention;
 
 class UsersController extends Controller
 {
@@ -34,7 +35,37 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'image' => 'mimes:jpg,jpeg,png',
+        ]);
+
+        $newUser = new User();
+        $newUser->name = $request['name'];
+        $newUser->email = $request['email'];
+        $newUser->password = Hash::make($request['password']);
+        // $newUser->save();
+
+        if ($request->hasfile('image')) {
+            $image = $request['image'];
+            $fileFullName = $image->getClientOriginalName();
+            $fileName = pathinfo($fileFullName, PATHINFO_FILENAME);
+            $fileExtension = pathinfo($fileFullName, PATHINFO_EXTENSION);
+            $filePath = $image->getPath();
+            $fileType = $image->getClientMimeType();
+
+            if ($fileType == 'image/jpeg' || $fileType == 'image/png') {
+
+                // 1) Store original image
+                $originalImage = Intervention::make($image)->encode();
+                Storage::disk('images')->put($request->path . '/' . $fileFullName, $originalImage);
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            '$request->hasfile(image)' => $request->hasfile('image'),
+            '$request[image]' => $request['image'],
+        ]);
     }
 
     /**
@@ -58,7 +89,7 @@ class UsersController extends Controller
     public function update(Request $request, User $user)
     {
         return response()->json([
-            'success' => true
+            'success' => true,
         ], 200);
     }
 

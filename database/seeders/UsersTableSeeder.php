@@ -35,6 +35,7 @@ class UsersTableSeeder extends Seeder
         $user = \App\Models\User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@example.com',
+            'picture' => 'sabine.jpg'
         ]);
         $user->assignRole($admin);
     }

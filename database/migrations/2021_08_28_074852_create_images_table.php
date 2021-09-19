@@ -20,6 +20,7 @@ class CreateImagesTable extends Migration
             $table->string('name');
             // $table->text('description');
             $table->string('path');
+            $table->string('thumbnail_path');
             $table->integer('size');
             $table->integer('height');
             $table->integer('width');

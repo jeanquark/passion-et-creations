@@ -1,26 +1,28 @@
 <template>
-    <!-- <v-carousel v-model="model" class="my-0 py-0">
-        <v-carousel-item v-for="(color, i) in colors" :key="color">
-                <v-sheet :color="color" height="100%" tile>
-                    <v-row class="fill-height" align="center" justify="center">
-                        <div class="text-h2">Slide {{ i + 1 }}</div>
-                    </v-row>
-                </v-sheet>
+    <div v-if="slider">
+        <!-- slider: {{ slider }} -->
+        <v-carousel cycle :hide-delimiters="true" :show-arrows="showArrows" :interval="interval">
+            <v-carousel-item v-for="(image, i) in slider.slider_images" :key="i" :src="`/medias/${image.image_path}`" transition="slide-fade"></v-carousel-item>
+        </v-carousel>
+        <!-- <v-carousel cycle :hide-delimiters="true" :show-arrows="false" :interval="interval">
+            <v-carousel-item v-for="(image, i) in slider.slider_images" :key="i">
+                <v-img :src="`/medias/${image.image_path}`" max-width="100%"></v-img>
             </v-carousel-item>
-        <v-carousel-item v-for="(image, index) in images" :key="index">
-            <v-sheet height="100%" tile>
-                <v-img :src="`/images/portfolio/${image}`"></v-img>
-            </v-sheet>
-        </v-carousel-item>
-    </v-carousel> -->
-    <v-carousel hide-delimiters cycle :interval="3000">
-        <!-- <v-carousel-item v-for="(item, i) in items" :key="i" :src="item.src"></v-carousel-item> -->
-        <v-carousel-item v-for="(image, i) in images" :key="i" :src="`/medias/images/sliders/${image}`"></v-carousel-item>
-    </v-carousel>
+        </v-carousel> -->
+        <!-- <v-carousel hide-delimiters cycle :interval="3000">
+            <v-carousel-item v-for="(image, i) in images" :key="i" :src="`/medias/images/sliders/${image}`"></v-carousel-item>
+        </v-carousel> -->
+    </div>
 </template>
 
 <script>
 export default {
+    props: ['slider', 'interval', 'showArrows'],
+    async created() {
+        // if (this.$store.getters['sliders/sliders'].length < 1) {
+        //     await this.$store.dispatch('sliders/fetchSliders')
+        // }
+    },
     data() {
         return {
             model: 0,
@@ -42,8 +44,25 @@ export default {
             ]
         }
     },
+    computed: {
+        sliders() {
+            return this.$store.getters['sliders/sliders']
+        }
+    },
     methods: {}
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.slide-fade-enter-active {
+    transition: all 2s ease;
+}
+.slide-fade-leave-active {
+    transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter, .slide-fade-leave-to
+    /* .slide-fade-leave-active below version 2.1.8 */ {
+    transform: translateY(30px);
+    opacity: 0;
+}
+</style>

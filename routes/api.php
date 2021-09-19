@@ -13,19 +13,25 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::apiResource('/v1/contents', App\Http\Controllers\ContentsController::class);
+
 Route::apiResource('/v1/portfolios', App\Http\Controllers\PortfoliosController::class);
 Route::post('/v1/portfolios/update-order', [App\Http\Controllers\PortfoliosController::class, 'updateOrder']);
 
 Route::apiResource('/v1/users', App\Http\Controllers\UsersController::class);
+
+Route::apiResource('/v1/sliders', App\Http\Controllers\SlidersController::class);
+
+Route::post('/v1/send-contact-form', [App\Http\Controllers\ContactMessagesController::class, 'send']);
 
 
 
 Route::get('/v1/medias', [App\Http\Controllers\MediasController::class, 'getMedias']);
 Route::post('/v1/medias', [App\Http\Controllers\MediasController::class, 'uploadMedias']);
 
-Route::get('/v1/images', [App\Http\Controllers\ImagesController::class, 'getImages']);
-Route::post('/v1/images', [App\Http\Controllers\ImagesController::class, 'uploadImage']);
-Route::post('/v1/images/delete', [App\Http\Controllers\ImagesController::class, 'deleteImage']);
+// Route::get('/v1/images', [App\Http\Controllers\ImagesController::class, 'getImages']);
+// Route::post('/v1/images', [App\Http\Controllers\ImagesController::class, 'uploadImage']);
+// Route::post('/v1/images/delete', [App\Http\Controllers\ImagesController::class, 'deleteImage']);
 
 
 
@@ -34,34 +40,6 @@ Route::post('/v1/images/delete', [App\Http\Controllers\ImagesController::class, 
 // });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-// Route::middleware('role:lawyer')->get('/user', function (Request $request) {
+// Route::get('/user', function (Request $request) {
     return $request->user();
 });
-
-
-Route::middleware('role:admin')->get('/v1/calendars', [App\Http\Controllers\CalendarsController::class, 'index']);
-
-Route::middleware('role:student|lawyer')->get('/v1/files', [App\Http\Controllers\FilesController::class, 'index']);
-
-// Permanences
-Route::apiResource('/v1/permanences', App\Http\Controllers\PermanencesController::class);
-
-Route::apiResource('/v1/folders', App\Http\Controllers\FoldersController::class);
-Route::post('/v1/folders/destroy', [
-    'as' => 'folders.destroy', 
-    'uses' => 'App\Http\Controllers\FoldersController@destroy'
-]);
-
-Route::apiResource('/v1/files', App\Http\Controllers\FilesController::class);
-Route::get('/v1/files/{file}', [App\Http\Controllers\FilesController::class, 'download'])->where('file', '.*');
-// Route::get('/v1/files/action/getsize?path={filePath}', [App\Http\Controllers\FilesController::class, 'getSize'])->where('filePath', '.*');
-Route::post('/v1/files/size', [App\Http\Controllers\FilesController::class, 'getSize']);
-Route::post('/v1/files/last-modified', [App\Http\Controllers\FilesController::class, 'getLastModified']);
-Route::post('/v1/files/destroy', [
-    'as' => 'files.destroy', 
-    'uses' => 'App\Http\Controllers\FilesController@destroy'
-]);
-
-// Route::get('/v1/permanences', [App\Http\Controllers\PermanencesController::class, 'index']);
-// Route::put('/v1/permanences/update', [App\Http\Controllers\PermanencesController::class, 'update']);
-// Route::get('/v1/permanences/{year}/{quarter}', [App\Http\Controllers\PermanencesController::class, 'index']);

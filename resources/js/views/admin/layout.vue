@@ -11,7 +11,12 @@
                 <v-list-item class="px-2">
                     <v-list-item-avatar>
                         <v-img
-                            src="/images/sabine.jpg"
+                            :src="`/images/${authUser.picture}`"
+                            v-if="authUser.picture"
+                        ></v-img>
+                        <v-img
+                            src="/images/logo.png"
+                            v-else
                         ></v-img>
                     </v-list-item-avatar>
                 </v-list-item>
@@ -19,10 +24,10 @@
                 <v-list-item link to="/admin/profile">
                     <v-list-item-content>
                         <v-list-item-title class="title">
-                            Sabine
+                            {{ authUser.name }}
                         </v-list-item-title>
                         <v-list-item-subtitle
-                            >sabine@gmail.com</v-list-item-subtitle
+                            >{{ authUser.email }}</v-list-item-subtitle
                         >
                     </v-list-item-content>
                 </v-list-item>
@@ -48,6 +53,18 @@
                         <v-icon>mdi-folder-multiple-image</v-icon>
                     </v-list-item-icon>
                     <v-list-item-title>Portfolios</v-list-item-title>
+                </v-list-item>
+                <v-list-item to="/admin/contents">
+                    <v-list-item-icon>
+                        <v-icon>mdi-text</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>Contenus</v-list-item-title>
+                </v-list-item>
+                <v-list-item to="/admin/sliders">
+                    <v-list-item-icon>
+                        <v-icon>mdi-view-carousel</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>Carousels</v-list-item-title>
                 </v-list-item>
                 <v-list-item to="/admin/users">
                     <v-list-item-icon>
@@ -104,6 +121,9 @@ export default {
         },
         auth(){
             return this.$store.getters['auth/auth']
+        },
+        authUser(){
+            return this.$store.getters['auth/user']
         },
     },
     methods: {

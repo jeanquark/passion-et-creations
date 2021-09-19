@@ -19,15 +19,15 @@ class PortfoliosTableSeeder extends Seeder
     {
         DB::table('portfolios')->delete();
         $portfolios = array(
-            ['category_id' => rand(1, 4), 'title' => 'Sculpture Le Thérianthrope', 'description' => '<b style="color: #8b8b8b">DESCRIPTIF</b><br />
+            ['category_id' => null, 'title' => 'Sculpture Le Thérianthrope', 'description' => '<b style="color: #8b8b8b">DESCRIPTIF</b><br />
             <p>Sculpture en béton, creuse soutenue par des fers à béton et posée sur des caisses.Inspirée du sculpteur lausannois Zaric et faite pour une exposition animalière collective qui a eu lieu en octobre 2019.</p><br /><b style="color: #8b8b8b">DIMENSION</b><br /><p>55 / 65 cm, H : 170 cm<br /></p><br /><b style="color: #8b8b8b">PRIX</b><br /><p>CHF 2\'100,00</p>', 'order' => 1, 'created_at' => new DateTime, 'updated_at' => new DateTime],
-            ['category_id' => rand(1, 4), 'title' => 'M-017 Console', 'description' => '<b style="color: #8b8b8b">DESCRIPTIF</b><br />
+            ['category_id' => null, 'title' => 'M-017 Console', 'description' => '<b style="color: #8b8b8b">DESCRIPTIF</b><br />
             <p>Console en bois de palette recyclé avec un tiroir central en bois flotté, structure en acier noirci.</p><br /><b style="color: #8b8b8b">DIMENSION</b><br /><p>101 / 33 cm, H : 86 cm<br /></p><br /><b style="color: #8b8b8b">PRIX</b><br /><p>CHF 590,00</p>', 'order' => 2, 'created_at' => new DateTime, 'updated_at' => new DateTime],
-            ['category_id' => rand(1, 4), 'title' => 'M-16 Table basse', 'description' => '<b style="color: #8b8b8b">DESCRIPTIF</b><br />
+            ['category_id' => null, 'title' => 'M-16 Table basse', 'description' => '<b style="color: #8b8b8b">DESCRIPTIF</b><br />
             <p>Table crée avec une jante et un couvercle de fût recyclés.</p><br /><b style="color: #8b8b8b">DIMENSION</b><br /><p>Diam : 60 cm, H : 41 cm<br /></p><br /><b style="color: #8b8b8b">PRIX</b><br /><p>Vendu</p>', 'order' => 3, 'created_at' => new DateTime, 'updated_at' => new DateTime],
-            ['category_id' => rand(1, 4), 'title' => 'L-33b Lampe Cailloux', 'description' => '<b style="color: #8b8b8b">DESCRIPTIF</b><br /><p>Lampe sculpture en cailloux, câble tissu soie torsadé ton gris et ampoule LED "Diamant".</p><br />
+            ['category_id' => null, 'title' => 'L-33b Lampe Cailloux', 'description' => '<b style="color: #8b8b8b">DESCRIPTIF</b><br /><p>Lampe sculpture en cailloux, câble tissu soie torsadé ton gris et ampoule LED "Diamant".</p><br />
             <b style="color: #8b8b8b">DIMENSION</b><br /><p>H : 47 cm<br /></p><br /><b style="color: #8b8b8b">PRIX</b><br /><p>Lampe sans ampoule : CHF 210,00</p><p>Ampoule : CHF 40,00 pce</p>', 'order' => 4, 'created_at' => new DateTime, 'updated_at' => new DateTime],
-            ['category_id' => rand(1, 4), 'title' => 'M-018 Tables gigognes', 'description' => '<b style="color: #8b8b8b">DESCRIPTIF</b><br /><p>Tables en sapin vieilli et plaques en métal travaillés avec des acides, structure en métal.</p><br /><b style="color: #8b8b8b">DIMENSION</b><br /><p>75 / 75 cm, H : 41 cm<br /></p><br /><b style="color: #8b8b8b">PRIX</b><br /><p>Vendu</p>', 'order' => 5, 'created_at' => new DateTime, 'updated_at' => new DateTime],
+            ['category_id' => null, 'title' => 'M-018 Tables gigognes', 'description' => '<b style="color: #8b8b8b">DESCRIPTIF</b><br /><p>Tables en sapin vieilli et plaques en métal travaillés avec des acides, structure en métal.</p><br /><b style="color: #8b8b8b">DIMENSION</b><br /><p>75 / 75 cm, H : 41 cm<br /></p><br /><b style="color: #8b8b8b">PRIX</b><br /><p>Vendu</p>', 'order' => 5, 'created_at' => new DateTime, 'updated_at' => new DateTime],
             ['category_id' => null, 'title' => 'L-033a Lampe Cailloux', 'description' => '<b style="color: #8b8b8b">DESCRIPTIF</b><br />
             <p>Lampe sculpture en cailloux, câble tissu soie torsadé ton gris et ampoule LED "Diamant".</p>
             <br />

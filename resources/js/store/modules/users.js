@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import { serialize } from 'object-to-formdata'
 
 export const state = () => ({
 	users: []
@@ -18,6 +19,24 @@ export const actions = {
 			console.log('data: ', data)
 			// return data
             commit('SET_USERS', data)
+		} catch (error) {
+			console.log('error: ', error)
+			throw error
+		}
+	},
+	async createUser({ commit }, form) {
+		try {
+			// const data = await form.submit('post', '/api/v1/users')
+            // console.log('data: ', data)
+
+			const { data } = await form.submit('post', `/api/v1/users`, {
+                transformRequest: [
+                    function(data, headers) {
+                        return serialize(data)
+                    }
+                ]
+            })
+			console.log('data: ', data)
 		} catch (error) {
 			console.log('error: ', error)
 			throw error
