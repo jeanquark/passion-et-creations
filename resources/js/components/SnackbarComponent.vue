@@ -12,7 +12,6 @@
 <script>
 export default {
     created () {
-        // this.$store.dispatch('snackbars/fetchSnackbars')
     },
     data() {
         return {
