@@ -1,11 +1,16 @@
 <template>
     <v-main>
         <v-breadcrumbs large :items="items"></v-breadcrumbs>
-        <v-row no-gutters justify="center">
-            <v-col cols="12">
+        <v-row no-gutters justify="center" class="my-2">
+            <v-col cols="11">
                 updatedOrder: {{ updatedOrder }}<br />
-                <v-btn small color="success" :disabled="!updatedOrder" @click="updateOrder">Enregistrer le nouvel ordre</v-btn>
+
+                <v-btn icon color="primary" class="mx-1" :disabled="displayImage" @click="displayImage = true"><v-icon>mdi-format-list-text</v-icon></v-btn>
+                <v-btn icon color="primary" class="mx-1" :disabled="!displayImage" @click="displayImage = false"><v-icon>mdi-format-list-bulleted</v-icon></v-btn>
+                <!-- <v-btn small color="success" class="mx-1" :disabled="!updatedOrder" @click="updateOrder">Enregistrer le nouvel ordre</v-btn> -->
             </v-col>
+        </v-row>
+        <v-row no-gutters justify="center">
             <v-col cols="11">
                 <!-- portfolios: {{ portfolios }}<br /><br /> -->
                 <v-expansion-panels>
@@ -15,13 +20,10 @@
                                 <v-row no-gutters justify="start" align="center">
                                     <v-col class="d-flex justify-start align-center">
                                         <v-chip small class="mr-2">{{ i + 1 }}</v-chip>
-                                        <v-img :src="`/medias/${frontImage(portfolio.images)['path']}`" max-width="80" aspect-ratio="1" class="mr-3"></v-img>
-                                        <!-- {{ frontImage(portfolio.images) }} -->
+                                        <v-img :src="`/medias/${frontImage(portfolio.images)['path']}`" max-width="80" aspect-ratio="1" class="mr-3" v-if="displayImage"></v-img>
 
                                         <p class="ml-2 my-0">{{ portfolio.title }}</p>
                                         <!-- index: {{ i }} id: {{ portfolio.id }} order: {{ portfolio.order }} -->
-
-                                        <!-- {{ portfolio.front_image.name }} -->
                                     </v-col>
                                     <!-- <v-spacer></v-spacer> -->
                                     <v-col class="d-flex justify-end">
@@ -63,8 +65,8 @@
             </v-col>
         </v-row>
 
-        <v-snackbar v-model="showSnackbar">
-            <v-btn small color="success" @click="updateOrder">Enregistrer le nouvel ordre</v-btn>
+        <v-snackbar color="success" v-model="showSnackbar">
+            <v-btn small color="primary" @click="updateOrder">Enregistrer le nouvel ordre</v-btn>
             <template v-slot:action="{ attrs }">
                 <v-btn icon color="red" v-bind="attrs" @click="showSnackbar = false"><v-icon>mdi-close</v-icon></v-btn>
             </template>
@@ -78,8 +80,10 @@ export default {
     name: 'AdminPortfoliosIndex',
     components: { draggable },
     async created() {
-        await this.$store.dispatch('portfolios/fetchPortfolios')
-        console.log('portfolios.length: ', this.portfolios.length)
+        if (this.$store.getters['portfolios/portfolios'].length < 1) {
+            await this.$store.dispatch('portfolios/fetchPortfolios')
+        }
+        // console.log('portfolios.length: ', this.portfolios.length)
     },
     mounted() {},
     data() {
@@ -96,7 +100,8 @@ export default {
                     to: '/admin/portfolios/create',
                 },
             ],
-            showSnackbar: false
+            showSnackbar: false,
+            displayImage: true
         }
     },
     computed: {
@@ -105,7 +110,8 @@ export default {
         // },
         portfolios: {
             get() {
-                return this.$store.getters['portfolios/portfolios'].slice(0, 3)
+                // return this.$store.getters['portfolios/portfolios'].slice(0, 3)
+                return this.$store.getters['portfolios/portfolios']
             },
             set(value) {
                 console.log('set portfolio: ', value)
@@ -114,13 +120,26 @@ export default {
             },
         },
         updatedOrder() {
+            let updatedOrder = false
             for (let i = 0; i < this.portfolios.length; i++) {
                 if (this.portfolios[i]['order'] != i + 1) {
-                    this.showSnackbar = true
-                    return true
+                    // this.showSnackbar = true
+
+                    // return true
+                    updatedOrder = true
                 }
             }
-            return false
+            if (updatedOrder) {
+                this.showSnackbar = true
+
+                // this.$store.commit('snackbars/SET_SNACKBAR', {
+                //     show: true,
+                //     content: '<v-btn>Enregistrer le nouvel ordre</v-btn>',
+                //     content2: '<v-btn small color="success" class="mx-1" :disabled="!updatedOrder" @click="updateOrder">Enregistrer le nouvel ordre</v-btn>',
+                //     color: 'success',
+                // })
+            }
+            return updatedOrder
         },
     },
     methods: {

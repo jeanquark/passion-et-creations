@@ -34,7 +34,8 @@
                 <a href="#portfolio" class="link mx-1 scrollactive-item">Portfolio</a> <span style="font-size: 1.2em;">|</span>
                 <a href="#about" class="link mx-1 scrollactive-item">Portrait</a> <span style="font-size: 1.2em;">|</span>
                 <a href="#contact" class="link mx-1 scrollactive-item">Contact</a>
-                <a href="/admin" class="link mx-1"> | Admin</a>
+                <span style="font-size: 1.2em;">|</span>
+                <a href="/admin/index" class="link mx-1">Admin</a>
                 <v-btn small color="#c49a6c" class="white--text" @click="logout" v-if="authUser">Logout</v-btn>
             </scrollactive>
         </v-app-bar>

@@ -21,7 +21,8 @@
                     </v-list-item-avatar>
                 </v-list-item>
 
-                <v-list-item link to="/admin/profile">
+                <!-- <v-list-item link to="/admin/profile"> -->
+                <v-list-item link to="/admin/index">
                     <v-list-item-content>
                         <v-list-item-title class="title">
                             {{ authUser.name }}
@@ -90,7 +91,7 @@
             fluid
             :class="[miniSidebar ? 'padding-left__small' : 'padding-left__big']"
         >
-            auth: {{ auth }}
+            <!-- auth: {{ auth }} -->
             <router-view></router-view>
         </v-container>
     </v-main>

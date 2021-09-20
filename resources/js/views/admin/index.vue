@@ -1,13 +1,14 @@
 <template>
     <div>
+        Admin index<br />
         auth: {{ auth }}
-        <router-view />
+        <!-- <router-view /> -->
     </div>
 </template>
 
 <script>
 export default {
-    layout: 'backend',
+    name: 'AdminIndex',
     // middleware: ['admin'],
     async created() {
         console.log('Entered created lifecycle hook')
@@ -29,11 +30,11 @@ export default {
         },
     },
     methods: {
-        onToggleCollapse(collapsed) {
-            console.log('onToggleCollapse')
-            console.log(collapsed)
-            this.collapsed = collapsed
-        },
+        // onToggleCollapse(collapsed) {
+        //     console.log('onToggleCollapse')
+        //     console.log(collapsed)
+        //     this.collapsed = collapsed
+        // },
     },
 }
 </script>

@@ -7,6 +7,7 @@ export const state = () => ({
 export const mutations = {
 	SET_SNACKBAR (state, payload) {
 		// state.snackbars.push(payload);
+		console.log('[VUEX] SET_SNACKBAR')
 		state.snackbar = payload
 	}
 }

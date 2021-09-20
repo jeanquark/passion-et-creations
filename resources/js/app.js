@@ -12,7 +12,7 @@ import axios from 'axios'
 import './plugins'
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default)
-Vue.component('login-component', require('./components/LoginComponent.vue').default)
+// Vue.component('login-component', require('./components/LoginComponent.vue').default)
 // Vue.component(
 //     "permanences",
 //     require("./components/PermanencesComponent.vue").default

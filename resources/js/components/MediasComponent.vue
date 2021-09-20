@@ -5,13 +5,13 @@
             <v-row no-gutters>
                 <v-col cols="12">
                     <!-- medias.allDirectories: {{ medias.allDirectories }}<br /><br /> -->
-                    medias.allFiles: {{ medias.allFiles }}<br /><br />
-                    medias.files_with_size: {{ medias.files_with_size }}<br /><br />
-                    folders: {{ folders }}<br /><br />
-                    files: {{ files }}<br /><br />
-                    path: {{ path }}<br /><br />
-                    items: {{ items }}<br /><br />
-                    showUploadFile: {{ showUploadFile }}<br /><br />
+                    <!-- medias.allFiles: {{ medias.allFiles }}<br /><br /> -->
+                    <!-- medias.files_with_size: {{ medias.files_with_size }}<br /><br /> -->
+                    <!-- folders: {{ folders }}<br /><br /> -->
+                    <!-- files: {{ files }}<br /><br /> -->
+                    <!-- path: {{ path }}<br /><br /> -->
+                    <!-- items: {{ items }}<br /><br /> -->
+                    <!-- showUploadFile: {{ showUploadFile }}<br /><br /> -->
                 </v-col>
             </v-row>
 
@@ -83,11 +83,10 @@ export default {
     name: 'AdminMediasIndex',
     components: { UploadMultipleFiles },
     async created() {
-        // if (this.$store.getters['medias/medias'].length < 1) {
-        const data = await this.$store.dispatch('medias/fetchMedias')
-        console.log('data: ', data)
-        // }
-
+        if (this.$store.getters['medias/medias'].length < 1) {
+            const data = await this.$store.dispatch('medias/fetchMedias')
+            console.log('data: ', data)
+        }
         this.goTo('/')
     },
     data() {
@@ -103,13 +102,13 @@ export default {
             path: '/',
             items: [],
             clicksCount: 0,
-            clicksTimer: null
+            clicksTimer: null,
         }
     },
     computed: {
         medias() {
             return this.$store.getters['medias/medias']
-        }
+        },
     },
     methods: {
         goTo(folderPath, folderName) {
@@ -124,17 +123,17 @@ export default {
                 this.items.push({
                     name: 'Dossier racine',
                     path: '/',
-                    disabled: true
+                    disabled: true,
                 })
                 this.medias.allDirectories
-                    .map(directory => directory.split('/'))
-                    .filter(path => path.length === 1)
-                    .map(folder => folder[0])
-                    .forEach(folder =>
+                    .map((directory) => directory.split('/'))
+                    .filter((path) => path.length === 1)
+                    .map((folder) => folder[0])
+                    .forEach((folder) =>
                         this.folders.push({
                             name: folder,
                             path: '/' + folder,
-                            type: 'folder'
+                            type: 'folder',
                         })
                     )
                 // this.medias.allFiles
@@ -150,8 +149,8 @@ export default {
                 //     )
 
                 this.medias.files_with_size
-                    .filter(file => file.path.split('/').length === 1)
-                    .forEach(file => {
+                    .filter((file) => file.path.split('/').length === 1)
+                    .forEach((file) => {
                         const fileName = file.path.substring(file.path.lastIndexOf('/') + 1)
                         this.files.push({
                             name: fileName,
@@ -160,7 +159,7 @@ export default {
                             width: file.width,
                             height: file.height,
                             last_updated: file.last_updated,
-                            extension: fileName.substring(fileName.lastIndexOf('.') + 1)
+                            extension: fileName.substring(fileName.lastIndexOf('.') + 1),
                         })
                     })
             } else {
@@ -174,17 +173,17 @@ export default {
                     this.items.push({
                         name: folderName ? folderName : 'Dossier Racine',
                         path: folderName ? array.join('/') : '/',
-                        disabled: index === paths.length - 1 ? true : false
+                        disabled: index === paths.length - 1 ? true : false,
                     })
                 })
                 this.medias.allDirectories
-                    .map(directory => directory.split('/'))
-                    .filter(a => a[a.length - 2] === folderName)
-                    .forEach(folder =>
+                    .map((directory) => directory.split('/'))
+                    .filter((a) => a[a.length - 2] === folderName)
+                    .forEach((folder) =>
                         this.folders.push({
                             name: folder[folder.length - 1],
                             path: '/' + folder.join('/'),
-                            type: 'folder'
+                            type: 'folder',
                         })
                     )
                 // this.medias.allFiles
@@ -198,8 +197,8 @@ export default {
                 //         })
                 //     )
                 this.medias.files_with_size
-                    .filter(file => file.path.split('/').length > 1)
-                    .forEach(file => {
+                    .filter((file) => file.path.split('/').length > 1)
+                    .forEach((file) => {
                         const pathArray = file.path.split('/')
                         if (pathArray[pathArray.length - 2] === folderName) {
                             const fileName = file.path.substring(file.path.lastIndexOf('/') + 1)
@@ -210,7 +209,7 @@ export default {
                                 width: file.width,
                                 height: file.height,
                                 last_updated: file.last_updated,
-                                extension: fileName.substring(fileName.lastIndexOf('.') + 1)
+                                extension: fileName.substring(fileName.lastIndexOf('.') + 1),
                             })
                         }
                     })
@@ -300,8 +299,8 @@ export default {
         formatRemoveFileExtension(file) {
             const index = file.lastIndexOf('.')
             return file.substring(0, index)
-        }
-    }
+        },
+    },
 }
 </script>
 

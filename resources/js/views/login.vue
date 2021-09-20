@@ -54,7 +54,7 @@ export default {
                 // console.log('data: ', data)
                 // const response = await this.form.post("/login");
                 // console.log('response: ', response)
-                this.$router.push('/admin')
+                this.$router.push('/admin/index')
                 // location.href = '/admin'
             } catch (error) {
                 console.log('error: ', error)

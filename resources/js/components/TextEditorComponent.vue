@@ -1,5 +1,5 @@
 <template>
-    <div style="border: 2px solid pink;">
+    <div style="border: 0px solid pink;">
         <!-- formContent: {{ formContent }}<br /><br /> -->
         <!-- content: {{ content }}<br /><br /> -->
         <v-form>
@@ -254,9 +254,10 @@ export default {
 #textBox {
     width: 100%;
     height: 250px;
-    border: 6px double red;
+    border: 2px double #ccc;
+    border-radius: 5px;
     padding: 12px;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 
 #textBox #sourceText {

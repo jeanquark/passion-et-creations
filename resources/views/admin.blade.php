@@ -13,6 +13,7 @@
         {{-- <app></app> --}}
         <v-app>
             <router-view></router-view>
+            <snackbar-component></snackbar-component>
         </v-app>
     </div>
 
