@@ -30,7 +30,7 @@ class Portfolio extends Model
      */
     public function front_image()
     {
-        return $this->belongsTo(Image::class);
+        return $this->belongsTo(PortfolioImage::class);
     }
 
     /**
@@ -44,8 +44,8 @@ class Portfolio extends Model
     /**
      * Get the comments for the blog post.
      */
-    public function images()
+    public function portfolio_images()
     {
-        return $this->hasMany(Image::class);
+        return $this->hasMany(PortfolioImage::class);
     }
 }

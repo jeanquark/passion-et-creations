@@ -11,7 +11,7 @@
             <medias-component @addFile="onAddFile"></medias-component>
         </v-dialog>
         <v-card class="mx-4 pa-2" v-if="portfolio">
-            portfolio.images.length: {{ portfolio.images.length }}<br /><br />
+            portfolio.portfolio_images.length: {{ portfolio.portfolio_images.length }}<br /><br />
             <v-form @submit.prevent="editPortfolio">
                 <!-- <v-card-title>{{ portfolio.title }}</v-card-title> -->
                 <v-card-text>
@@ -31,7 +31,7 @@
                             <v-row no-gutters justify="center" class="my-0 pa-0">
                                 <!-- <draggable class="list-group" group="people" style="width: 100%; border: 2px dashed green"> -->
                                 <!-- <v-col cols="12"> -->
-                                <v-img :src="`/medias/${frontImage(portfolio.images)['path']}`" width="100%" class="image" style="border: 1px solid red"></v-img>
+                                <v-img :src="`/medias/${frontImage(portfolio.portfolio_images)['path']}`" width="100%" class="image" style="border: 1px solid red"></v-img>
                                 <!-- </v-col> -->
                                 <!-- </draggable> -->
                             </v-row>
@@ -74,7 +74,7 @@
             <v-row no-gutters class="my-5" style="border: 1px solid blue">
                 <v-col cols="6">
                     <h3>Draggable 1</h3>
-                    <draggable class="list-group" :list="list1" group="people" @change="log">
+                    <draggable class="list-group" :list="list1" group="people" @change="log" :draggable="[]">
                         <div class="list-group-item" v-for="(element, index) in list1" :key="element.name">{{ element.name }} {{ index }}</div>
                     </draggable>
                 </v-col>
@@ -89,15 +89,15 @@
             <v-row no-gutters class="my-5" style="border: 1px solid grey">
                 <v-col cols="6">
                     <h3>Draggable 3</h3>
-                    <draggable class="list-group" group="people2" @change="log" v-model="list3">
-                        <div class="list-group-item" v-for="element in list3" :key="element.name">{{ element.name }}</div>
+                    <draggable class="list-group" group="people2" @end="onEnd" @add="onAddList3" @change="log" @update="onUpdate" v-model="list3" draggable="[]">
+                        <div class="list-group-item" v-for="element in list3_2" :key="element.name">{{ element.name }}</div>
                     </draggable>
                 </v-col>
 
                 <v-col cols="6">
                     <h3>Draggable 4</h3>
-                    <draggable class="list-group" group="people2" @change="log" v-model="list4">
-                        <div class="list-group-item" v-for="element in list4" :key="element.name">{{ element.name }}</div>
+                    <draggable class="list-group" group="people2" @end="onEnd" @add="onAdd" @change="log" v-model="list4">
+                        <div class="list-group-item" v-for="element in list4_2" :key="element.name">{{ element.name }}</div>
                     </draggable>
                 </v-col>
             </v-row>
@@ -117,6 +117,9 @@ export default {
         // if (this.portfolios.length < 1) {
         await this.$store.dispatch('portfolios/fetchPortfolios')
         // }
+    },
+    mounted () {
+        this.list3_2 = [{ name: 'list3_1', id: 1 }]
     },
     data() {
         return {
@@ -159,6 +162,8 @@ export default {
             //     { name: 'list4_2', id: 6 },
             //     { name: 'list4_3', id: 7 },
             // ]
+            list3_2: [],
+            list4_2: [],
         }
     },
     computed: {
@@ -170,10 +175,10 @@ export default {
         },
         backImages: {
             get() {
-                return this.portfolio.images.filter((image) => image.is_front_image == false)
+                return this.portfolio.portfolio_images.filter((image) => image.is_front_image == false)
             },
             set(value) {
-                console.log('set abc: ', value)
+                console.log('set backImages: ', value)
                 // this.$store.commit('portfolios/SET_PORTFOLIOS', value)
                 // this.portfolios = value
                 // this.portfolio.images = value
@@ -189,15 +194,15 @@ export default {
         // },
         list3: {
             get() {
-                return [
-                    { name: 'list3_1', id: 1 },
-                    { name: 'list3_2', id: 2 },
-                    { name: 'list3_3', id: 3 },
-                    { name: 'list3_4', id: 4 },
-                ]
+                // this.list3_2 = [{ name: 'list3_1', id: 1 }]
+                // return [{ name: 'list3_1', id: 1 }]
+                return this.list3_2
             },
             set(value) {
                 console.log('list3 set value: ', value)
+                // console.log('list3 set value: ', value)
+                // this.list3_2 = value
+                // this.list4_2 = []
                 // return this.list3.push(value)
                 // this.list3 = value
                 // this.list3.push({
@@ -215,14 +220,26 @@ export default {
         // },
         list4: {
             get() {
-                return [
+                this.list4_2 = [
                     { name: 'list4_1', id: 5 },
                     { name: 'list4_2', id: 6 },
                     { name: 'list4_3', id: 7 },
+                    { name: 'list4_4', id: 8 },
+                    { name: 'list4_5', id: 9 },
                 ]
+                // return [
+                //     { name: 'list4_1', id: 5 },
+                //     { name: 'list4_2', id: 6 },
+                //     { name: 'list4_3', id: 7 },
+                //     { name: 'list4_4', id: 8 },
+                //     { name: 'list4_5', id: 9 },
+                // ]
             },
             set(value) {
                 console.log('list4 set value: ', value)
+                // this.list4_2 = []
+                this.list4_2 = value
+                // this.list4 = value
             },
         },
     },
@@ -262,6 +279,32 @@ export default {
         },
         log(evt) {
             console.log(evt)
+            const { added, removed } = evt
+            if (added) {
+                console.log('evt.added.element: ', added.element)
+            }
+            if (removed) {
+                console.log('evt.removed.element: ', removed.element)
+            }
+        },
+        onChangeList3(e) {
+            console.log('onChangeList3 e: ', e)
+        },
+        changeList4(e) {
+            console.log('changeList4 e: ', e)
+            console.log('changeList4 e.moved: ', e.moved)
+
+            if (e.moved.newIndex > e.moved.oldIndex) {
+                console.log('newIndex > oldIndex')
+                
+            } else {
+                console.log('newIndex < oldIndex')
+                // for (let i = e.moved.newIndex; i++; i < this.list4.length) {
+                //     this.list4[i] = this.list4[i + 1]
+                // }
+            }
+            // this.list4[e.moved.oldIndex] = null
+            // this.list4[e.moved.newIndex] = e.moved.element
         },
         handleMove(e) {
             console.log('handleMove e:', e)
@@ -272,9 +315,26 @@ export default {
         handleDragEnd() {
             console.log('handleDragEnd')
         },
-        onChange(e) {
-            console.log('onChange e: ', e)
-            this.list3 = []
+        onChange(evt) {
+            console.log('onChange evt: ', evt)
+            // this.list3 = []
+        },
+        onAdd(e) {
+            console.log('onAdd e: ', e)
+            // this.list3_2 = []
+            // this.list4_2 = []
+        },
+        onAddList3(e) {
+            console.log('onAddList3 e: ', e)
+            console.log('list3_2: ', this.list3_2)
+            console.log('list3: ', this.list3)
+            // this.list3_2 = []
+        },
+        onUpdate(e) {
+            console.log('onUpdate e: ', e)
+        },
+        onEnd(e) {
+            console.log('onEnd e: ', e)
         },
     },
 }

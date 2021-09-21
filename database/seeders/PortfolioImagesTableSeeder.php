@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Datetime;
 
-class ImagesTableSeeder extends Seeder
+class PortfolioImagesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,7 +15,7 @@ class ImagesTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('images')->delete();
+        DB::table('portfolio_images')->delete();
         $images = array(
             [
                 'portfolio_id' => 1, 'name' => 'sculpture_le_therianthrope_01.jpg', 'path' => '/images/sculpture_le_therianthrope_01.jpg', 'thumbnail_path' => '/images/thumbnails/sculpture_le_therianthrope_01_thumbnail.jpg', 'size' => 200000, 'width' => 1394, 'height' => 1046, 'is_front_image' => true, 'created_at' => new DateTime, 'updated_at' => new DateTime
@@ -182,12 +182,6 @@ class ImagesTableSeeder extends Seeder
             [
                 'portfolio_id' => 16, 'name' => 'meuble_table_basse_015_04.jpg', 'path' => '/images/meuble_table_basse_015_04.jpg', 'thumbnail_path' => '/images/thumbnails/meuble_table_basse_015_04_thumbnail.jpg', 'size' => 1260000, 'width' => 2448, 'height' => 2448, 'is_front_image' => false, 'created_at' => new DateTime, 'updated_at' => new DateTime
             ],
-
-
-
-
-
-
             [
                 'portfolio_id' => 17, 'name' => 'lampes_023_et_024_01.jpg', 'path' => '/images/lampes_023_et_024_01.jpg', 'thumbnail_path' => '/images/thumbnails/lampes_023_et_024_01_thumbnail.jpg', 'size' => 1260000, 'width' => 3264, 'height' => 2448, 'is_front_image' => true, 'created_at' => new DateTime, 'updated_at' => new DateTime
             ],
@@ -860,6 +854,6 @@ class ImagesTableSeeder extends Seeder
             ['name' => '768x1080.jpg', 'description' => '', 'path' => '/images/portfolio/768x1080.jpg', 'height' => 1080, 'width' => 768, 'created_at' => new DateTime, 'updated_at' => new DateTime],
             ['name' => '1920x1080.jpg', 'description' => '', 'path' => '/images/portfolio/1920x1080.jpg', 'height' => 1080, 'width' => 1920, 'created_at' => new DateTime, 'updated_at' => new DateTime],
         );
-        DB::table('images')->insert($images);
+        DB::table('portfolio_images')->insert($images);
     }
 }

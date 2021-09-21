@@ -12,16 +12,28 @@
                         <v-card-text>
                             <v-form>
                                 <v-text-field prepend-icon="mdi-account" name="email" label="Email" type="text" :error-messages="[]" v-model="form.email"></v-text-field>
-                                <v-text-field id="password" prepend-icon="mdi-lock" name="password" label="Password" type="password" :error-messages="form.errors.get('email')" v-model="form.password"></v-text-field>
+                                <v-text-field
+                                    id="password"
+                                    prepend-icon="mdi-lock"
+                                    name="password"
+                                    label="Password"
+                                    type="password"
+                                    :error-messages="form.errors.get('email')"
+                                    v-model="form.password"
+                                ></v-text-field>
                             </v-form>
                         </v-card-text>
-                        <v-card-actions class="justify-center">
-                            <!-- <v-spacer></v-spacer> -->
-                            <!-- <div class="text-xs-center"> -->
-                                <v-btn color="#c49a6c" class="white--text" href="/">
-                                <v-icon>mdi-arrow-left</v-icon>Retour</v-btn>
-                                <v-btn color="#c49a6c" class="white--text" :loading="form.busy" @click="login">Login</v-btn>
-                            <!-- </div> -->
+                        <v-card-actions class="">
+                            <v-row no-gutters align="center">
+                                <v-col cols="4">
+                                    <v-btn small outlined color="#c49a6c" class="" href="/"> <v-icon>mdi-arrow-left</v-icon>Retour</v-btn>
+                                </v-col>
+                                <v-col cols="4" class="d-flex justify-center">
+                                    <v-btn color="#c49a6c" class="white--text" :loading="form.busy" @click="login">Login</v-btn>
+                                </v-col>
+                                <v-col cols="4">
+                                </v-col>
+                            </v-row>
                         </v-card-actions>
                     </v-card>
                 </v-col>
@@ -41,8 +53,8 @@ export default {
         return {
             form: new Form({
                 email: 'admin@example.com',
-                password: 'secret1'
-            })
+                password: 'secret1',
+            }),
         }
     },
     computed: {},
@@ -59,8 +71,8 @@ export default {
             } catch (error) {
                 console.log('error: ', error)
             }
-        }
-    }
+        },
+    },
 }
 </script>
 

@@ -9,7 +9,7 @@ use Response;
 use File;
 // use Intervention\Image\ImageManagerStatic as Image;
 use Intervention\Image\Facades\Image as Intervention;
-use App\Models\Image;
+use App\Models\PortfolioImage;
 
 class MediasController extends Controller
 {

@@ -20,7 +20,7 @@
                                 <v-row no-gutters justify="start" align="center">
                                     <v-col class="d-flex justify-start align-center">
                                         <v-chip small class="mr-2">{{ i + 1 }}</v-chip>
-                                        <v-img :src="`/medias/${frontImage(portfolio.images)['path']}`" max-width="80" aspect-ratio="1" class="mr-3" v-if="displayImage"></v-img>
+                                        <v-img :src="`/medias/${frontImage(portfolio.portfolio_images)['path']}`" max-width="80" aspect-ratio="1" class="mr-3" v-if="displayImage"></v-img>
 
                                         <p class="ml-2 my-0">{{ portfolio.title }}</p>
                                         <!-- index: {{ i }} id: {{ portfolio.id }} order: {{ portfolio.order }} -->
@@ -41,7 +41,7 @@
                                     <v-col cols="12" md="6" class="px-2">
                                         <!-- {{ portfolio.images }} -->
                                         <v-row no-gutters>
-                                            <v-col cols="12" md="4" lg="4" class="pa-2" v-for="(image, index) in backImages(portfolio.images)" :key="index">
+                                            <v-col cols="12" md="4" lg="4" class="pa-2" v-for="(image, index) in backImages(portfolio.portfolio_images)" :key="index">
                                                 <v-img :src="`/medias/${image.path}`"></v-img>
                                             </v-col>
                                         </v-row>

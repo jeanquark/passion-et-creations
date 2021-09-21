@@ -26,9 +26,9 @@
             </waterfall>
             </v-expand-transition>
 
-            <div class="text-center">
-                <v-icon size="60" @click="showAllPortfolios = true" v-if="!showAllPortfolios">mdi-plus</v-icon>
-                <v-icon size="60" @click="showAllPortfolios = false" v-else>mdi-minus</v-icon>
+            <div class="text-center my-3">
+                <v-icon size="60" class="icon" @click="showAllPortfolios = true" v-if="!showAllPortfolios">mdi-plus</v-icon>
+                <v-icon size="60" class="icon" @click="showAllPortfolios = false" v-else>mdi-minus</v-icon>
             </div>
             <!-- <v-btn small color="primary" class="text-center">Afficher plus</v-btn> -->
             <!-- <p>End of page</p> -->
@@ -101,9 +101,9 @@ export default {
         }
     },
     computed: {
-        images() {
-            return this.$store.getters['images/images']
-        },
+        // images() {
+        //     return this.$store.getters['images/images']
+        // },
         portfolios() {
             if (!this.showAllPortfolios) {
                 return [...this.$store.getters['portfolios/portfolios']].splice(0, 20)
@@ -115,7 +115,7 @@ export default {
     methods: {
         frontImage(portfolio) {
             try {
-                return portfolio.images.find(image => image.is_front_image == true)
+                return portfolio.portfolio_images.find(image => image.is_front_image == true)
             } catch (error) {
                 console.log('error: ', error)
             }

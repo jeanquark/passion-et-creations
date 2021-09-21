@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
                 // SliderTableSeeder::class,
                 CategoriesTableSeeder::class,
                 PortfoliosTableSeeder::class,
-                ImagesTableSeeder::class,
+                PortfolioImagesTableSeeder::class,
                 ContentsTableSeeder::class,
                 SlidersTableSeeder::class,
             ]);
