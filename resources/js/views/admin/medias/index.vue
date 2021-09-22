@@ -36,7 +36,8 @@
                 </div>
                 <v-list nav dense>
                     <v-list-item-group active-class="deep-purple--text text--accent-4">
-                        <v-list-item>
+                        selectedImage: {{ selectedImage }}
+                        <!-- <v-list-item>
                             <v-list-item-title>Foo</v-list-item-title>
                         </v-list-item>
 
@@ -50,7 +51,7 @@
 
                         <v-list-item>
                             <v-list-item-title>Buzz</v-list-item-title>
-                        </v-list-item>
+                        </v-list-item> -->
                     </v-list-item-group>
                 </v-list>
             </v-navigation-drawer>
@@ -89,7 +90,7 @@
                             </v-col>
                             <v-col cols="6" md="3" lg="2" class="pa-3" v-for="(file, index) of files" :key="`file_${index}`">
                                 <div v-if="getFileType(file.name) === 'image'">
-                                    <v-img :src="`/medias${file.path}`" id="clickableElement" aspect-ratio="1" class="link" data-type="file"></v-img>
+                                    <v-img :src="`/medias${file.path}`" id="clickableElement" aspect-ratio="1" class="link" data-type="file" :data-name="file.name"></v-img>
                                     <p class="text-center" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ file.name }}</p>
                                 </div>
                                 <div v-else>Not an image</div>
@@ -134,6 +135,7 @@ export default {
             items: [],
             clicksCount: 0,
             clicksTimer: null,
+            selectedImage: null
         }
     },
     computed: {
@@ -229,9 +231,10 @@ export default {
         handleClick(e) {
             console.log('handleClick e: ', e)
             // console.log('e.target: ', e.target)
-            // console.log('e.target.parentNode: ', e.target.parentNode)
-            // console.log('e.target.parentNode.id: ', e.target.parentNode.id)
+            console.log('e.target.parentNode: ', e.target.parentNode)
+            console.log('e.target.parentNode.id: ', e.target.parentNode.id)
             // console.log('e.target.parentNode[data-value]: ', e.target.parentNode.getAttribute('data-value'))
+            console.log('e.target.parentNode[data-name]: ', e.target.parentNode.getAttribute('data-name'))
             this.showUploadFile = false
             this.clicksCount++
             if (this.clicksCount === 1) {
@@ -243,6 +246,7 @@ export default {
                         console.log('Clicked on folder')
                     } else if (e.target.parentNode.getAttribute('data-type') === 'file') {
                         console.log('Clicked on file')
+                        this.selectedImage = 'abc'
                     } else {
                         console.log('Clicked on blank')
                         this.showUploadFile = true

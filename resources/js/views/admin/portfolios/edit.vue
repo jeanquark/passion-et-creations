@@ -184,11 +184,12 @@ export default {
         },
         onAddFile(file) {
             console.log('onAddFile file: ', file)
-            file.is_front_image = false
+            file['is_front_image'] = false
+            file['order'] = this.portfolio.portfolio_images.length
             this.dialog = false
-            console.log('portfolio.images: ', this.portfolio.images)
-            this.portfolio.images.push(file)
-            console.log('portfolio.images 2: ', this.portfolio.images)
+            // console.log('portfolio.images: ', this.portfolio.portfolio_images)
+            this.backImagesList.push(file)
+            // console.log('portfolio.images 2: ', this.portfolio.portfolio_images)
         },
         addImage() {
             console.log('addImage')
@@ -228,6 +229,7 @@ export default {
             this.form['portfolio_images'] = newImages
 
             await this.$store.dispatch('portfolios/updatePortfolio', this.form)
+            this.$router.push('/admin/portfolios')
         },
         deletePortfolioImage(image) {
             console.log('deletePortfolioImage image: ', image)

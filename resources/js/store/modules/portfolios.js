@@ -56,11 +56,12 @@ export const actions = {
             throw error
         }
     },
-    async updatePortfolio({}, form) {
+    async updatePortfolio({ dispatch }, form) {
         try {
             console.log('[VUEX] updatePortfolio form: ', form)
             const data = await form.put(`/api/v1/portfolios/${form.id}`, form)
-            console.log('data: ', data)
+            console.log('[VUEX] data: ', data)
+            dispatch('fetchPortfolios')
         } catch (error) {
             throw error
         }
