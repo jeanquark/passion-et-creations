@@ -7,7 +7,7 @@
             clipped
             :mini-variant.sync="miniSidebar"
         >
-            <v-list>
+            <v-list v-if="authUser">
                 <v-list-item class="px-2">
                     <v-list-item-avatar>
                         <v-img
@@ -101,6 +101,17 @@
 import axios from 'axios'
 export default {
     name: "AdminIndex",
+    created () {
+        if (!this.authUser) {
+            this.$store.commit('snackbars/SET_SNACKBAR', {
+                color: 'error',
+                content: 'Votre session a expiré. Veuillez vous reconnectez.',
+                show: true,
+                timeout: 5000,
+                type: 'session_expired'
+            })
+        }
+    },
     data() {
         return {
         };

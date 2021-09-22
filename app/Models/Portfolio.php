@@ -14,7 +14,7 @@ class Portfolio extends Model
      * @var array
      */
     protected $fillable = [
-        'category_id', 'front_image_id', 'name', 'description', 'order', 'is_active'
+        'category_id', 'title', 'description', 'order', 'is_active'
     ];
 
     /**
@@ -28,10 +28,10 @@ class Portfolio extends Model
     /**
      * Get the post that owns the comment.
      */
-    public function front_image()
-    {
-        return $this->belongsTo(PortfolioImage::class);
-    }
+    // public function front_image()
+    // {
+    //     return $this->belongsTo(PortfolioImage::class);
+    // }
 
     /**
      * The roles that belong to the user.

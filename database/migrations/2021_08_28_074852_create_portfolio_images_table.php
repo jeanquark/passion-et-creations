@@ -25,6 +25,7 @@ class CreatePortfolioImagesTable extends Migration
             $table->integer('height');
             $table->integer('width');
             $table->boolean('is_front_image')->default(0);
+            $table->integer('order')->nullable();
             $table->timestamps();
         });
     }

@@ -18,6 +18,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 //     require("./components/PermanencesComponent.vue").default
 // );
 Vue.component('navbar-component', require('./components/NavbarComponent.vue').default)
+Vue.component('login-component', require('./components/LoginComponent.vue').default)
 // Vue.component('slider-component', require('./components/SliderComponent.vue').default)
 Vue.component('carousel-component', require('./components/CarouselComponent.vue').default)
 Vue.component('info-component', require('./components/InfoComponent.vue').default)

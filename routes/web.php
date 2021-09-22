@@ -79,3 +79,7 @@ Route::get('/admin/{any}', [App\Http\Controllers\AdminController::class, 'index'
 // Route::get('{any}', function () { 
 //     return view('vue-layout'); 
 // })->where('any', '.*'); 
+
+Route::get('/login', function () {
+    return view('login');
+});

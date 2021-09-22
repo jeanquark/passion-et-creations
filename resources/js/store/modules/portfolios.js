@@ -56,6 +56,15 @@ export const actions = {
             throw error
         }
     },
+    async updatePortfolio({}, form) {
+        try {
+            console.log('[VUEX] updatePortfolio form: ', form)
+            const data = await form.put(`/api/v1/portfolios/${form.id}`, form)
+            console.log('data: ', data)
+        } catch (error) {
+            throw error
+        }
+    },
     async deletePortfolio({ }, payload) {
         try {
             const { path } = payload

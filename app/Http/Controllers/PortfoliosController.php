@@ -125,7 +125,54 @@ class PortfoliosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validatedData = $request->validate([
+            'title' => ['required'],
+        ]);
+
+        $portfolio = Portfolio::find($id);
+
+        // $portfolio->updateOrCreate(
+        //     ['id' => $id],
+        //     [
+        //         'title' => $request->title,
+        //         'description' => $request->description,
+        //         'updated_at' => \Carbon\Carbon::now(),
+        //     ]
+        // );
+
+        $portfolioImages = PortfolioImage::where('portfolio_id', '=', $id)->get();
+
+        // $portfolio->portfolio_images()->dissociate();
+        // $portfolio->portfolio_images()->associate($request->portfolio_images);
+
+        // 1) Dissociate all existing relations
+        foreach ($portfolioImages as $image) {
+            $image->delete();
+        }
+
+        // 2) Associate new relation
+        foreach ($request->portfolio_images as $image) {
+            $newImage = new PortfolioImage();
+            $newImage->portfolio_id = $id;
+            $newImage->name = $image['name'];
+            $newImage->path = $image['path'];
+            $newImage->thumbnail_path = $image['thumbnail_path'];
+            $newImage->height = $image['height'];
+            $newImage->width = $image['width'];
+            $newImage->size = $image['size'];
+            $newImage->is_front_image = $image['is_front_image'];
+            $newImage->order = $image['order'];
+            $newImage->save();
+        }
+
+        return response()->json([
+            'success' => true,
+            'id' => $id,
+            'portfolio' => $portfolio,
+            'request->all()' => $request->all(),
+            '$request->portfolio_images' => $request->portfolio_images,
+            'portfolioImages' => $portfolioImages
+        ]);
     }
 
     /**

@@ -68,8 +68,8 @@ export default {
                 // console.log('data: ', data)
                 // const response = await this.form.post("/login");
                 // console.log('response: ', response)
-                this.$router.push('/admin/index')
-                // location.href = '/admin'
+                // this.$router.push('/admin/index')
+                location.href = '/admin/index'
             } catch (error) {
                 console.log('error: ', error)
             }
