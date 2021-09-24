@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Slider;
+use App\Models\SliderImage;
 
 
 class SlidersController extends Controller
@@ -59,10 +60,30 @@ class SlidersController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Content $content)
+    public function update(Request $request, $id)
     {
+        $slider = Slider::where('id', '=', $id)->firstOrFail();
+
+        // 1) Dissociate all existing relations
+        foreach ($slider->slider_images as $image) {
+            $image->delete();
+        }
+
+        // 2) Associate new relation
+        foreach ($request->sliderImages as $image) {
+            $newImage = new SliderImage();
+            $newImage->slider_id = $id;
+            $newImage->image_path = $image['image_path'];
+            $newImage->order = $image['order'];
+            // $newImage->updated_at = 
+            $newImage->save();
+        }
+
         return response()->json([
-            'success' => true
+            'success' => true,
+            'id' => $id,
+            'request->all()' => $request->all(),
+            'request->sliderImages' => $request->sliderImages
         ], 200);
     }
 

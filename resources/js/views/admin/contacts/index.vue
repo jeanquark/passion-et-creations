@@ -3,13 +3,13 @@
         <v-breadcrumbs large :items="items"></v-breadcrumbs>
         <v-row no-gutters justify="center">
             <v-col cols="12">
-                <h2>Sliders</h2>
-                sliders: {{ sliders }}<br /><br />
+                <h2>Contacts</h2>
+                contacts: {{ contacts }}<br /><br />
             </v-col>
         </v-row>
         <v-row no-gutters>
             <v-col cols="12" class="mx-3">
-                <v-data-table :headers="headers" :items="sliders" :items-per-page="5" :hide-default-header="true" class="elevation-1">
+                <v-data-table :headers="headers" :items="contacts" :items-per-page="5" :hide-default-header="true" class="elevation-1">
                     <template v-slot:header="{ props }">
                         <thead>
                             <tr>
@@ -30,7 +30,10 @@
                                 {{ item.name }}
                             </td>
                             <td>
-                                {{ item.section }}
+                                {{ item.message }}
+                            </td>
+                            <td>
+                                {{ item.is_read }}
                             </td>
                             <td>
                                 {{ item.created_at | moment('DD MMM YYYY') }}
@@ -39,8 +42,7 @@
                                 {{ item.updated_at | moment('from') }}
                             </td>
                             <td style="white-space: nowrap">
-                                <v-btn small color="success" :to="`/admin/sliders/${item.id}`">Montrer</v-btn>
-                                <v-btn small color="info" :to="`/admin/sliders/${item.id}/edit`">Editer</v-btn>
+                                <v-btn small color="success" :to="`/admin/contacts/${item.id}`">Montrer</v-btn>
                                 <v-btn small color="error">Supprimer</v-btn>
                             </td>
                         </tr>
@@ -53,11 +55,11 @@
 
 <script>
 export default {
-    name: 'AdminSlidersIndex',
+    name: 'AdminContactsIndex',
     async created() {
         try {
-            if (this.$store.getters['sliders/sliders'].length < 1) {
-                this.$store.dispatch('sliders/fetchSliders')
+            if (this.$store.getters['contacts/contacts'].length < 1) {
+                this.$store.dispatch('contacts/fetchContacts')
             }
         } catch (error) {
             console.log('error: ', error)
@@ -68,14 +70,9 @@ export default {
         return {
             items: [
                 {
-                    text: 'Carousels',
+                    text: 'Formulaires de contact',
                     disabled: true,
-                    href: '/admin/sliders'
-                },
-                {
-                    text: 'Ajouter',
-                    disabled: false,
-                    to: '/admin/sliders/create'
+                    href: '/admin/contacts'
                 }
             ],
             headers: [
@@ -90,8 +87,12 @@ export default {
                     value: 'name'
                 },
                 {
-                    text: 'Section',
-                    value: 'section'
+                    text: 'Message',
+                    value: 'message'
+                },
+                {
+                    text: 'Lu?',
+                    value: 'is_read'
                 },
                 { text: 'Créé le', value: 'created_at' },
                 { text: 'Dernière modification', value: 'updated_at' }
@@ -99,8 +100,8 @@ export default {
         }
     },
     computed: {
-        sliders() {
-            return this.$store.getters['sliders/sliders']
+        contacts() {
+            return this.$store.getters['contacts/contacts']
         }
     },
     methods: {}

@@ -41,6 +41,16 @@ export const actions = {
 			console.log('error: ', error)
 			throw error
 		}
+	},
+	async updateSlider({ commit }, payload) {
+		try {
+			const { id } = payload
+			const data = await axios.put(`/api/v1/sliders/${id}`, payload)
+			console.log('data: ', data)
+		} catch (error) {
+			console.log('error: ', error)
+			throw error
+		}
 	}
 }
 

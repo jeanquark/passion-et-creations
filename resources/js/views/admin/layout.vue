@@ -67,6 +67,12 @@
                     </v-list-item-icon>
                     <v-list-item-title>Carousels</v-list-item-title>
                 </v-list-item>
+                <v-list-item to="/admin/contacts">
+                    <v-list-item-icon>
+                        <v-icon>mdi-message</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>Formulaire de contact</v-list-item-title>
+                </v-list-item>
                 <v-list-item to="/admin/users">
                     <v-list-item-icon>
                         <v-icon>mdi-account-group</v-icon>
@@ -104,7 +110,7 @@ export default {
     created () {
         if (!this.authUser) {
             this.$store.commit('snackbars/SET_SNACKBAR', {
-                color: 'error',
+                color: 'dark',
                 content: 'Votre session a expiré. Veuillez vous reconnectez.',
                 show: true,
                 timeout: 5000,

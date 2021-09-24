@@ -1,20 +1,126 @@
 <template>
     <v-main>
-        <medias-component />
+        <!-- <v-breadcrumbs large :items="items"></v-breadcrumbs> -->
+        <v-row no-gutters>
+            <v-col cols="12">
+                <!-- medias.allDirectories: {{ medias.allDirectories }}<br /><br /> -->
+                <!-- medias.allFiles: {{ medias.allFiles }}<br /><br /> -->
+                <!-- folders: {{ folders }}<br /><br /> -->
+                <!-- files: {{ files }}<br /><br /> -->
+                <!-- path: {{ path }}<br /><br /> -->
+                <!-- items: {{ items }}<br /><br /> -->
+                <!-- showUploadFile: {{ showUploadFile }}<br /><br /> -->
+            </v-col>
+            <!-- <v-col>
+                <v-btn small color="primary" @click="goBack">Go back</v-btn><br />
+                Folders:<br />
+                <ul>
+                    <li v-for="(folder, index) in folders" :key="index">
+                        <div class="link" @click="goTo(folder.path, folder.name)">{{ folder }}</div>
+                    </li>
+                </ul>
+                Files:<br />
+                <ul>
+                    <li v-for="(file, index) in files" :key="index">
+                        <div class="link">{{ file }}</div>
+                    </li>
+                </ul>
+            </v-col> -->
+        </v-row>
+
+        <v-row no-gutters>
+            tab: {{ tab }}
+            <v-navigation-drawer app bottom right temporary :width="showUploadFile ? 512 : 256" v-model="showSidebar">
+                <div v-if="showUploadFile">
+                    <upload-multiple-files :items="items"></upload-multiple-files>
+                </div>
+                <v-list nav dense>
+                    <v-list-item-group active-class="deep-purple--text text--accent-4">
+                        selectedImage: {{ selectedImage }}
+                        <!-- <v-list-item>
+                            <v-list-item-title>Foo</v-list-item-title>
+                        </v-list-item>
+
+                        <v-list-item>
+                            <v-list-item-title>Bar</v-list-item-title>
+                        </v-list-item>
+
+                        <v-list-item>
+                            <v-list-item-title>Fizz</v-list-item-title>
+                        </v-list-item>
+
+                        <v-list-item>
+                            <v-list-item-title>Buzz</v-list-item-title>
+                        </v-list-item> -->
+                    </v-list-item-group>
+                </v-list>
+            </v-navigation-drawer>
+            <v-tabs v-model="tab" align-with-title>
+                <v-tabs-slider color="yellow"></v-tabs-slider>
+                <v-tab href="#tab-1"> Médiathèque </v-tab>
+                <v-tab href="#tab-2"> Uploader un fichier </v-tab>
+                <v-tabs-items v-model="tab">
+                    <v-tab-item :value="'tab-1'">
+                        <v-row no-gutters class="my-4 mx-7" align="end">
+                            <v-col cols="12" class="ml-4 mb-3">
+                                <v-breadcrumbs large :items="items" id="breadcrumbs">
+                                    <template v-slot:item="{ item }">
+                                        <v-breadcrumbs-item class="link" :disabled="item.disabled" @click="goTo(item.path, item.name)">
+                                            {{ item.name }}
+                                        </v-breadcrumbs-item>
+                                    </template>
+                                    <template v-slot:divider>
+                                        <v-icon>mdi-chevron-right</v-icon>
+                                    </template>
+                                </v-breadcrumbs>
+                            </v-col>
+                        </v-row>
+                        <v-row no-gutters align="end" class="mx-7" style="border: 2px solid green" @click="handleClick">
+                            <v-col cols="6" md="3" lg="2" class="pa-3" v-for="(folder, index) of folders" :key="`folder_${index}`">
+                                <v-img
+                                    src="/images/icons/folder.png"
+                                    class="link"
+                                    id="clickableElement"
+                                    :data-value="{ name: folder.name, path: folder.path }"
+                                    data-type="folder"
+                                    :data-name="folder.name"
+                                    :data-path="folder.path"
+                                ></v-img>
+                                <p class="text-center" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ folder.name }}</p>
+                            </v-col>
+                            <v-col cols="6" md="3" lg="2" class="pa-3" v-for="(file, index) of files" :key="`file_${index}`">
+                                <div v-if="getFileType(file.name) === 'image'">
+                                    <v-img :src="`/medias${file.path}`" id="clickableElement" aspect-ratio="1" class="link" data-type="file" :data-name="file.name"></v-img>
+                                    <p class="text-center" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ file.name }}</p>
+                                </div>
+                                <div v-else>Not an image</div>
+                            </v-col>
+                        </v-row>
+                    </v-tab-item>
+                    <v-tab-item :value="'tab-2'">
+                        <v-row no-gutters class="ml-7">
+                            <v-col cols="12" justify="center">
+                                <upload-multiple-files :items="items"></upload-multiple-files>
+                            </v-col>
+                        </v-row>
+                    </v-tab-item>
+                </v-tabs-items>
+            </v-tabs>
+        </v-row>
     </v-main>
 </template>
 
 <script>
-import MediasComponent from '../../../components/MediasComponent'
 import UploadMultipleFiles from '../../../components/UploadMultipleFiles'
 export default {
     name: 'AdminMediasIndex',
-    components: { MediasComponent, UploadMultipleFiles },
+    components: { UploadMultipleFiles },
     async created() {
-        if (this.$store.getters['medias/medias'].length < 1) {
-            const data = await this.$store.dispatch('medias/fetchMedias')
-            // console.log('data: ', data)
-        }
+        // if (this.$store.getters['medias/medias'].length < 1) {
+        const data = await this.$store.dispatch('medias/fetchMedias')
+        console.log('data: ', data)
+        // }
+
         this.goTo('/')
     },
     data() {

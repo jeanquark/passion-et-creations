@@ -3,7 +3,7 @@
         <v-breadcrumbs large :items="items"></v-breadcrumbs>
         <v-row no-gutters justify="center">
             <v-col cols="12">
-                <h2>Sliders</h2>
+                <h2>Contacts show</h2>
                 sliders: {{ sliders }}<br /><br />
             </v-col>
         </v-row>
@@ -53,7 +53,7 @@
 
 <script>
 export default {
-    name: 'AdminSlidersIndex',
+    name: 'AdminContactsShow',
     async created() {
         try {
             if (this.$store.getters['sliders/sliders'].length < 1) {

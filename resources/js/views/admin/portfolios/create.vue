@@ -7,10 +7,10 @@
                     <v-text-field prepend-icon="mdi-lock" name="title" label="Titre" type="text" :error-messages="form.errors.get('title')" v-model="form.title"></v-text-field>
                     <v-text-field prepend-icon="mdi-lock" name="description" label="Description" type="text" :error-messages="form.errors.get('description')" v-model="form.description"></v-text-field>
 
-                    <v-dialog v-model="dialog" width="800">
-                        <medias-component @addFile="onAddFile"></medias-component>
-                    </v-dialog>
-                    <v-row no-gutters class="px-5">
+                    <v-row no-gutters class="px-6">
+                        <v-col cols="12">
+                            <span class="pl-2" style="color: grey; font-size: .9em">Images</span>
+                        </v-col>
                         <v-col cols="12" md="6" lg="4" class="pa-2" style="border: 0px solid green" v-for="(image, index) in form.images" :key="index">
                             <v-hover v-slot="{ hover }">
                                 <v-card height="200" :elevation="hover ? 12 : 2" :class="{ 'on-hover': hover }" class="d-flex justify-center align-center" style="border: 0px dashed #ccc">
@@ -21,10 +21,11 @@
                                 </v-card>
                             </v-hover>
                         </v-col>
-                        <v-col cols="12" md="4" lg="3" class="pa-2" style="">
+                        <v-col cols="12" md="4" lg="4" class="pa-2" style="">
                             <v-hover v-slot="{ hover }">
                                 <v-card
-                                    height="150"
+                                    height="200"
+                                    width="100%"
                                     :elevation="hover ? 12 : 2"
                                     :class="{ 'on-hover': hover }"
                                     class="d-flex justify-center align-center"
@@ -39,7 +40,7 @@
                         </v-col>
                     </v-row>
 
-                    <div class="text-center">
+                    <div class="text-center mt-5">
                         <v-btn type="submit" color="success" :loading="form.busy">Ajouter</v-btn>
                     </div>
                 </v-form>
@@ -53,6 +54,9 @@
                 </v-form>
             </v-col>
         </v-row>
+        <v-dialog v-model="dialog" width="800">
+            <medias-component @addFile="onAddFile"></medias-component>
+        </v-dialog>
     </v-main>
 </template>
 
@@ -110,7 +114,11 @@ export default {
         async createPortfolio() {
             try {
                 console.log('createPortfolio form: ', this.form)
+                this.form.images.forEach((image, index) => {
+                    image.order = index
+                })
                 await this.$store.dispatch('portfolios/createPortfolio', this.form)
+                this.$router.push('/admin/portfolios')
             } catch (error) {
                 console.log('error: ', error)
             }

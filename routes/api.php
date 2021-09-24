@@ -4,6 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\PortfoliosController;
+use App\Http\Controllers\MediasController;
+use App\Http\Controllers\SlidersController;
+use App\Http\Controllers\ContactMessagesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,16 +27,21 @@ Route::put('/v1/portfolios/{id}', [PortfoliosController::class, 'update']);
 Route::delete('/v1/portfolios/{id}', [PortfoliosController::class, 'destroy']);
 Route::post('/v1/portfolios/update-order', [PortfoliosController::class, 'updateOrder']);
 
+Route::get('/v1/medias', [MediasController::class, 'getMedias']);
+Route::post('/v1/medias', [MediasController::class, 'uploadMedias']);
+Route::post('/v1/medias/delete', [MediasController::class, 'destroy']);
+
 Route::apiResource('/v1/users', App\Http\Controllers\UsersController::class);
 
-Route::apiResource('/v1/sliders', App\Http\Controllers\SlidersController::class);
+Route::get('/v1/sliders', [SlidersController::class, 'index']);
+Route::put('/v1/sliders/{id}', [SlidersController::class, 'update']);
+
+Route::get('/v1/contacts', [ContactMessagesController::class, 'index']);
+Route::get('/v1/contacts/{id}', [ContactMessagesController::class, 'show']);
+Route::put('/v1/contacts/{id}', [ContactMessagesController::class, 'update']);
 
 Route::post('/v1/send-contact-form', [App\Http\Controllers\ContactMessagesController::class, 'send']);
 
-
-
-Route::get('/v1/medias', [App\Http\Controllers\MediasController::class, 'getMedias']);
-Route::post('/v1/medias', [App\Http\Controllers\MediasController::class, 'uploadMedias']);
 
 // Route::get('/v1/images', [App\Http\Controllers\ImagesController::class, 'getImages']);
 // Route::post('/v1/images', [App\Http\Controllers\ImagesController::class, 'uploadImage']);

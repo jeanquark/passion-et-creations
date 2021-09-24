@@ -130,63 +130,63 @@ class MediasController extends Controller
                     // 2) Store thumbnail
                     $thumbnailName = $fileName . '_thumbnail' . '.' . $fileExtension;
                     $thumbnailImage = Intervention::make($file)->fit(512)->encode();
-                    Storage::disk('medias')->put($request->path . '/' .$thumbnailName, $thumbnailImage);
+                    Storage::disk('thumbnails')->put($request->path . '/' .$thumbnailName, $thumbnailImage);
 
                     // 3) Store blurred thumbnail
-                    $thumbnailBlurryName = $fileName . '_thumbnail_blurred' . '.' . $fileExtension;
-                    $thumbnailImageBlurry = Intervention::make($file)->fit(512)->blur(25)->encode();
-                    Storage::disk('medias')->put($request->path . '/' .$thumbnailBlurryName, $thumbnailImageBlurry);
+                    // $thumbnailBlurryName = $fileName . '_thumbnail_blurred' . '.' . $fileExtension;
+                    // $thumbnailImageBlurry = Intervention::make($file)->fit(512)->blur(25)->encode();
+                    // Storage::disk('thumbnails')->put($request->path . '/' .$thumbnailBlurryName, $thumbnailImageBlurry);
                 }
             }
         }
 
-        return response()->json([
-            'success' => true,
-            'file' => $file,
-            'fileFullName' => $fileFullName,
-            'fileName' => $fileName,
-            'fileExtension' => $fileExtension,
-            'fileType' => $fileType,
-            'filePath' => $filePath,
-            'request->path' => $request->path,
-            // 'originalFile' => $originalFile
-        ], 200);
+        // return response()->json([
+        //     'success' => true,
+        //     'file' => $file,
+        //     'fileFullName' => $fileFullName,
+        //     'fileName' => $fileName,
+        //     'fileExtension' => $fileExtension,
+        //     'fileType' => $fileType,
+        //     'filePath' => $filePath,
+        //     'request->path' => $request->path,
+        //     // 'originalFile' => $originalFile
+        // ], 200);
 
-        if (File::exists($request->image)) { // Upload single image
+        // if (File::exists($request->image)) { // Upload single image
 
-            $request->validate([
-                'image' => 'required|image|max:1024'
-            ]);
+        //     $request->validate([
+        //         'image' => 'required|image|max:1024'
+        //     ]);
 
-            // 1) Store original image
-            $image = $request->image->getClientOriginalName();
-            $imageName = pathinfo($image, PATHINFO_FILENAME);
-            $imageExtension = pathinfo($image, PATHINFO_EXTENSION);
-            $originalImage = Intervention::make($request->image)->encode();
-            Storage::disk('portfolio')->put($image, $originalImage);
+        //     // 1) Store original image
+        //     $image = $request->image->getClientOriginalName();
+        //     $imageName = pathinfo($image, PATHINFO_FILENAME);
+        //     $imageExtension = pathinfo($image, PATHINFO_EXTENSION);
+        //     $originalImage = Intervention::make($request->image)->encode();
+        //     Storage::disk('portfolio')->put($image, $originalImage);
 
-            // 2) Store thumbnail
-            $thumbnailName = $imageName . '_thumbnail' . '.' . $imageExtension;
-            $small = Intervention::make($request->image)->fit(512)->encode();
-            Storage::disk('portfolio')->put($thumbnailName, $small);
+        //     // 2) Store thumbnail
+        //     $thumbnailName = $imageName . '_thumbnail' . '.' . $imageExtension;
+        //     $small = Intervention::make($request->image)->fit(512)->encode();
+        //     Storage::disk('portfolio')->put($thumbnailName, $small);
 
-            // 3) Store blurry image
-            // $blurryName = $imageName . '_blurred' . '.' . $imageExtension;
-            // $blurry = Image::make($request->image)->blur(15)->encode();
-            // Storage::disk('portfolio')->put($blurryName, $blurry);
+        //     // 3) Store blurry image
+        //     // $blurryName = $imageName . '_blurred' . '.' . $imageExtension;
+        //     // $blurry = Image::make($request->image)->blur(15)->encode();
+        //     // Storage::disk('portfolio')->put($blurryName, $blurry);
 
-            // 4) Store blurry thumbnail
-            $thumbnailBlurryName = $imageName . '_thumbnail_blurred' . '.' . $imageExtension;
-            $smallBlurry = Intervention::make($request->image)->fit(512)->blur(25)->encode();
-            Storage::disk('portfolio')->put($thumbnailBlurryName, $smallBlurry);
+        //     // 4) Store blurry thumbnail
+        //     $thumbnailBlurryName = $imageName . '_thumbnail_blurred' . '.' . $imageExtension;
+        //     $smallBlurry = Intervention::make($request->image)->fit(512)->blur(25)->encode();
+        //     Storage::disk('portfolio')->put($thumbnailBlurryName, $smallBlurry);
 
-            return response()->json([
-                'success' => true,
-                'request' => $request,
-                'request->image' => $request->image,
-                '$imageName' => $imageName,
-            ], 200);
-        }
+        //     return response()->json([
+        //         'success' => true,
+        //         'request' => $request,
+        //         'request->image' => $request->image,
+        //         '$imageName' => $imageName,
+        //     ], 200);
+        // }
     }
 
     /**
@@ -199,7 +199,7 @@ class MediasController extends Controller
     {
         return response()->json([
             'status' => 'success',
-            'function' => 'deleteImage'
+            '$request->path' => $request->path
         ]);
     }
 
@@ -281,7 +281,7 @@ class MediasController extends Controller
     public function destroy(Request $request)
     {
         $path = $request->path;
-        $deleted = Storage::disk('images')->delete($path);
+        $deleted = Storage::disk('medias2')->delete($path);
 
         if ($deleted) {
             return response()->json([

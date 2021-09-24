@@ -11,6 +11,19 @@ class ContactMessagesController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('role:admin');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $contact_messages = ContactMessage::orderBy('id', 'desc')->get();
+        
+        return response()->json($contact_messages);
     }
 
     public function send(Request $request)

@@ -18,7 +18,7 @@
             <v-row no-gutters>
                 <v-navigation-drawer app bottom right temporary :width="showUploadFile ? 512 : 256" v-model="showSidebar">
                     <!-- selectedFile: {{ selectedFile }}<br /> -->
-                    selectedFolder: {{ selectedFolder }}<br />
+                    <!-- selectedFolder: {{ selectedFolder }}<br /> -->
                     <div v-if="selectedFile" class="ma-4">
                         <v-img :src="`/medias/${selectedFile.path}`"></v-img>
                         <p class="text-center" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap">{{ selectedFile.name }}</p>
@@ -31,6 +31,12 @@
                         <div class="text-center">
                             <v-btn small color="primary" @click="addFile(selectedFile)">Ajouter</v-btn>
                         </div>
+                        <div class="text-center mt-2">
+                            <v-btn small color="error" @click="deleteFile()">Supprimer</v-btn>
+                        </div>
+                    </div>
+                    <div v-if="selectedFolder">
+                        selectedFolder: {{ selectedFolder }}
                     </div>
                     <div v-if="showUploadFile">
                         <upload-multiple-files :items="items"></upload-multiple-files>
@@ -51,17 +57,20 @@
                         </v-breadcrumbs>
                     </v-col>
                 </v-row>
-                <v-row no-gutters align="end" class="mx-0" style="border: 2px solid green" @click="handleClick">
+                <v-row no-gutters align="end" class="mx-0" style="border: 2px solid #e9ecef; border-radius: 5px;" @click="handleClick">
                     <v-col cols="6" md="3" lg="2" class="pa-3" v-for="(folder, index) of folders" :key="`folder_${index}`">
-                        <v-img
-                            src="/images/icons/folder.png"
-                            class="link"
-                            id="clickableElement"
-                            :data-value="{ name: folder.name, path: folder.path }"
-                            data-type="folder"
-                            :data-name="folder.name"
-                            :data-path="folder.path"
-                        ></v-img>
+                        <v-hover v-slot="{ hover }">
+                            <v-img
+                                :src="hover ? '/images/icons/folder_hover.svg' : '/images/icons/folder.svg'"
+                                class="link"
+                                id="clickableElement"
+                                data-type="folder"
+                                :data-value="{ name: folder.name, path: folder.path }"
+                                :data-name="folder.name"
+                                :data-path="folder.path"
+                            ></v-img>
+                                <!-- @click.stop="clickOnFolder(folder)" -->
+                        </v-hover>
                         <p class="text-center" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap">{{ folder.name }}</p>
                     </v-col>
                     <v-col cols="6" md="3" lg="2" class="pa-3" v-for="(file, index) of files" :key="`file_${index}`">
@@ -93,8 +102,6 @@ export default {
         return {
             showSidebar: false,
             showUploadFile: false,
-            // tab: null,
-            // tabs: ['Médiathèque', 'Uploader un fichier'],
             files: [],
             folders: [],
             selectedFile: null,
@@ -155,6 +162,7 @@ export default {
                         this.files.push({
                             name: fileName,
                             path: '/' + file.path,
+                            thumbnail_path: '/' + file.path,
                             size: file.size,
                             width: file.width,
                             height: file.height,
@@ -205,6 +213,7 @@ export default {
                             this.files.push({
                                 name: fileName,
                                 path: '/' + file.path,
+                                thumbnail_path: '/' + file.path,
                                 size: file.size,
                                 width: file.width,
                                 height: file.height,
@@ -233,6 +242,11 @@ export default {
             this.showUploadFile = false
             this.showSidebar = true
         },
+        // clickOnFolder(folder) {
+        //     console.log('clickOnFolder')
+        //     this.selectedFolder = folder
+        //     this.showSidebar = true
+        // },
         handleClick(e) {
             console.log('handleClick e: ', e)
             // console.log('e.target: ', e.target)
@@ -250,6 +264,9 @@ export default {
                     this.showSidebar = !this.showSidebar
                     if (e.target.parentNode.getAttribute('data-type') === 'folder') {
                         console.log('Clicked on folder')
+                        console.log(e.target.parentNode.getAttribute('data-path'))
+                        const folderPath = e.target.parentNode.getAttribute('data-path')
+                        this.selectedFolder = this.folders.find(folder => folder.path === folderPath)
                     } else if (e.target.parentNode.getAttribute('data-type') === 'file') {
                         console.log('Clicked on file')
                         this.selectedFile = ''
@@ -274,9 +291,26 @@ export default {
             this.showSidebar = false
             this.$emit('addFile', file)
         },
+        async deleteFile() {
+            try {
+                await this.$store.dispatch('medias/deleteFile', this.selectedFile.path)
+                this.$store.commit('snackbars/SET_SNACKBAR', {
+                    show: true,
+                    color: 'success',
+                    content: 'Fichier supprimé avec succès.'
+                })
+            } catch (error) {
+                console.log('error: ', error)
+                this.$store.commit('snackbars/SET_SNACKBAR', {
+                    show: true,
+                    color: 'error',
+                    content: "Une erreur est survenue et le fichier n'a pas été supprimé."
+                })
+            }
+        },
         getFileType(fileName) {
             const fileExtension = fileName.substring(fileName.lastIndexOf('.'))
-            console.log('fileExtension: ', fileExtension)
+            // console.log('fileExtension: ', fileExtension)
             switch (fileExtension) {
                 case '.jpg':
                 case '.JPG':
@@ -307,17 +341,17 @@ export default {
 <style scoped>
 .link:hover {
     cursor: pointer;
-    background: #e9ecef;
-    border: 2px solid #e9ecef;
+    /* background: #e9ecef; */
+    /* border: 2px solid #e9ecef; */
 }
-.folder:hover {
+/* .folder:hover {
     cursor: pointer;
     background: #e9ecef;
-}
-.image:hover {
+} */
+/* .image:hover {
     cursor: pointer;
     border: 4px solid #e9ecef;
-}
+} */
 #breadcrumbs {
     background-color: #e9ecef;
     border-radius: 5px;

@@ -3,7 +3,8 @@
         <v-breadcrumbs large :items="items"></v-breadcrumbs>
         <v-row no-gutters justify="center" class="my-2">
             <v-col cols="11">
-                updatedOrder: {{ updatedOrder }}<br />
+                updatedOrder: {{ updatedOrder }}<br /><br />
+                indexClicked: {{ indexClicked }}<br /><br />
 
                 <v-btn icon color="primary" class="mx-1" :disabled="displayImage" @click="displayImage = true"><v-icon>mdi-format-list-text</v-icon></v-btn>
                 <v-btn icon color="primary" class="mx-1" :disabled="!displayImage" @click="displayImage = false"><v-icon>mdi-format-list-bulleted</v-icon></v-btn>
@@ -20,7 +21,7 @@
                                 <v-row no-gutters justify="start" align="center">
                                     <v-col class="d-flex justify-start align-center">
                                         <v-chip small class="mr-2">{{ i + 1 }}</v-chip>
-                                        <v-img :src="`/medias/${frontImage(portfolio.portfolio_images)['path']}`" max-width="80" aspect-ratio="1" class="mr-3" v-if="displayImage"></v-img>
+                                        <v-img :src="frontImagePath(portfolio.portfolio_images)" max-width="80" aspect-ratio="1" class="mr-3" v-if="displayImage"></v-img>
 
                                         <p class="ml-2 my-0">{{ portfolio.title }}</p>
                                         <!-- index: {{ i }} id: {{ portfolio.id }} order: {{ portfolio.order }} -->
@@ -28,7 +29,7 @@
                                     <!-- <v-spacer></v-spacer> -->
                                     <v-col class="d-flex justify-end">
                                         <v-btn small color="primary" class="mx-1" @click.native.stop="goToPage(portfolio.id)">Editer</v-btn>
-                                        <v-btn small color="error" class="ml-1 mr-3" @click.native.stop="goToPage(portfolio.id)">Supprimer</v-btn>
+                                        <v-btn small color="error" class="ml-1 mr-3" :loading="form.busy && indexClicked == i" @click.native.stop="deletePortfolio(portfolio.id, i)">Supprimer</v-btn>
                                     </v-col>
                                 </v-row>
                             </v-expansion-panel-header>
@@ -46,18 +47,7 @@
                                             </v-col>
                                         </v-row>
                                     </v-col>
-                                    <!-- <v-col cols="12" md="6" lg="4" class="px-2">
-                                        <v-img :src="portfolio.front_image.path"></v-img>
-                                    </v-col>
-                                    <v-col cols="12" md="6" lg="8" class="px-2">
-                                        <div v-html="portfolio.description"></div>
-                                    </v-col> -->
                                 </v-row>
-                                <!-- <v-row no-gutters>
-                                    <v-col cols="12" md="4" lg="3" v-for="image in portfolio.images" :key="image.id" class="pa-2">
-                                        <v-img :src="image.path"></v-img>
-                                    </v-col>
-                                </v-row> -->
                             </v-expansion-panel-content>
                         </v-expansion-panel>
                     </draggable>
@@ -65,8 +55,8 @@
             </v-col>
         </v-row>
 
-        <v-snackbar color="success" v-model="showSnackbar">
-            <v-btn small color="primary" @click="updateOrder">Enregistrer le nouvel ordre</v-btn>
+        <v-snackbar color="dark" v-model="showSnackbar">
+            <v-btn small color="success" @click="updateOrder">Enregistrer le nouvel ordre</v-btn>
             <template v-slot:action="{ attrs }">
                 <v-btn icon color="red" v-bind="attrs" @click="showSnackbar = false"><v-icon>mdi-close</v-icon></v-btn>
             </template>
@@ -75,6 +65,7 @@
 </template>
 
 <script>
+import Form from 'vform'
 import draggable from 'vuedraggable'
 export default {
     name: 'AdminPortfoliosIndex',
@@ -83,7 +74,6 @@ export default {
         if (this.$store.getters['portfolios/portfolios'].length < 1) {
             await this.$store.dispatch('portfolios/fetchPortfolios')
         }
-        // console.log('portfolios.length: ', this.portfolios.length)
     },
     mounted() {},
     data() {
@@ -101,7 +91,11 @@ export default {
                 },
             ],
             showSnackbar: false,
-            displayImage: true
+            displayImage: true,
+            form: new Form({
+                id: null
+            }),
+            indexClicked: null
         }
     },
     computed: {
@@ -149,8 +143,28 @@ export default {
         backImages(images) {
             return images.filter((image) => image.is_front_image == false)
         },
+        frontImagePath(images) {
+            if (images.length) {
+                const frontImage = images.find((image) => image.is_front_image == true)
+                if (frontImage) {
+                    return `/medias${frontImage.path}`
+                }
+            } else {
+                return '/images/no-image.jpg'
+            }
+        },
         goToPage(id) {
             this.$router.push(`/admin/portfolios/${id}/edit`)
+        },
+        async deletePortfolio(id, index) {
+            try {
+                console.log('deletePortfolio id: ', id)
+                this.indexClicked = index
+                this.form.id = id
+                await this.$store.dispatch('portfolios/deletePortfolio', this.form)
+            } catch (error) {
+                console.log('error: ', error)
+            }
         },
         updateOrder() {
             try {

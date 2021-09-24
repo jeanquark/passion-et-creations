@@ -27,6 +27,10 @@ import AdminSliders from '../views/admin/sliders/layout'
 import AdminSlidersIndex from '../views/admin/sliders/index'
 import AdminSlidersEdit from '../views/admin/sliders/edit'
 
+import AdminContacts from '../views/admin/contacts/layout'
+import AdminContactsIndex from '../views/admin/contacts/index'
+import AdminContactsShow from '../views/admin/contacts/show'
+
 import AdminUsers from '../views/admin/users/layout'
 import AdminUsersIndex from '../views/admin/users/index'
 import AdminUsersCreate from '../views/admin/users/create'
@@ -240,6 +244,25 @@ const router = new VueRouter({
                             path: ':id/edit',
                             name: 'adminSlidersEdit',
                             component: AdminSlidersEdit
+                        }
+                    ]
+                },
+                {
+                    path: 'contacts',
+                    component: AdminContacts,
+                    meta: {
+                        middleware: auth
+                    },
+                    children: [
+                        {
+                            path: '',
+                            name: 'adminContactsIndex',
+                            component: AdminContactsIndex
+                        },
+                        {
+                            path: ':id',
+                            name: 'adminContactsShow',
+                            component: AdminContactsShow
                         }
                     ]
                 },

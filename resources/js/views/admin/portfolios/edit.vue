@@ -195,6 +195,12 @@ export default {
             console.log('addImage')
             this.showMediasModal = true
         },
+        deletePortfolioImage(image) {
+            console.log('deletePortfolioImage image: ', image)
+            const index = this.backImagesList.findIndex((el) => el.id === image.id)
+            console.log('index: ', index)
+            this.backImagesList.splice(index, 1)
+        },
         async editPortfolio() {
             console.log('editPortfolio')
             console.log('portfolio: ', this.portfolio)
@@ -231,12 +237,7 @@ export default {
             await this.$store.dispatch('portfolios/updatePortfolio', this.form)
             this.$router.push('/admin/portfolios')
         },
-        deletePortfolioImage(image) {
-            console.log('deletePortfolioImage image: ', image)
-            const index = this.backImagesList.findIndex((el) => el.id === image.id)
-            console.log('index: ', index)
-            this.backImagesList.splice(index, 1)
-        },
+        
     },
 }
 </script>

@@ -58,10 +58,12 @@ class PortfoliosController extends Controller
             $newImage->portfolio_id = $newPortfolio['id'];
             $newImage->name = $image['name'];
             $newImage->path = $image['path'];
+            $newImage->thumbnail_path = $image['thumbnail_path'];
             $newImage->height = $image['height'];
             $newImage->width = $image['width'];
             $newImage->size = $image['size'];
             $newImage->is_front_image = $image['is_front_image'];
+            $newImage->order = $image['order'];
             $newImage->save();
         }
 
@@ -183,6 +185,11 @@ class PortfoliosController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Portfolio::where('id', '=', $id)->delete();
+
+        return response()->json([
+            'success' => true,
+            'id' => $id
+        ]);
     }
 }

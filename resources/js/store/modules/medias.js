@@ -60,10 +60,11 @@ export const actions = {
             console.log('error: ', error)
         }
     },
-    async deleteImage({ }, payload) {
+    async deleteFile({ }, payload) {
         try {
-            const { path } = payload
-            const { data } = await axios.post(`/api/v1/images/destroy`, { path })
+            // const { path } = payload
+            // const { data } = await axios.post(`/api/v1/images/destroy`, { path })
+            const { data } = await axios.post(`/api/v1/medias/delete`, payload)
             console.log('[VUEX] data: ', data)
         } catch (error) {
             console.log("[VUEX] error: ", error);

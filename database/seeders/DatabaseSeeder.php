@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
                 PortfolioImagesTableSeeder::class,
                 ContentsTableSeeder::class,
                 SlidersTableSeeder::class,
+                ContactMessagesTableSeeder::class,
             ]);
         }
     }

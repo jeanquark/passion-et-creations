@@ -38,10 +38,11 @@ export const actions = {
             throw error
         }
     },
-    async createPortfolio({}, form) {
+    async createPortfolio({ dispatch }, form) {
         try {
             const data = await form.post(`/api/v1/portfolios`, form)
             console.log('data: ', data)
+            dispatch('fetchPortfolios')
         } catch (error) {
             console.log('error: ', error)
             throw error
@@ -66,11 +67,11 @@ export const actions = {
             throw error
         }
     },
-    async deletePortfolio({ }, payload) {
+    async deletePortfolio({ dispatch }, form) {
         try {
-            const { path } = payload
-            const { data } = await axios.post(`/api/v1/portfolios/destroy`, { path })
+            const { data } = await form.delete(`/api/v1/portfolios/${form.id}`)
             console.log('[VUEX] data: ', data)
+            dispatch('fetchPortfolios')
         } catch (error) {
             console.log("[VUEX] error: ", error);
             throw error
