@@ -44,13 +44,39 @@
                     </v-row>
                     <v-row no-gutters style="border: 1px solid green">
                         <v-col cols="12" md="4">
+                            frontImagesList: {{ frontImagesList }}
                             <v-row no-gutters justify="center" class="my-2">
                                 <v-chip small color="primary" class="">Image principale</v-chip>
                             </v-row>
-                            <draggable class="list-group3" group="people3" draggable="[]" v-model="frontImages">
-                                <v-col cols="12" v-for="(image, index) in frontImagesList" :key="index" style="border: 2px dashed grey">
-                                    <v-img :src="`/medias/${image.path}`" class="image" style="border: 2px solid red"></v-img>
-                                </v-col>
+                            <draggable class="" group="images" handle=".draggable" style="border: 2px dashed grey;  min-height: 150px;" v-model="frontImages">
+                                <div @dragover="onDragover3" v-if="frontImages.length > 0" style="border: 2px dashed red;">
+                                    <v-col cols="12" v-for="(image, index) in frontImagesList" :key="index" style="">
+                                        <v-hover v-slot="{ hover }" v-if="showMainImage">
+                                            <v-card
+                                                min-height="140"
+                                                :elevation="hover ? 12 : 2"
+                                                :class="{ 'on-hover': hover }"
+                                                class="d-flex justify-center align-center"
+                                                style="border: 2px dashed #ccc"
+                                            >
+                                                <v-card-text class="text-center" style="">
+                                                    <v-img :src="`/medias/${image.path}`" class="image" width="100%" style="border: 2px solid red"></v-img>
+                                                </v-card-text>
+                                            </v-card>
+                                        </v-hover>
+                                    </v-col>
+                                </div>
+                                <div @dragover="onDragover3" v-else>
+                                    <v-col cols="12">
+                                        <v-hover v-slot="{ hover }" v-if="showMainImage">
+                                            <v-card height="140" :elevation="hover ? 12 : 2" :class="{ 'on-hover': hover }" class="d-flex justify-center align-center" style="border: 2px dashed #ccc">
+                                                <v-card-text class="text-center" style="">
+                                                    Pas d'image. Faire glisser depuis les images annexes.
+                                                </v-card-text>
+                                            </v-card>
+                                        </v-hover>
+                                    </v-col>
+                                </div>
                             </draggable>
                         </v-col>
                         <v-col cols="12" md="8">
@@ -58,7 +84,8 @@
                                 <v-chip small color="primary" class="">Images annexes</v-chip>
                             </v-row>
                             <v-row no-gutters style="border: 2px dashed grey">
-                                <draggable class="list-group3 row no-gutters" group="people3" handle=".draggable" v-model="backImages">
+                                <draggable class="row no-gutters" group="images" handle=".draggable" v-model="backImages">
+                                    <!-- <div @dragover="onDragover2"> -->
                                     <v-col cols="12" md="4" class="pa-2 draggable" v-for="(image, index) in backImagesList" :key="index">
                                         <v-hover v-slot="{ hover }">
                                             <div class="text-center">
@@ -83,6 +110,7 @@
                                             </v-card>
                                         </v-hover>
                                     </v-col>
+                                    <!-- </div> -->
                                 </draggable>
                             </v-row>
                         </v-col>
@@ -111,8 +139,8 @@ export default {
                 await this.$store.dispatch('portfolios/fetchPortfolios')
             }
             this.form.fill(this.portfolio)
-            this.backImagesList = this.form.portfolio_images.filter((image) => image.is_front_image == false)
-            this.frontImagesList = this.form.portfolio_images.filter((image) => image.is_front_image == true)
+            this.backImagesList = this.form.portfolio_images.filter(image => image.is_front_image == false)
+            this.frontImagesList = this.form.portfolio_images.filter(image => image.is_front_image == true)
         } catch (error) {
             console.log('error: ', error)
         }
@@ -129,21 +157,22 @@ export default {
                     disabled: false,
                     to: '/admin/portfolios',
                     exact: true,
-                    link: true,
+                    link: true
                 },
                 {
                     text: 'Editer',
                     disabled: true,
-                    href: '/admin/portfolios',
-                },
+                    href: '/admin/portfolios'
+                }
             ],
             form: new Form({
                 title: '',
                 description: '',
-                portfolio_images: [],
+                portfolio_images: []
             }),
             backImagesList: [],
             frontImagesList: [],
+            showMainImage: true
         }
     },
     computed: {
@@ -151,7 +180,7 @@ export default {
             return this.$store.getters['portfolios/portfolios']
         },
         portfolio() {
-            return this.portfolios.find((portfolio) => portfolio.id == this.$route.params.id)
+            return this.portfolios.find(portfolio => portfolio.id == this.$route.params.id)
         },
         frontImages: {
             get() {
@@ -159,13 +188,23 @@ export default {
             },
             set(value) {
                 console.log('frontImages set value: ', value)
-                const oldEl = value[value.length - 2]
-                const newEl = value[value.length - 1]
-                console.log('oldEl.name: ', oldEl.name)
-                console.log('newEl.name: ', newEl.name)
+                this.showMainImage = true
+                const abc = this.backImagesList.some(item => value.includes(item))
+                console.log('abc: ', abc)
+                console.log('frontImagesList: ', this.frontImagesList)
+                console.log('backImagesList: ', this.backImagesList)
+                // const oldEl = value[value.length - 2]
+                // const newEl = value[value.length - 1]
+                const newEl = value.find(el => el != this.frontImagesList[0])
+                console.log('newEl: ', newEl)
+                const oldEl = value.find(el => el == this.frontImagesList[0])
+                console.log('oldEl: ', oldEl)
+                // console.log('newEl: ', newEl)
                 this.frontImagesList = [newEl]
-                this.backImagesList.push(oldEl)
-            },
+                if (oldEl) {
+                    this.backImagesList.push(oldEl)
+                }
+            }
         },
         backImages: {
             get() {
@@ -174,8 +213,8 @@ export default {
             set(value) {
                 console.log('backImages set value: ', value)
                 this.backImagesList = value
-            },
-        },
+            }
+        }
     },
     methods: {
         toggleShowHTML(value) {
@@ -197,9 +236,50 @@ export default {
         },
         deletePortfolioImage(image) {
             console.log('deletePortfolioImage image: ', image)
-            const index = this.backImagesList.findIndex((el) => el.id === image.id)
+            const index = this.backImagesList.findIndex(el => el.id === image.id)
             console.log('index: ', index)
             this.backImagesList.splice(index, 1)
+        },
+        onEnd() {
+            console.log('onEnd')
+        },
+        onAdd() {
+            console.log('onAdd')
+        },
+        onUpdate() {
+            console.log('onUpdate')
+        },
+        onStart() {
+            console.log('onStart')
+        },
+        onChange() {
+            console.log('onChange')
+        },
+        onDrag() {
+            console.log('onDrag')
+        },
+        onDragover() {
+            // try {
+                console.log('onDragover')
+                this.showMainImage = false
+            // } catch (error) {
+            //     console.log('error: ', error)
+            // }
+        },
+        onDragover2() {
+            try {
+                console.log('onDragover2')
+                this.showMainImage = true
+            } catch (error) {
+                console.log('error: ', error)
+            }
+        },
+        onDragover3() {
+            try {
+                console.log('onDragover3')
+            } catch (error) {
+                console.log('error: ', error)
+            }
         },
         async editPortfolio() {
             console.log('editPortfolio')
@@ -222,7 +302,7 @@ export default {
             this.form['description'] = description
 
             // 3) Add images
-            this.frontImagesList.forEach((image) => {
+            this.frontImagesList.forEach(image => {
                 image.order = null
                 image.is_front_image = true
             })
@@ -236,9 +316,8 @@ export default {
 
             await this.$store.dispatch('portfolios/updatePortfolio', this.form)
             this.$router.push('/admin/portfolios')
-        },
-        
-    },
+        }
+    }
 }
 </script>
 

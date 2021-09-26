@@ -195,13 +195,13 @@ class MediasController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function deleteImage(Request $request)
-    {
-        return response()->json([
-            'status' => 'success',
-            '$request->path' => $request->path
-        ]);
-    }
+    // public function deleteImage(Request $request)
+    // {
+    //     return response()->json([
+    //         'status' => 'success',
+    //         '$request->path' => $request->path
+    //     ]);
+    // }
 
 
 
@@ -281,18 +281,27 @@ class MediasController extends Controller
     public function destroy(Request $request)
     {
         $path = $request->path;
-        $deleted = Storage::disk('medias2')->delete($path);
 
-        if ($deleted) {
+        $portfolioImages = PortfolioImage::where('path', '=', $path)->get();
+        foreach ($portfolioImages as $image) {
+            PortfolioImage::where('id', '=', $image->id)->delete();
+        }
+        $deletedImage = Storage::disk('medias')->delete($path);
+        $deletedThumbnail = Storage::disk('thumbnails')->delete($path);
+
+        if ($deletedImage) {
             return response()->json([
                 'success'   => true,
                 'message'   => 'Deleted image successfully'
             ], 200);
-        } else {
-            return response()->json([
-                'success'   => false,
-                'message'   => 'Delete image error'
-            ], 500);
         }
+        return response()->json([
+            'success'   => false,
+            'message'   => 'Delete image error',
+            'request->all()' => $request->all(),
+            'path' => $path,
+            'portfolioImages' => $portfolioImages
+        ], 500);
+        
     }
 }

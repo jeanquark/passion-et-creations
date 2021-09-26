@@ -117,21 +117,11 @@ export default {
             let updatedOrder = false
             for (let i = 0; i < this.portfolios.length; i++) {
                 if (this.portfolios[i]['order'] != i + 1) {
-                    // this.showSnackbar = true
-
-                    // return true
                     updatedOrder = true
                 }
             }
             if (updatedOrder) {
                 this.showSnackbar = true
-
-                // this.$store.commit('snackbars/SET_SNACKBAR', {
-                //     show: true,
-                //     content: '<v-btn>Enregistrer le nouvel ordre</v-btn>',
-                //     content2: '<v-btn small color="success" class="mx-1" :disabled="!updatedOrder" @click="updateOrder">Enregistrer le nouvel ordre</v-btn>',
-                //     color: 'success',
-                // })
             }
             return updatedOrder
         },
@@ -156,24 +146,41 @@ export default {
         goToPage(id) {
             this.$router.push(`/admin/portfolios/${id}/edit`)
         },
+        
+        async updateOrder() {
+            try {
+                console.log('updateOrder')
+                // return
+                await this.$store.dispatch(
+                    'portfolios/updateOrder',
+                    this.portfolios.map((portfolio, index) => ({ id: portfolio.id, order: index + 1 }))
+                )
+                this.showSnackbar = false
+                this.$store.commit(
+                    'snackbars/SET_SNACKBAR',{
+                        show: true,
+                        color: 'success',
+                        content: 'Nouvel ordre sauvegardé avec succès.'
+                    }
+                )
+            } catch (error) {
+                console.log('error: ', error)
+                this.showSnackbar = false
+                this.$store.commit(
+                    'snackbars/SET_SNACKBAR',{
+                        show: true,
+                        color: 'error',
+                        content: 'Une erreur est survenue et le nouvel ordre n\'a pas pu être sauvegardé.'
+                    }
+                )
+            }
+        },
         async deletePortfolio(id, index) {
             try {
                 console.log('deletePortfolio id: ', id)
                 this.indexClicked = index
                 this.form.id = id
                 await this.$store.dispatch('portfolios/deletePortfolio', this.form)
-            } catch (error) {
-                console.log('error: ', error)
-            }
-        },
-        updateOrder() {
-            try {
-                console.log('updateOrder')
-                return
-                this.$store.dispatch(
-                    'portfolios/updateOrder',
-                    this.portfolios.map((portfolio, index) => ({ id: portfolio.id, order: index + 1 }))
-                )
             } catch (error) {
                 console.log('error: ', error)
             }

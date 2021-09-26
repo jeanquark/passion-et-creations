@@ -17,14 +17,13 @@
         </v-col>
         <v-col cols="12" class="mx-0">
             <v-form @submit.prevent="uploadMedias">
-                items: {{ items }}<br /><br />
-                form.path: {{ form.path }}<br /><br />
-                form.files: {{ form.files }}<br /><br />
-                <span v-if="form.files">
-                form.files[0][size]: {{ form.files[0]['size'] }}<br /><br /></span>
+                <!-- items: {{ items }}<br /><br /> -->
+                <!-- form.path: {{ form.path }}<br /><br /> -->
+                <!-- form.files: {{ form.files }}<br /><br /> -->
+                <!-- <span v-if="form.files"> form.files[0][size]: {{ form.files[0]['size'] }}<br /><br /></span> -->
                 <v-file-input label="Sélectionner un ou des fichiers" filled :multiple="true" :clearable="false" show-size @change="onFileChange" v-model="form.files"></v-file-input>
                 <div id="preview">
-                    previewImages: {{ previewImages }}<br />
+                    <!-- previewImages: {{ previewImages }}<br /> -->
                     <v-row no-gutters class="my-2">
                         <v-col cols="12" md="6" lg="4" class="pa-2" v-for="(previewImage, index) in previewImages" :key="index">
                             <v-img :src="previewImage"></v-img>
@@ -53,7 +52,7 @@ export default {
                 path: ''
             }),
             url: null,
-            previewImages: [],
+            previewImages: []
         }
     },
     computed: {},
@@ -77,10 +76,15 @@ export default {
             //     blah.src = URL.createObjectURL(file)
             // }
         },
-        uploadMedias() {
-            this.$store.dispatch('medias/uploadMedias', this.form)
-        },
-    },
+        async uploadMedias() {
+            try {
+                await this.$store.dispatch('medias/uploadMedias', this.form)
+                this.$emit('fileUploaded')
+            } catch (error) {
+                console.log('error: ', error)
+            }
+        }
+    }
 }
 </script>
 

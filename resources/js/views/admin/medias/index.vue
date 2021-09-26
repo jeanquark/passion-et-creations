@@ -1,208 +1,33 @@
 <template>
     <v-main>
-        <medias-component />
+        <medias-component @addFile="onAddFile" />
     </v-main>
 </template>
 
 <script>
 import MediasComponent from '../../../components/MediasComponent'
-import UploadMultipleFiles from '../../../components/UploadMultipleFiles'
 export default {
     name: 'AdminMediasIndex',
-    components: { MediasComponent, UploadMultipleFiles },
+    components: { MediasComponent },
     async created() {
-        if (this.$store.getters['medias/medias'].length < 1) {
-            const data = await this.$store.dispatch('medias/fetchMedias')
-            // console.log('data: ', data)
-        }
-        this.goTo('/')
+
     },
     data() {
         return {
-            showSidebar: false,
-            showUploadFile: false,
-            tab: null,
-            tabs: ['Médiathèque', 'Uploader un fichier'],
-            files: [],
-            folders: [],
-            path: '/',
-            items: [],
-            clicksCount: 0,
-            clicksTimer: null,
-            selectedImage: null
+
         }
     },
     computed: {
-        medias() {
-            return this.$store.getters['medias/medias']
-        },
+
     },
     methods: {
-        goTo(folderPath, folderName) {
-            console.log('goTo folderPath: ', folderPath)
-            console.log('goTo folderName: ', folderName)
-            this.items = []
-            this.folders = []
-            this.files = []
-
-            if (folderPath === '/') {
-                this.path = '/'
-                this.items.push({
-                    name: 'Dossier racine',
-                    path: '/',
-                    disabled: true,
-                })
-                this.medias.allDirectories
-                    .map((directory) => directory.split('/'))
-                    .filter((path) => path.length === 1)
-                    .map((folder) => folder[0])
-                    .forEach((folder) =>
-                        this.folders.push({
-                            name: folder,
-                            path: '/' + folder,
-                            type: 'folder',
-                        })
-                    )
-                this.medias.allFiles
-                    .map((filePath) => filePath.split('/'))
-                    .filter((filePath) => filePath.length === 1)
-                    .map((file) => file[0])
-                    .forEach((file) =>
-                        this.files.push({
-                            name: file,
-                            path: '/' + file,
-                            extension: file.substring(file.lastIndexOf('.') + 1),
-                        })
-                    )
-            } else {
-                this.path = folderPath
-                this.items = []
-                const paths = folderPath.split('/')
-                console.log('paths: ', paths)
-                let array = []
-                paths.forEach((folderName, index, paths) => {
-                    array.push(folderName)
-                    this.items.push({
-                        name: folderName ? folderName : 'Dossier Racine',
-                        path: folderName ? array.join('/') : '/',
-                        disabled: index === paths.length - 1 ? true : false,
-                    })
-                })
-                this.medias.allDirectories
-                    .map((directory) => directory.split('/'))
-                    .filter((a) => a[a.length - 2] === folderName)
-                    .forEach((folder) =>
-                        this.folders.push({
-                            name: folder[folder.length - 1],
-                            path: '/' + folder.join('/'),
-                            type: 'folder',
-                        })
-                    )
-                this.medias.allFiles
-                    .map((filePath) => filePath.split('/'))
-                    .filter((a) => a[a.length - 2] === folderName)
-                    .forEach((file) =>
-                        this.files.push({
-                            name: file[file.length - 1],
-                            path: '/' + file.join('/'),
-                            extension: file.join('/').substring(file.join('/').lastIndexOf('.') + 1),
-                        })
-                    )
-            }
-        },
-        goBack() {
-            console.log('goBack')
-            let path = this.path.substring(0, this.path.lastIndexOf('/'))
-            if (path == '') {
-                path = '/'
-            }
-            console.log('path: ', path)
-
-            const name = path.substring(path.lastIndexOf('/') + 1, path.length)
-            console.log('name: ', name)
-            this.goTo(path, name)
-        },
-        handleClick(e) {
-            console.log('handleClick e: ', e)
-            // console.log('e.target: ', e.target)
-            console.log('e.target.parentNode: ', e.target.parentNode)
-            console.log('e.target.parentNode.id: ', e.target.parentNode.id)
-            // console.log('e.target.parentNode[data-value]: ', e.target.parentNode.getAttribute('data-value'))
-            console.log('e.target.parentNode[data-name]: ', e.target.parentNode.getAttribute('data-name'))
-            this.showUploadFile = false
-            this.clicksCount++
-            if (this.clicksCount === 1) {
-                this.clicksTimer = setTimeout(() => {
-                    console.log('Single click!')
-                    this.clicksCount = 0
-                    this.showSidebar = !this.showSidebar
-                    if (e.target.parentNode.getAttribute('data-type') === 'folder') {
-                        console.log('Clicked on folder')
-                    } else if (e.target.parentNode.getAttribute('data-type') === 'file') {
-                        console.log('Clicked on file')
-                        this.selectedImage = 'abc'
-                    } else {
-                        console.log('Clicked on blank')
-                        this.showUploadFile = true
-                    }
-                }, 350)
-            } else {
-                clearTimeout(this.clicksTimer)
-                console.log('Double click!')
-                this.clicksCount = 0
-                // this.navigateToFolder(folder)
-                if (e.target.parentNode.getAttribute('data-type') === 'folder') {
-                    const folderName = e.target.parentNode.getAttribute('data-name')
-                    const folderPath = e.target.parentNode.getAttribute('data-path')
-                    this.goTo(folderPath, folderName)
-                }
-            }
-        },
-        getFileType(fileName) {
-            const fileExtension = fileName.substring(fileName.lastIndexOf('.'))
-            console.log('fileExtension: ', fileExtension)
-            switch (fileExtension) {
-                case '.jpg':
-                case '.JPG':
-                case '.jpeg':
-                case '.JPEG':
-                case '.png':
-                case '.PNG':
-                    return 'image'
-                case '.pdf':
-                case '.PDF':
-                    return 'file'
-                default:
-                    return null
-            }
-        },
-        formatFileName(file) {
-            const index = file.lastIndexOf('/')
-            return file.substring(index + 1)
-        },
-        formatRemoveFileExtension(file) {
-            const index = file.lastIndexOf('.')
-            return file.substring(0, index)
-        },
+        onAddFile () {
+            console.log('onAddFile')
+        }
     },
 }
 </script>
 
 <style scoped>
-.link:hover {
-    cursor: pointer;
-    background: #e9ecef;
-}
-.folder:hover {
-    cursor: pointer;
-    background: #e9ecef;
-}
-.image:hover {
-    cursor: pointer;
-    border: 4px solid #e9ecef;
-}
-#breadcrumbs {
-    background-color: #e9ecef;
-    border-radius: 5px;
-}
+
 </style>

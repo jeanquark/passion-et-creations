@@ -1,7 +1,7 @@
 <template>
     <v-card>
         <v-card-title></v-card-title>
-        <v-card-text>
+        <v-card-text >
             <v-row no-gutters>
                 <v-col cols="12">
                     <!-- medias.allDirectories: {{ medias.allDirectories }}<br /><br /> -->
@@ -9,13 +9,13 @@
                     <!-- medias.files_with_size: {{ medias.files_with_size }}<br /><br /> -->
                     <!-- folders: {{ folders }}<br /><br /> -->
                     <!-- files: {{ files }}<br /><br /> -->
-                    <!-- path: {{ path }}<br /><br /> -->
+                    path: {{ path }}<br /><br />
                     <!-- items: {{ items }}<br /><br /> -->
                     <!-- showUploadFile: {{ showUploadFile }}<br /><br /> -->
                 </v-col>
             </v-row>
 
-            <v-row no-gutters>
+            <v-row no-gutters >
                 <v-navigation-drawer app bottom right temporary :width="showUploadFile ? 512 : 256" v-model="showSidebar">
                     <!-- selectedFile: {{ selectedFile }}<br /> -->
                     <!-- selectedFolder: {{ selectedFolder }}<br /> -->
@@ -32,55 +32,59 @@
                             <v-btn small color="primary" @click="addFile(selectedFile)">Ajouter</v-btn>
                         </div>
                         <div class="text-center mt-2">
-                            <v-btn small color="error" @click="deleteFile()">Supprimer</v-btn>
+                            <v-btn small color="error" :loading="loading" @click="deleteFile()">Supprimer</v-btn>
                         </div>
                     </div>
                     <div v-if="selectedFolder">
                         selectedFolder: {{ selectedFolder }}
                     </div>
                     <div v-if="showUploadFile">
-                        <upload-multiple-files :items="items"></upload-multiple-files>
+                        <upload-multiple-files :items="items" @fileUploaded="onFileUploaded"></upload-multiple-files>
                     </div>
                 </v-navigation-drawer>
 
-                <v-row no-gutters class="my-4 mx-0" align="end">
-                    <v-col cols="12" class="ml-0 mb-3">
-                        <v-breadcrumbs large :items="items" id="breadcrumbs">
-                            <template v-slot:item="{ item }">
-                                <v-breadcrumbs-item class="link" :disabled="item.disabled" @click="goTo(item.path, item.name)">
-                                    {{ item.name }}
-                                </v-breadcrumbs-item>
-                            </template>
-                            <template v-slot:divider>
-                                <v-icon>mdi-chevron-right</v-icon>
-                            </template>
-                        </v-breadcrumbs>
-                    </v-col>
-                </v-row>
-                <v-row no-gutters align="end" class="mx-0" style="border: 2px solid #e9ecef; border-radius: 5px;" @click="handleClick">
-                    <v-col cols="6" md="3" lg="2" class="pa-3" v-for="(folder, index) of folders" :key="`folder_${index}`">
-                        <v-hover v-slot="{ hover }">
-                            <v-img
-                                :src="hover ? '/images/icons/folder_hover.svg' : '/images/icons/folder.svg'"
-                                class="link"
-                                id="clickableElement"
-                                data-type="folder"
-                                :data-value="{ name: folder.name, path: folder.path }"
-                                :data-name="folder.name"
-                                :data-path="folder.path"
-                            ></v-img>
-                                <!-- @click.stop="clickOnFolder(folder)" -->
-                        </v-hover>
-                        <p class="text-center" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap">{{ folder.name }}</p>
-                    </v-col>
-                    <v-col cols="6" md="3" lg="2" class="pa-3" v-for="(file, index) of files" :key="`file_${index}`">
-                        <div v-if="getFileType(file.name) === 'image'" @click.stop="clickOnFile(file)">
-                            <v-img :src="`/medias${file.path}`" id="clickableElement" aspect-ratio="1" class="link" data-type="file"></v-img>
-                            <p class="text-center" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap">{{ file.name }}</p>
-                        </div>
-                        <div v-else>Not an image</div>
-                    </v-col>
-                </v-row>
+                <v-col cols="12">
+                    <v-row no-gutters class="my-4 mx-0" align="end">
+                        <v-col cols="12" class="ml-0 mb-3">
+                            <v-breadcrumbs large :items="items" id="breadcrumbs">
+                                <template v-slot:item="{ item }">
+                                    <v-breadcrumbs-item class="link" :disabled="item.disabled" @click="goTo(item.path, item.name)">
+                                        {{ item.name }}
+                                    </v-breadcrumbs-item>
+                                </template>
+                                <template v-slot:divider>
+                                    <v-icon>mdi-chevron-right</v-icon>
+                                </template>
+                            </v-breadcrumbs>
+                        </v-col>
+                    </v-row>
+                </v-col>
+                <v-col cols="12">
+                    <v-row no-gutters align="end" class="mx-0" style="border: 2px solid #e9ecef; border-radius: 5px;" @click="handleClick">
+                        <v-col cols="12" md="3" lg="2" class="pa-3" v-for="(folder, index) of folders" :key="`folder_${index}`">
+                            <v-hover v-slot="{ hover }">
+                                <v-img
+                                    :src="hover ? '/images/icons/folder_hover.svg' : '/images/icons/folder.svg'"
+                                    class="link"
+                                    id="clickableElement"
+                                    data-type="folder"
+                                    :data-value="{ name: folder.name, path: folder.path }"
+                                    :data-name="folder.name"
+                                    :data-path="folder.path"
+                                ></v-img>
+                                    <!-- @click.stop="clickOnFolder(folder)" -->
+                            </v-hover>
+                            <p class="text-center" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap">{{ folder.name }}</p>
+                        </v-col>
+                        <v-col cols="12" md="3" lg="2" class="pa-3" v-for="(file, index) of files" :key="`file_${index}`">
+                            <div v-if="getFileType(file.name) === 'image'" @click.stop="clickOnFile(file)" class="image">
+                                <v-img :src="`/medias${file.path}`" id="clickableElement" aspect-ratio="1" class="link" data-type="file"></v-img>
+                                <p class="text-center" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap">{{ file.name }}</p>
+                            </div>
+                            <div v-else>Not an image</div>
+                        </v-col>
+                    </v-row>
+                </v-col>
             </v-row>
         </v-card-text>
     </v-card>
@@ -96,7 +100,7 @@ export default {
             const data = await this.$store.dispatch('medias/fetchMedias')
             console.log('data: ', data)
         }
-        this.goTo('/')
+        await this.goTo('/')
     },
     data() {
         return {
@@ -110,6 +114,7 @@ export default {
             items: [],
             clicksCount: 0,
             clicksTimer: null,
+            loading: false,
         }
     },
     computed: {
@@ -118,7 +123,7 @@ export default {
         },
     },
     methods: {
-        goTo(folderPath, folderName) {
+        async goTo(folderPath, folderName) {
             console.log('goTo folderPath: ', folderPath)
             console.log('goTo folderName: ', folderName)
             this.items = []
@@ -288,12 +293,41 @@ export default {
             }
         },
         addFile(file) {
-            this.showSidebar = false
-            this.$emit('addFile', file)
+            try {
+                console.log('addFile')
+                this.showSidebar = false
+                this.$emit('addFile', file)
+            } catch (error) {
+                console.log('error: ', error)
+            }
+        },
+        async onFileUploaded() {
+            try {
+                console.log('onFileUploaded')
+                await this.$store.dispatch('medias/fetchMedias')
+                this.showSidebar = false
+                this.goTo(this.path, this.formatFileName(this.path))
+                this.$store.commit('snackbars/SET_SNACKBAR', {
+                    show: true,
+                    color: 'success',
+                    content: 'Fichier ajouté avec succès.'
+                })
+            } catch (error) {
+                console.log('error: ', error)
+                this.$store.commit('snackbars/SET_SNACKBAR', {
+                    show: true,
+                    color: 'error',
+                    content: 'Une erreur est survenue et le fichier n\'a pas pu être téléversé.'
+                })
+            }
         },
         async deleteFile() {
             try {
+                this.loading = true
                 await this.$store.dispatch('medias/deleteFile', this.selectedFile.path)
+                this.loading = false
+                this.showSidebar = false
+                this.goTo(this.path, this.formatFileName(this.path))
                 this.$store.commit('snackbars/SET_SNACKBAR', {
                     show: true,
                     color: 'success',
@@ -301,6 +335,7 @@ export default {
                 })
             } catch (error) {
                 console.log('error: ', error)
+                this.loading = false
                 this.$store.commit('snackbars/SET_SNACKBAR', {
                     show: true,
                     color: 'error',
@@ -348,10 +383,11 @@ export default {
     cursor: pointer;
     background: #e9ecef;
 } */
-/* .image:hover {
+.image:hover {
     cursor: pointer;
-    border: 4px solid #e9ecef;
-} */
+    /* border: 4px solid #e9ecef; */
+    background: #e9ecef;
+}
 #breadcrumbs {
     background-color: #e9ecef;
     border-radius: 5px;

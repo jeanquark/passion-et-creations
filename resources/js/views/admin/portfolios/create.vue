@@ -5,7 +5,8 @@
             <v-col cols="12" md="8">
                 <v-form @submit.prevent="createPortfolio">
                     <v-text-field prepend-icon="mdi-lock" name="title" label="Titre" type="text" :error-messages="form.errors.get('title')" v-model="form.title"></v-text-field>
-                    <v-text-field prepend-icon="mdi-lock" name="description" label="Description" type="text" :error-messages="form.errors.get('description')" v-model="form.description"></v-text-field>
+                    <!-- <v-text-field prepend-icon="mdi-lock" name="description" label="Description" type="text" :error-messages="form.errors.get('description')" v-model="form.description"></v-text-field> -->
+                    <text-editor-component @toggleShowHTML="toggleShowHTML" :formContent="form.description" v-if="form.description" />
 
                     <v-row no-gutters class="px-6">
                         <v-col cols="12">
@@ -63,9 +64,10 @@
 <script>
 import Form from 'vform'
 import MediasComponent from '../../../components/MediasComponent'
+import TextEditorComponent from '../../../components/TextEditorComponent'
 export default {
     name: 'AdminPortfoliosCreate',
-    components: { MediasComponent },
+    components: { MediasComponent, TextEditorComponent },
     data() {
         return {
             items: [
@@ -94,6 +96,10 @@ export default {
     },
     computed: {},
     methods: {
+        toggleShowHTML(value) {
+            console.log('toggleShowHTML2: ', value)
+            this.showHTML = value
+        },
         selectFile(e) {
             console.log('selectFile e: ', e)
             this.form.image = e.File

@@ -10,8 +10,8 @@
             <waterfall :line-gap="250" :watch="portfolios">
                 <waterfall-slot v-for="(portfolio, index) in portfolios" :width="frontImage(portfolio)['width']" :height="frontImage(portfolio)['height']" :order="index" :key="index">
                     <v-img
-                        :lazy-src="`/medias${frontImage(portfolio)['thumbnail_path']}`"
-                        :src="`/medias${frontImage(portfolio)['thumbnail_path']}`"
+                        :lazy-src="`/thumbnails${frontImage(portfolio)['thumbnail_path']}`"
+                        :src="`/thumbnails${frontImage(portfolio)['thumbnail_path']}`"
                         class="image"
                         style="margin: 5px"
                         @click="selectPortfolio(portfolio, index)"

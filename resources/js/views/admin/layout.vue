@@ -113,7 +113,7 @@ export default {
                 color: 'dark',
                 content: 'Votre session a expiré. Veuillez vous reconnectez.',
                 show: true,
-                timeout: 5000,
+                timeout: -1,
                 type: 'session_expired'
             })
         }

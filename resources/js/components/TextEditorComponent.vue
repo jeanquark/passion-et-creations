@@ -253,7 +253,7 @@ export default {
 <style scoped>
 #textBox {
     width: 100%;
-    height: 250px;
+    height: 200px;
     border: 2px double #ccc;
     border-radius: 5px;
     padding: 12px;

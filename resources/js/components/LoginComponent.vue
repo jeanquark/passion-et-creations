@@ -6,8 +6,10 @@
             <v-row align="center" justify="center">
                 <v-col cols="12" sm="8" md="4">
                     <v-card class="elevation-12">
-                        <v-toolbar dark color="#c49a6c">
-                            <v-toolbar-title>Login</v-toolbar-title>
+                        <v-toolbar class="background-image">
+                            <!-- <v-img src="/images/favicon.png" max-height="100%" /> -->
+                            <!-- <v-spacer></v-spacer> -->
+                            <v-toolbar-title class="primary-color">Login</v-toolbar-title>
                         </v-toolbar>
                         <v-card-text>
                             <v-form>
@@ -78,4 +80,15 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+    .background-image {
+        background-image: url('/images/logo_toolbar.png');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: right;
+    }
+    .primary-color {
+        color: #c49a6c;
+
+    }
+</style>

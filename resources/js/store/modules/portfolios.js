@@ -48,11 +48,12 @@ export const actions = {
             throw error
         }
     },
-    async updateOrder({}, payload) {
+    async updateOrder({ dispatch }, payload) {
         try {
             console.log('[VUEX] updateOrder payload: ', payload)
             const data = await axios.post('/api/v1/portfolios/update-order', payload)
             console.log('data: ', data)
+            dispatch('fetchPortfolios')
         } catch (error) {
             throw error
         }
