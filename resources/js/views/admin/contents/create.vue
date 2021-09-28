@@ -11,7 +11,7 @@
                     <v-checkbox v-model="form.is_published" label="Publié?"></v-checkbox>
 
                     <div class="text-center">
-                        <v-btn color="success" type="submit" :loading="form.busy">Editer</v-btn>
+                        <v-btn color="success" type="submit" :loading="form.busy">Créer</v-btn>
                     </div>
                 </v-form>
             </v-col>
@@ -74,7 +74,7 @@ export default {
                     color: 'success',
                     content: 'Contenu créé avec succès.',
                 })
-                this.$route.push('/admin/contents')
+                this.$router.push('/admin/contents')
             } catch (error) {
                 console.log('error: ', error)
                 this.$store.commit('snackbars/SET_SNACKBAR', {

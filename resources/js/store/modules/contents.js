@@ -38,10 +38,10 @@ export const actions = {
             throw error
         }
     },
-    async createContent({}, form) {
+    async createContent({ dispatch }, form) {
         try {
-            const data = await form.post(`/api/v1/contents`, form)
-            console.log('data: ', data)
+            await form.post(`/api/v1/contents`, form)
+            await dispatch('fetchContents')
         } catch (error) {
             console.log('error: ', error)
             throw error
@@ -65,11 +65,11 @@ export const actions = {
             throw error
         }
     },
-    async deleteContent({ }, payload) {
+    async deleteContent({ dispatch }, id) {
         try {
-            const { path } = payload
-            const { data } = await axios.post(`/api/v1/contents/destroy`, { path })
-            console.log('[VUEX] data: ', data)
+            await axios.delete(`/api/v1/contents/${id}`)
+            // console.log('[VUEX] data: ', data)
+            await dispatch('fetchContents')
         } catch (error) {
             console.log("[VUEX] error: ", error);
             throw error

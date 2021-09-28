@@ -11,7 +11,7 @@ class ContentsController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:admin')->except(['index']);
+        // $this->middleware('auth:sanctum')->except(['index']);
     }
 
     /**
@@ -101,8 +101,13 @@ class ContentsController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Content $content)
+    public function destroy($id)
     {
-        //
+        Content::where('id', '=', $id)->delete();
+
+        return response()->json([
+            'success' => true,
+            'id' => $id
+        ]);
     }
 }

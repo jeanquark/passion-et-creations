@@ -25,6 +25,8 @@ export const mutations = {
 export const actions = {
 	async login ({ dispatch }, form) {
 		try {
+            // const response = await axios.get('/sanctum/csrf-cookie')
+            // console.log('[VUEX] response: ', response)
 			const data = await form.post('/login')
             console.log('[VUEX] login: ', data)
 			await dispatch('setAuthUser')

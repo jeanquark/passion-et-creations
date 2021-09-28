@@ -41,7 +41,7 @@
                             <td style="white-space: nowrap">
                                 <v-btn small color="success" :to="`/admin/contents/${item.id}`">Montrer</v-btn>
                                 <v-btn small color="info" :to="`/admin/contents/${item.id}/edit`">Editer</v-btn>
-                                <v-btn small color="error">Supprimer</v-btn>
+                                <v-btn small color="error" @click="deleteContent(item.id)">Supprimer</v-btn>
                             </td>
                         </tr>
                     </template>
@@ -70,39 +70,58 @@ export default {
                 {
                     text: 'Contenus',
                     disabled: true,
-                    href: '/admin/contents'
+                    href: '/admin/contents',
                 },
                 {
                     text: 'Ajouter',
                     disabled: false,
-                    to: '/admin/contents/create'
-                }
+                    to: '/admin/contents/create',
+                },
             ],
             headers: [
                 {
                     text: 'ID',
                     align: 'start',
                     sortable: false,
-                    value: 'id'
+                    value: 'id',
                 },
                 {
                     text: 'Nom',
-                    value: 'name'
+                    value: 'name',
                 },
                 { text: 'Section', value: 'section' },
                 { text: 'Contenu', value: 'content' },
                 { text: 'Publié?', value: 'is_published' },
                 { text: 'Créé le', value: 'created_at' },
-                { text: 'Dernière modification', value: 'updated_at' }
-            ]
+                { text: 'Dernière modification', value: 'updated_at' },
+            ],
         }
     },
     computed: {
         contents() {
             return this.$store.getters['contents/contents'].sort((a, b) => b.id > a.id)
-        }
+        },
     },
-    methods: {}
+    methods: {
+        async deleteContent(id) {
+            try {
+                console.log('deleteContent ', id)
+                await this.$store.dispatch('contents/deleteContent', id)
+                this.$store.commit('snackbars/SET_SNACKBAR', {
+                    show: true,
+                    color: 'success',
+                    content: 'Contenu supprimé avec succès.',
+                })
+            } catch (error) {
+                console.log('error: ', error)
+                this.$store.commit('snackbars/SET_SNACKBAR', {
+                    show: true,
+                    color: 'error',
+                    content: "Une erreur est survenue et le contenu n'a pas pu être supprimé.",
+                })
+            }
+        },
+    },
 }
 </script>
 

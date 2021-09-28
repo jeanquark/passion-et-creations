@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '../store'
+import axios from 'axios'
 Vue.use(VueRouter)
 
 import AdminLayout from '../views/admin/layout'
@@ -391,15 +392,19 @@ function nextFactory(context, middleware, index) {
 }
 
 router.beforeEach(async (to, from, next) => {
-    console.log('beforeEach 1')
+    console.log('[router] index beforeEach() ')
     console.log("beforeEach store.getters['auth/auth']: ", store.getters['auth/auth'])
     console.log("beforeEach store.getters['auth/token']: ", store.getters['auth/token'])
     // Check auth
     // if (!store.getters['auth/auth'] && store.getters['auth/token']) {
     if (!store.getters['auth/auth']) {
         try {
-            await store.dispatch('auth/setAuthUser')
-        } catch (e) {}
+            // await store.dispatch('auth/setAuthUser')
+            // const response = await axios.get('/sanctum/csrf-cookie')
+            // console.log('[router] response: ', response)
+        } catch (error) {
+            console.log('error: ', error)
+        }
     }
     console.log('beforeEach next()')
     return next()

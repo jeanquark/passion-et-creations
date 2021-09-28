@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\ContentsController;
 use App\Http\Controllers\PortfoliosController;
 use App\Http\Controllers\MediasController;
 use App\Http\Controllers\SlidersController;
@@ -18,7 +19,9 @@ use App\Http\Controllers\ContactMessagesController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::apiResource('/v1/contents', App\Http\Controllers\ContentsController::class);
+// Route::apiResource('/v1/contents', App\Http\Controllers\ContentsController::class);
+Route::get('/v1/contents', [ContentsController::class, 'index']); 
+
 
 // Route::apiResource('/v1/portfolios', App\Http\Controllers\PortfoliosController::class);
 Route::get('/v1/portfolios', [PortfoliosController::class, 'index']);
@@ -56,4 +59,10 @@ Route::post('/v1/send-contact-form', [App\Http\Controllers\ContactMessagesContro
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Route::get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::middleware(['auth:sanctum'])->group(function() {
+    Route::post('/v1/contents', [ContentsController::class, 'store']);
+    Route::put('/v1/contents/{id}', [ContentsController::class, 'update']);
+    Route::delete('/v1/contents/{id}', [ContentsController::class, 'destroy']);
 });
