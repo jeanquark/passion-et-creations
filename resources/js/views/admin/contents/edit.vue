@@ -1,15 +1,19 @@
 <template>
     <v-main>
         <v-breadcrumbs large :items="items"></v-breadcrumbs>
-        <h2>Editer contenu {{ $route.params.id }}</h2>
         <!-- <p>content: {{ content }}</p> -->
         <v-row no-gutters justify="center" v-if="content">
             <v-col cols="12" md="10">
                 <v-form @submit.prevent="updateContent">
+                    
+
+                    <v-text-field label="Nom" :error-messages="form.errors.get('name')" v-model="form.name"></v-text-field>
+                    <v-select :items="sections" item-text="name" item-value="slug" label="Section (partie du site où le nouveau contenu sera affiché)" v-model="form.section"></v-select>
                     <TextEditorComponent :formContent="content.content" />
-                    <br />
+                    <small class="error--text" v-if="form.errors.get('content')">{{ form.errors.get('content') }}</small>
+                    <v-checkbox v-model="form.is_published" label="Publié?"></v-checkbox>
                     <div class="text-center">
-                    <v-btn color="success" type="submit">Editer</v-btn>
+                    <v-btn color="success" type="submit" :loading="form.busy">Editer</v-btn>
                     </div>
                 </v-form>
             </v-col>
@@ -36,7 +40,7 @@ export default {
     },
     data() {
         return {
-            showHTML: false,
+            // showHTML: false,
             showMediasModal: false,
             items: [
                 {
@@ -53,13 +57,18 @@ export default {
                 }
             ],
             form: new Form({
-                id: '',
+                id: this.$route.params.id,
                 name: '',
                 section: '',
                 content: '',
                 is_published: false
             }),
-            showHTML: false
+            // showHTML: false
+            sections: [
+                { name: 'Bienvenue', slug: 'bienvenue' },
+                { name: 'Portrait', slug: 'portrait' },
+                { name: 'Contact', slug: 'contact' },
+            ],
         }
     },
     computed: {
@@ -71,10 +80,10 @@ export default {
         }
     },
     methods: {
-        toggleShowHTML(value) {
-            console.log('toggleShowHTML2: ', value)
-            this.showHTML = value
-        },
+        // toggleShowHTML(value) {
+        //     console.log('toggleShowHTML2: ', value)
+        //     this.showHTML = value
+        // },
         async updateContent() {
             try {
                 console.log('updateContent: ', this.form)
@@ -90,11 +99,20 @@ export default {
                 this.form['content'] = content
                 console.log('this.form: ', this.form)
 
-                // await this.$store.dispatch('contents/updateContent', this.form)
-                // // console.log('data: ', data)
-                // this.$router.push('/admin/contents')
+                await this.$store.dispatch('contents/updateContent', this.form)
+                this.$store.commit('snackbars/SET_SNACKBAR', {
+                    show: true,
+                    color: 'success',
+                    content: 'Contenu modifié avec succès.'
+                })
+                this.$router.push('/admin/contents')
             } catch (error) {
                 console.log('error: ', error)
+                this.$store.commit('snackbars/SET_SNACKBAR', {
+                    show: true,
+                    color: 'error',
+                    content: 'Une erreur est survenue et le contenu n\'a pas pu être modifié.'
+                })
             }
         }
     }

@@ -1,12 +1,6 @@
 <template>
     <v-main>
         <v-breadcrumbs large :items="items"></v-breadcrumbs>
-        <v-row no-gutters justify="center">
-            <v-col cols="12">
-                <h2>Contents</h2>
-                <!-- contents: {{ contents }}<br /><br /> -->
-            </v-col>
-        </v-row>
         <v-row no-gutters>
             <v-col cols="12" class="mx-3">
                 <v-data-table :headers="headers" :items="contents" :items-per-page="5" :hide-default-header="true" class="elevation-1">
@@ -33,7 +27,10 @@
                                 {{ item.section }}
                             </td>
                             <td>
-                                <div v-html="item.content.substring(0, 200)"></div>
+                                <div v-html="item.content.substring(0, 100)"></div>
+                            </td>
+                            <td>
+                                {{ item.is_published ? 'Oui' : 'Non' }}
                             </td>
                             <td>
                                 {{ item.created_at | moment('DD MMM YYYY') }}
@@ -94,6 +91,7 @@ export default {
                 },
                 { text: 'Section', value: 'section' },
                 { text: 'Contenu', value: 'content' },
+                { text: 'Publié?', value: 'is_published' },
                 { text: 'Créé le', value: 'created_at' },
                 { text: 'Dernière modification', value: 'updated_at' }
             ]
@@ -101,7 +99,7 @@ export default {
     },
     computed: {
         contents() {
-            return this.$store.getters['contents/contents']
+            return this.$store.getters['contents/contents'].sort((a, b) => b.id > a.id)
         }
     },
     methods: {}

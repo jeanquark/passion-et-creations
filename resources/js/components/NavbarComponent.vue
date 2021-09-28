@@ -12,7 +12,7 @@
 
             <v-spacer></v-spacer>
             auth: {{ auth }}
-            token: {{ authToken.substring(0, 4) }}
+            <!-- token: {{ authToken.substring(0, 4) }} -->
             <!-- <v-toolbar-title class="nav-link mx-2"><a href="/login" class="link">Login</a></v-toolbar-title> -->
 
             <!-- <v-toolbar-title class="nav-link mx-2"><a href="/admin" class="link">Admin</a></v-toolbar-title> -->

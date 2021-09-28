@@ -4,7 +4,7 @@ import Cookies from 'js-cookie'
 export const state = () => ({
     auth: false,
     user: null,
-    token: Cookies.get('XSRF-TOKEN')
+    // token: Cookies.get('XSRF-TOKEN')
     // token: document.cookie
     // token: Cookies.get()
 })
@@ -86,7 +86,7 @@ export const getters = {
     user(state) {
         return state.user
     },
-    token(state) {
-        return state.token
-    }
+    // token(state) {
+    //     return state.token
+    // }
 }

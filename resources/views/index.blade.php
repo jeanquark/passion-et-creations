@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    {{-- <meta name="csrf-token" content="{{ csrf_token() }}" /> --}}
 
     <title>Passion et Créations</title>
 
@@ -55,19 +55,10 @@
             </v-col>
         </v-row>
         <info-component></info-component>
-        {{-- <v-row no-gutters id="portfolio"></v-row> --}}
-        {{-- <a href="#portfolio"></a> --}}
         <portfolio-component></portfolio-component>
-        {{-- <v-row no-gutters id="about"></v-row> --}}
-        {{-- <a href="#about"></a> --}}
         <about-component></about-component>
-        {{-- <v-row no-gutters id="contact"> --}}
-        {{-- <a href="#contact"></a> --}}
         <contact-component></contact-component>
-        {{-- </v-row> --}}
         <footer-component></footer-component>
-        {{-- <router-view></router-view> --}}
-        {{-- </v-main> --}}
         <snackbar-component></snackbar-component>
     </v-app>
     {{-- </div> --}}

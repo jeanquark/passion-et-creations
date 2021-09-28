@@ -1,11 +1,12 @@
 <template>
     <v-row no-gutters justify="center" id="portfolio" class="my-10" style="border: 1px solid red;">
-        <v-col cols="12" md="10" style="border: 1px dashed pink;">
+        <v-col cols="12" md="10" class="px-4" style="border: 1px dashed pink;">
             <h2 class="text-center my-2" style="color: #c49a6c;">Portfolio</h2>
             <!-- Start of page<br /> -->
             <!-- Images: {{ images }}<br /> -->
             <!-- selectedImage: {{ selectedImage }} -->
-            portfolios: {{ portfolios.length }}<br />
+            <!-- portfolios: {{ portfolios.length }}<br /><br /> -->
+            <!-- selectedPortfolio: {{ selectedPortfolio }}<br /><br /> -->
             <v-expand-transition>
             <waterfall :line-gap="250" :watch="portfolios">
                 <waterfall-slot v-for="(portfolio, index) in portfolios" :width="frontImage(portfolio)['width']" :height="frontImage(portfolio)['height']" :order="index" :key="index">
@@ -13,7 +14,7 @@
                         :lazy-src="`/thumbnails${frontImage(portfolio)['thumbnail_path']}`"
                         :src="`/thumbnails${frontImage(portfolio)['thumbnail_path']}`"
                         class="image"
-                        style="margin: 5px"
+                        style="margin: .5em"
                         @click="selectPortfolio(portfolio, index)"
                         v-if="frontImage(portfolio)"
                     ></v-img>
@@ -43,15 +44,12 @@
                     </v-card-title>
                     <v-card-text>
                         <v-row no-gutters>
-                            <!-- selectedPortfolio: {{ selectedPortfolio }}<br /><br /> -->
-                            <!-- selectedImage: {{ selectedImage }}<br /><br /> -->
                             <v-col cols="8" class="pa-2" v-if="selectedImage">
                                 <v-img :src="`/medias${selectedImage.path}`"></v-img>
                             </v-col>
                             <v-col cols="4" class="px-4 py-1">
                                 <v-row no-gutters>
-                                    <v-col cols="4" class="pa-1" v-for="(image, index) in selectedPortfolio.images" :key="index">
-                                        <!-- image: {{ image }} -->
+                                    <v-col cols="4" class="pa-1" v-for="(image, index) in selectedPortfolio.portfolio_images" :key="index">
                                         <v-img
                                             :src="`/medias${image.path}`"
                                             aspect-ratio="1"
@@ -69,7 +67,6 @@
                     <v-divider></v-divider>
 
                     <v-card-text class="mt-3">
-                        <!-- <v-spacer></v-spacer> -->
                         <div v-html="selectedPortfolio.description"></div>
                     </v-card-text>
                 </v-card>
@@ -121,10 +118,10 @@ export default {
             }
         },
         selectPortfolio(portfolio, index) {
-            console.log('selectPortfolio portfolio: ', portfolio)
+            console.log('selectPortfolio portfolio: ', portfolio, index)
             this.selectedPortfolio = portfolio
             this.selectedPortfolio['index'] = index
-            this.selectedImage = this.selectedPortfolio.images[0]
+            this.selectedImage = this.selectedPortfolio.portfolio_images[0]
             this.dialog = true
         },
         selectImage(image) {

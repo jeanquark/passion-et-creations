@@ -18,8 +18,8 @@ class SlidersTableSeeder extends Seeder
     {
         DB::table('sliders')->delete();
         $sliders = array(
-            ['name' => 'Main slider', 'slug' => 'main_slider', 'section' => 'welcome', 'created_at' => new DateTime, 'updated_at' => new DateTime],
-            ['name' => 'About slider', 'slug' => 'about_slider', 'section' => 'about', 'created_at' => new DateTime, 'updated_at' => new DateTime],
+            ['name' => 'Carousel accueil', 'slug' => 'accueil_slider', 'section' => 'bienvenue', 'created_at' => new DateTime, 'updated_at' => new DateTime],
+            ['name' => 'Carousel portrait', 'slug' => 'portrait_slider', 'section' => 'portrait', 'created_at' => new DateTime, 'updated_at' => new DateTime],
         );
         DB::table('sliders')->insert($sliders);
 

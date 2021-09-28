@@ -47,6 +47,15 @@ export const actions = {
             throw error
         }
     },
+    async updateContent({ dispatch }, form) {
+        try {
+            await form.put(`/api/v1/contents/${form.id}`, form)
+            await dispatch('fetchContents')
+        } catch (error) {
+            console.log('error: ', error)
+            throw error
+        }
+    },
     async updateOrder({}, payload) {
         try {
             console.log('[VUEX] updateOrder payload: ', payload)

@@ -21,7 +21,7 @@ class ContentsController extends Controller
      */
     public function index()
     {
-        $contents = Content::all();
+        $contents = Content::orderBy('id', 'desc')->get();
 
         return response()->json($contents);
     }
@@ -34,7 +34,23 @@ class ContentsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'content' => 'required'
+        ]);
+
+        $content = new Content;
+
+        $content->name = $request->name;
+        $content->content = $request->content;
+        $content->section = $request->section;
+        $content->is_published = $request->is_published;
+
+        $content->save();
+
+        return response()->json([
+            'success' => true
+        ]);
     }
 
     /**
@@ -55,10 +71,27 @@ class ContentsController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Content $content)
+    public function update(Request $request, $id)
     {
+        $request->validate([
+            'name' => 'required',
+            'content' => 'required'
+        ]);
+
+        $updatedContent = Content::find($id);
+
+        $updatedContent->name = $request->name;
+        $updatedContent->content = $request->content;
+        $updatedContent->section = $request->section;
+        $updatedContent->is_published = $request->is_published;
+
+        $updatedContent->save();
+
         return response()->json([
-            'success' => true
+            'success' => true,
+            'request' => $request,
+            'updatedContent' => $updatedContent,
+            'id' => $id
         ], 200);
     }
 

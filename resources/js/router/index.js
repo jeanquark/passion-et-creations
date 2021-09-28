@@ -217,6 +217,11 @@ const router = new VueRouter({
                             component: AdminContentsIndex
                         },
                         {
+                            path: 'create',
+                            name: 'adminContentsCreate',
+                            component: AdminContentsCreate
+                        },
+                        {
                             path: ':id',
                             name: 'adminContentsShow',
                             component: AdminContentsShow

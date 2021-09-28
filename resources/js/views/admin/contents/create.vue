@@ -2,15 +2,17 @@
     <v-main>
         <v-breadcrumbs large :items="items"></v-breadcrumbs>
         <v-row no-gutters justify="center">
-            <v-col cols="12" md="8">
-                
-            </v-col>
-            <v-col cols="12">
-                <v-form @submit.prevent="uploadImage">
-                    <!-- image: {{ image }} -->
-                    form.busy: {{ form.busy }}<br />
-                    form.errors: {{ form.errors }}<br />
-                    form.images: {{ form.image }}<br />
+            <v-col cols="12" md="10">
+                <v-form @submit.prevent="createContent">
+                    <v-text-field label="Nom" :error-messages="form.errors.get('name')" v-model="form.name"></v-text-field>
+                    <v-select :items="sections" item-text="name" item-value="slug" label="Section (partie du site où le nouveau contenu sera affiché)" v-model="form.section"></v-select>
+                    <TextEditorComponent />
+                    <small class="error--text" v-if="form.errors.get('content')">{{ form.errors.get('content') }}</small>
+                    <v-checkbox v-model="form.is_published" label="Publié?"></v-checkbox>
+
+                    <div class="text-center">
+                        <v-btn color="success" type="submit" :loading="form.busy">Editer</v-btn>
+                    </div>
                 </v-form>
             </v-col>
         </v-row>
@@ -19,10 +21,11 @@
 
 <script>
 import Form from 'vform'
+import TextEditorComponent from '../../../components/TextEditorComponent'
 import MediasComponent from '../../../components/MediasComponent'
 export default {
     name: 'AdminContentsCreate',
-    components: { MediasComponent },
+    components: { TextEditorComponent, MediasComponent },
     data() {
         return {
             items: [
@@ -39,41 +42,46 @@ export default {
                 },
             ],
             form: new Form({
-                title: 'New title',
-                description: 'New description',
-                // front_image_id: '',
-                images: [],
+                name: 'New name',
+                content: '<b>New content</b>',
+                section: 'portrait',
+                is_published: false,
             }),
-            tab: null,
-            showModal: false,
-            dialog: false,
+            sections: [
+                { name: 'Bienvenue', slug: 'bienvenue' },
+                { name: 'Portrait', slug: 'portrait' },
+                { name: 'Contact', slug: 'contact' },
+            ],
         }
     },
     computed: {},
     methods: {
-        selectFile(e) {
-            console.log('selectFile e: ', e)
-            this.form.image = e.File
-            // this.form.image = e.target.files[0]
-            this.image = e.File
-        },
-        onAddFile(file) {
-            this.dialog = false
-            console.log('onAddFile file: ', file)
-            // this.form.front_image_id = file.id
-            if (this.form.images.length < 1) {
-                file['is_front_image'] = true
-            } else {
-                file['is_front_image'] = false
-            }
-            this.form.images.push(file)
-        },
-        async createPortfolio() {
+        async createContent() {
             try {
-                console.log('createPortfolio form: ', this.form)
-                await this.$store.dispatch('portfolios/createPortfolio', this.form)
+                console.log('createContent form: ', this.form)
+                let content
+                if (!this.showHTML) {
+                    content = document.getElementById('textBox').innerHTML
+                } else {
+                    content = document.getElementById('textBox').innerText
+                }
+                this.form['content'] = content
+                console.log('form: ', this.form)
+                
+                await this.$store.dispatch('contents/createContent', this.form)
+                this.$store.commit('snackbars/SET_SNACKBAR', {
+                    show: true,
+                    color: 'success',
+                    content: 'Contenu créé avec succès.',
+                })
+                this.$route.push('/admin/contents')
             } catch (error) {
                 console.log('error: ', error)
+                this.$store.commit('snackbars/SET_SNACKBAR', {
+                    show: true,
+                    color: 'error',
+                    content: "Une erreur est survenue et le nouveau contenu n'a pas pu être créé.",
+                })
             }
         },
     },

@@ -21,7 +21,7 @@ export default {
             return this.$store.getters['sliders/sliders']
         },
         slider () {
-            return this.$store.getters['sliders/sliders'].find(slider => slider.section === 'welcome')
+            return this.$store.getters['sliders/sliders'].find(slider => slider.section === 'bienvenue')
         }
     },
     methods: {}
