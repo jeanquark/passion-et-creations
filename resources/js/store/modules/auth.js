@@ -47,7 +47,7 @@ export const actions = {
 	},
     async setAuthUser({ commit }, form) {
         try {
-			const { data } = await axios.get('/api/user')
+			const { data } = await axios.get('/api/auth-user')
             console.log('[VUEX] setAuthUser: ', data)
 			commit('SET_AUTH', true)
 			commit('SET_USER', data)

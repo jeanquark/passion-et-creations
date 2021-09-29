@@ -11,7 +11,7 @@
             </v-toolbar-title>
 
             <v-spacer></v-spacer>
-            auth: {{ auth }}
+            authUser: {{ authUser }}
             <!-- token: {{ authToken.substring(0, 4) }} -->
             <!-- <v-toolbar-title class="nav-link mx-2"><a href="/login" class="link">Login</a></v-toolbar-title> -->
 
@@ -29,12 +29,11 @@
             authUser.name: {{ authUser ? authUser.name : ''  }} | 
             <v-btn small @click="logout">Logout</v-btn></span> -->
             <scrollactive class="my-nav d-flex align-center" :offset="80" active-class="active">
-                <a href="#welcome" class="link mx-1 scrollactive-item">Accueil</a> <span style="font-size: 1.2em;">|</span>
-                <a href="#info" class="link mx-1 scrollactive-item">Info</a> <span style="font-size: 1.2em;">|</span>
-                <a href="#portfolio" class="link mx-1 scrollactive-item">Portfolio</a> <span style="font-size: 1.2em;">|</span>
-                <a href="#about" class="link mx-1 scrollactive-item">Portrait</a> <span style="font-size: 1.2em;">|</span>
+                <a href="#welcome" class="link mx-1 scrollactive-item">Accueil</a> <span style="font-size: 1.2em">|</span> <a href="#info" class="link mx-1 scrollactive-item">Info</a>
+                <span style="font-size: 1.2em">|</span> <a href="#portfolio" class="link mx-1 scrollactive-item">Portfolio</a> <span style="font-size: 1.2em">|</span>
+                <a href="#about" class="link mx-1 scrollactive-item">Portrait</a> <span style="font-size: 1.2em">|</span>
                 <a href="#contact" class="link mx-1 scrollactive-item">Contact</a>
-                <span style="font-size: 1.2em;">|</span>
+                <span style="font-size: 1.2em">|</span>
                 <a href="/admin/index" class="link mx-1">Admin</a>
                 <v-btn small color="#c49a6c" class="white--text" @click="logout" v-if="authUser">Logout</v-btn>
             </scrollactive>
@@ -72,13 +71,17 @@
 // import VueScrollactive from 'vue-scrollactive'
 export default {
     // component: { VueScrollactive },
+    mounted() {
+        this.checkAuth()
+    },
     data() {
         return {
             drawer: false,
             group: null,
             duration: 1200,
             offset: 0,
-            easing: 'easeInOutCubic'
+            easing: 'easeInOutCubic',
+            authUser: null,
         }
     },
     computed: {
@@ -88,7 +91,7 @@ export default {
         authUser() {
             return this.$store.getters['auth/user']
         },
-        authToken () {
+        authToken() {
             return this.$store.getters['auth/token']
         },
         target() {
@@ -100,14 +103,23 @@ export default {
             return {
                 duration: this.duration,
                 offset: this.offset,
-                easing: this.easing
+                easing: this.easing,
             }
         },
         intersect() {
             return this.$store.getters['intersect/intersect']
-        }
+        },
     },
     methods: {
+        async checkAuth() {
+            try {
+                const { data } = await axios.get('/api/auth-user')
+                console.log('data: ', data)
+                this.authUser = data.name
+            } catch (error) {
+                console.log('error: ', error)
+            }
+        },
         async logout() {
             await this.$store.dispatch('auth/logout')
             location.href = '/'
@@ -119,7 +131,7 @@ export default {
         // onItemChanged(event, currentItem, lastActiveItem) {
         //     console.log('onItemChanged: ', currentItem)
         // }
-    }
+    },
 }
 </script>
 
@@ -128,7 +140,7 @@ export default {
     color: yellow;
 } */
 .link {
-    color: rgba(0,0,0,.87);
+    color: rgba(0, 0, 0, 0.87);
     text-decoration: none;
     font-size: 1.3em;
 }

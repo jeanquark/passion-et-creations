@@ -18,7 +18,7 @@ class Portfolio extends Model
     ];
 
     /**
-     * Get the post that owns the comment.
+     * Get the category that owns the portfolio.
      */
     public function category()
     {
@@ -26,23 +26,7 @@ class Portfolio extends Model
     }
 
     /**
-     * Get the post that owns the comment.
-     */
-    // public function front_image()
-    // {
-    //     return $this->belongsTo(PortfolioImage::class);
-    // }
-
-    /**
-     * The roles that belong to the user.
-     */
-    // public function images()
-    // {
-    //     return $this->belongsToMany('App\Models\Image', 'portfolio_image', 'portfolio_id', 'image_id')->withTimestamps();
-    // }
-
-    /**
-     * Get the comments for the blog post.
+     * Get the images for the portfolio.
      */
     public function portfolio_images()
     {

@@ -107,7 +107,8 @@
 import axios from 'axios'
 export default {
     name: "AdminIndex",
-    created () {
+    async created () {
+        await this.$store.dispatch('auth/setAuthUser')
         if (!this.authUser) {
             this.$store.commit('snackbars/SET_SNACKBAR', {
                 color: 'dark',

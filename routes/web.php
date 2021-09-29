@@ -74,9 +74,9 @@ Route::get('/reset-password/{token}', function () {
     return view('auth/reset-password');
 })->name('password.reset');
 
-// Route::middleware('auth:sanctum')->group(function() {
+Route::middleware('auth:sanctum')->group(function() {
     Route::get('/admin/{any}', [App\Http\Controllers\AdminController::class, 'index'])->where('any', '.*');
-// });
+});
 
 // Route::get('{any}', function () { 
 //     return view('vue-layout'); 
@@ -84,4 +84,4 @@ Route::get('/reset-password/{token}', function () {
 
 Route::get('/login', function () {
     return view('login');
-});
+})->name('login');

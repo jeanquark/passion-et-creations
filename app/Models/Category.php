@@ -10,7 +10,7 @@ class Category extends Model
     // use HasFactory;
 
     /**
-     * Get the comments for the blog post.
+     * Get the images for the blog category.
      */
     public function images()
     {
