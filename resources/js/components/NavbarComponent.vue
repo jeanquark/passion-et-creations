@@ -88,9 +88,6 @@ export default {
         auth() {
             return this.$store.getters['auth/auth']
         },
-        authUser() {
-            return this.$store.getters['auth/user']
-        },
         authToken() {
             return this.$store.getters['auth/token']
         },

@@ -112,7 +112,7 @@ export default {
         if (!this.authUser) {
             this.$store.commit('snackbars/SET_SNACKBAR', {
                 color: 'dark',
-                content: 'Votre session a expiré. Veuillez vous reconnectez.',
+                content: 'Votre session a expiré. Veuillez vous reconnecter.',
                 show: true,
                 timeout: -1,
                 type: 'session_expired'

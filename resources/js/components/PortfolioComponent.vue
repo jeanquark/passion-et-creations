@@ -8,23 +8,23 @@
             <!-- portfolios: {{ portfolios.length }}<br /><br /> -->
             <!-- selectedPortfolio: {{ selectedPortfolio }}<br /><br /> -->
             <v-expand-transition>
-            <waterfall :line-gap="250" :watch="portfolios">
-                <waterfall-slot v-for="(portfolio, index) in portfolios" :width="frontImage(portfolio)['width']" :height="frontImage(portfolio)['height']" :order="index" :key="index">
-                    <v-img
-                        :lazy-src="`/thumbnails${frontImage(portfolio)['thumbnail_path']}`"
-                        :src="`/thumbnails${frontImage(portfolio)['thumbnail_path']}`"
-                        class="image"
-                        style="margin: .5em"
-                        @click="selectPortfolio(portfolio, index)"
-                        v-if="frontImage(portfolio)"
-                    ></v-img>
-                    <!-- {{ portfolio.images[0]['path'] }} -->
-                    <!-- <v-img :lazy-src="`/medias/${portfolio.images[0]['path']}`" :src="`/medias/${portfolio.images[0]['path']}`" class="image" style="margin: 5px" @click="selectImage(portfolio)"></v-img> -->
-                </waterfall-slot>
-                <!-- <waterfall-slot v-for="(item, index) in items" :width="item.width" :height="item.height" :order="index" :key="index">
+                <waterfall :line-gap="240" :watch="portfolios">
+                    <waterfall-slot v-for="(portfolio, index) in portfolios" :width="frontImage(portfolio)['width']" :height="frontImage(portfolio)['height']" :order="index" :key="index">
+                        <v-img
+                            :lazy-src="`/thumbnails${frontImage(portfolio)['thumbnail_path']}`"
+                            :src="`/thumbnails${frontImage(portfolio)['thumbnail_path']}`"
+                            class="image"
+                            style="margin: .5em"
+                            @click="selectPortfolio(portfolio, index)"
+                            v-if="frontImage(portfolio)"
+                        ></v-img>
+                        <!-- {{ portfolio.images[0]['path'] }} -->
+                        <!-- <v-img :lazy-src="`/medias/${portfolio.images[0]['path']}`" :src="`/medias/${portfolio.images[0]['path']}`" class="image" style="margin: 5px" @click="selectImage(portfolio)"></v-img> -->
+                    </waterfall-slot>
+                    <!-- <waterfall-slot v-for="(item, index) in items" :width="item.width" :height="item.height" :order="index" :key="index">
                     <v-img :lazy-src="item.src" :src="item.src" class="image" style="margin: 5px" @click="selectImage(item)"></v-img>
                 </waterfall-slot> -->
-            </waterfall>
+                </waterfall>
             </v-expand-transition>
 
             <div class="text-center my-3">
@@ -153,7 +153,7 @@ export default {
 .image:hover {
     cursor: pointer;
     /* border: 2px solid #c49a6c; */
-    opacity: .5;
+    opacity: 0.5;
 }
 .thumbnail:hover {
     cursor: pointer;

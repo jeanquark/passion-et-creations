@@ -71,9 +71,9 @@ export default {
     name: 'AdminPortfoliosIndex',
     components: { draggable },
     async created() {
-        if (this.$store.getters['portfolios/portfolios'].length < 1) {
+        // if (this.$store.getters['portfolios/portfolios'].length < 1) {
             await this.$store.dispatch('portfolios/fetchPortfolios')
-        }
+        // }
     },
     mounted() {},
     data() {

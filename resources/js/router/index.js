@@ -129,16 +129,10 @@ const router = new VueRouter({
                     path: 'index',
                     name: 'adminIndex',
                     component: AdminIndex,
-                    meta: {
-                        // middleware: auth
-                    },
                 },
                 {
                     path: 'profile',
                     component: AdminProfile,
-                    meta: {
-                        // middleware: auth
-                    },
                     children: [
                         {
                             path: '',
@@ -150,9 +144,6 @@ const router = new VueRouter({
                 {
                     path: 'medias',
                     component: AdminMedias,
-                    meta: {
-                        // middleware: auth
-                    },
                     children: [
                         {
                             path: '',
@@ -164,9 +155,6 @@ const router = new VueRouter({
                 {
                     path: 'images',
                     component: AdminImages,
-                    meta: {
-                        // middleware: auth
-                    },
                     children: [
                         {
                             path: '',
@@ -183,9 +171,6 @@ const router = new VueRouter({
                 {
                     path: 'portfolios',
                     component: AdminPortfolios,
-                    meta: {
-                        // middleware: auth
-                    },
                     children: [
                         {
                             path: '',
@@ -207,9 +192,6 @@ const router = new VueRouter({
                 {
                     path: 'contents',
                     component: AdminContents,
-                    meta: {
-                        // middleware: auth
-                    },
                     children: [
                         {
                             path: '',
@@ -236,9 +218,6 @@ const router = new VueRouter({
                 {
                     path: 'sliders',
                     component: AdminSliders,
-                    meta: {
-                        // middleware: auth
-                    },
                     children: [
                         {
                             path: '',
@@ -255,9 +234,6 @@ const router = new VueRouter({
                 {
                     path: 'contacts',
                     component: AdminContacts,
-                    meta: {
-                        // middleware: auth
-                    },
                     children: [
                         {
                             path: '',
@@ -274,9 +250,6 @@ const router = new VueRouter({
                 {
                     path: 'users',
                     component: AdminUsers,
-                    meta: {
-                        // middleware: auth
-                    },
                     children: [
                         {
                             path: '',
