@@ -68,6 +68,25 @@ export default {
         }
     },
     methods: {
+        async updateUser () {
+            try {
+                const data = await this.$store.dispatch('auth/resetPassword', this.form)
+                console.log('data: ', data)
+                this.$store.commit('snackbars/SET_SNACKBAR', {
+                    show: true,
+                    content: 'Utilisateur modifié avec succès.',
+                    color: 'success'
+                })
+                this.$router.push('/admin/users')
+            } catch (error) {
+                this.$store.commit('snackbars/SET_SNACKBAR', {
+                    show: true,
+                    content: 'Une erreur est survenue et l\'utilisateur n\'a pas pu être créé.',
+                    color: 'error'
+                })
+                console.log('error: ', error)
+            }
+        },
         async resetPassword() {
             try {
                 const data = await this.$store.dispatch('auth/resetPassword', this.form)

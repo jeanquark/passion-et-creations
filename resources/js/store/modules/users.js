@@ -43,6 +43,18 @@ export const actions = {
 			throw error
 		}
 	},
+	async updateUser({ dispatch }, payload) {
+        try {
+            console.log('[VUEX] updateOrder payload: ', payload)
+			const { id } = payload
+            const data = await axios.put(`/api/v1/users/${id}`, payload)
+            console.log('data: ', data)
+			await dispatch('fetchUsers')
+        } catch (error) {
+			console.log('error: ', error)
+            throw error
+        }
+    },
 	async deleteUser({ dispatch }, payload) {
 		try {
 			const { id } = payload
