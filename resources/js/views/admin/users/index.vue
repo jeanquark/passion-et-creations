@@ -1,8 +1,7 @@
 <template>
     <v-main>
         <v-breadcrumbs large :items="items"></v-breadcrumbs>
-        users: {{ users }}<br /><br />
-
+        <!-- users: {{ users }}<br /><br /> -->
         <v-row no-gutters>
             <v-col cols="12" class="mx-3">
                 <v-data-table :headers="headers" :items="users" :items-per-page="5" :hide-default-header="true" class="elevation-1">
@@ -17,7 +16,7 @@
                         </thead>
                     </template>
 
-                    <template v-slot:[`item`]="{ item, index }">
+                    <template v-slot:[`item`]="{ item }">
                         <tr style="" v-if="headers && headers.length">
                             <td>
                                 {{ item.name }}
@@ -34,7 +33,7 @@
                             <td style="white-space: nowrap">
                                 <v-btn small color="success" :to="`/admin/users/${item.id}`">Montrer</v-btn>
                                 <v-btn small color="info" :to="`/admin/users/${item.id}/edit`">Editer</v-btn>
-                                <v-btn small color="error">Supprimer</v-btn>
+                                <v-btn small color="error" @click="deleteUser(item.id)" v-if="users.length > 1">Supprimer</v-btn>
                             </td>
                         </tr>
                     </template>
@@ -84,6 +83,27 @@ export default {
             return this.$store.getters['users/users']
         },
     },
+    methods: {
+        async deleteUser (id) {
+            try {
+                await this.$store.dispatch('users/deleteUser', {
+                    id
+                })
+                this.$store.commit('snackbars/SET_SNACKBAR', {
+                    show: true,
+                    content: 'Utilisateur supprimé avec succès.',
+                    color: 'success'
+                })
+            } catch (error) {
+                console.log('error: ', error)
+                this.$store.commit('snackbars/SET_SNACKBAR', {
+                    show: true,
+                    content: 'Une erreur est survenue et l\'utilisateur n\'a pas pu être supprimé.',
+                    color: 'error'
+                })
+            }
+        }
+    }
 }
 </script>
 

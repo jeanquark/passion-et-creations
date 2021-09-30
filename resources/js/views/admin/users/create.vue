@@ -6,7 +6,7 @@
                 <v-form @submit.prevent="createUser">
                     <v-text-field prepend-icon="mdi-account" name="name" label="Nom" type="text" :error-messages="form.errors.get('name')" v-model="form.name"></v-text-field>
                     <v-text-field prepend-icon="mdi-email" name="email" label="Email" type="email" :error-messages="form.errors.get('email')" v-model="form.email"></v-text-field>
-                    <v-file-input label="Sélectionner une image" :clearable="false" show-size @change="onFileChange" v-model="form.image"></v-file-input>
+                    <v-file-input prepend-icon="mdi-camera" label="Sélectionner une image (public)" :clearable="false" show-size @change="onFileChange" v-model="form.image"></v-file-input>
                     <div id="preview" class="mb-4" v-if="previewImage">
                         <!-- previewImage: {{ previewImage }}<br /> -->
                         <v-row no-gutters class="">
@@ -76,8 +76,24 @@ export default {
             this.previewImage = URL.createObjectURL(file)
         },
         async createUser() {
-            console.log('createUser')
-            await this.$store.dispatch('users/createUser', this.form)
+            try {
+                console.log('createUser')
+                await this.$store.dispatch('users/createUser', this.form)
+                this.$store.commit('snackbars/SET_SNACKBAR', {
+                    show: true,
+                    content: 'Utilisateur créé avec succès.',
+                    color: 'success'
+                })
+                this.$router.push('/admin/users')
+            } catch (error) {
+                console.log('error: ', error)
+                this.$store.commit('snackbars/SET_SNACKBAR', {
+                    show: true,
+                    content: 'Une erreur est survenue et l\'utilisateur n\'a pas pu être créé.',
+                    color: 'error'
+                })
+                throw error
+            }
         }
     }
 }

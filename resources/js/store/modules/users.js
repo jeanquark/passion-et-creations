@@ -24,7 +24,7 @@ export const actions = {
 			throw error
 		}
 	},
-	async createUser({ commit }, form) {
+	async createUser({ dispatch }, form) {
 		try {
 			// const data = await form.submit('post', '/api/v1/users')
             // console.log('data: ', data)
@@ -37,6 +37,17 @@ export const actions = {
                 ]
             })
 			console.log('data: ', data)
+			await dispatch('fetchUsers')
+		} catch (error) {
+			console.log('error: ', error)
+			throw error
+		}
+	},
+	async deleteUser({ dispatch }, payload) {
+		try {
+			const { id } = payload
+			await axios.delete(`/api/v1/users/${id}`)
+			await dispatch('fetchUsers')
 		} catch (error) {
 			console.log('error: ', error)
 			throw error

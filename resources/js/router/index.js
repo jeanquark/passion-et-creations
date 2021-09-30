@@ -53,9 +53,9 @@ import AdminUsersEdit from '../views/admin/users/edit'
 // import Lawyer from '../views/lawyer'
 // import Permanences from '../views/permanences'
 // import Slider from '../views/slider'
-import Portfolio from '../views/portfolio'
+// import Portfolio from '../views/portfolio'
 import Home from '../views/index'
-import Creatrice from '../views/creatrice'
+// import Creatrice from '../views/creatrice'
 import Login from '../views/login'
 
 import log from '../middleware/log'
@@ -104,14 +104,14 @@ const router = new VueRouter({
         //         middleware: log
         //     }
         // },
-        {
-            path: '/portfolio',
-            name: 'portfolio',
-            component: Portfolio,
-            meta: {
-                middleware: log
-            }
-        },
+        // {
+        //     path: '/portfolio',
+        //     name: 'portfolio',
+        //     component: Portfolio,
+        //     meta: {
+        //         middleware: log
+        //     }
+        // },
         // {
         //     path: '/creatrice',
         //     name: 'creatrice',
@@ -364,26 +364,25 @@ function nextFactory(context, middleware, index) {
 }
 
 router.beforeEach(async (to, from, next) => {
-    console.log('[router] index beforeEach() ')
-    console.log("beforeEach store.getters['auth/auth']: ", store.getters['auth/auth'])
-    console.log("beforeEach store.getters['auth/token']: ", store.getters['auth/token'])
+    // console.log('[router] index beforeEach() ')
+    // console.log("beforeEach store.getters['auth/auth']: ", store.getters['auth/auth'])
+    // console.log("beforeEach store.getters['auth/token']: ", store.getters['auth/token'])
     // Check auth
     // if (!store.getters['auth/auth'] && store.getters['auth/token']) {
-    if (!store.getters['auth/auth']) {
-        try {
-            // await store.dispatch('auth/setAuthUser')
-            // const response = await axios.get('/sanctum/csrf-cookie')
-            // console.log('[router] response: ', response)
-        } catch (error) {
-            console.log('error: ', error)
-        }
-    }
-    console.log('beforeEach next()')
+    // if (!store.getters['auth/auth']) {
+    //     try {
+    //         // await store.dispatch('auth/setAuthUser')
+    //         // const response = await axios.get('/sanctum/csrf-cookie')
+    //         // console.log('[router] response: ', response)
+    //     } catch (error) {
+    //         console.log('error: ', error)
+    //     }
+    // }
+    // console.log('beforeEach next()')
     return next()
 })
 
 router.beforeEach((to, from, next) => {
-    console.log('beforeEach 2')
     if (to.meta.middleware) {
         const middleware = Array.isArray(to.meta.middleware) ? to.meta.middleware : [to.meta.middleware]
 

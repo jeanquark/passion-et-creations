@@ -27,7 +27,7 @@
                                 {{ item.section }}
                             </td>
                             <td>
-                                <div v-html="item.content.substring(0, 100)"></div>
+                                <div v-html="truncate(item.content, 50)"></div>
                             </td>
                             <td>
                                 {{ item.is_published ? 'Oui' : 'Non' }}
@@ -103,6 +103,9 @@ export default {
         },
     },
     methods: {
+        truncate(str, n) {
+            return (str.length > n) ? str.substr(0, n-1) + '&hellip;' : str;
+        },
         async deleteContent(id) {
             try {
                 console.log('deleteContent ', id)

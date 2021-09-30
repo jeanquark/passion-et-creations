@@ -1,6 +1,6 @@
 <template>
     <v-row no-gutters justify="center" id="portfolio" class="my-10" style="border: 1px solid red;">
-        <v-col cols="12" md="10" class="px-4" style="border: 1px dashed pink;">
+        <v-col cols="12" md="10" class="px-0" style="border: 1px dashed pink;">
             <h2 class="text-center my-2" style="color: #c49a6c;">Portfolio</h2>
             <!-- Start of page<br /> -->
             <!-- Images: {{ images }}<br /> -->
@@ -8,16 +8,18 @@
             <!-- portfolios: {{ portfolios.length }}<br /><br /> -->
             <!-- selectedPortfolio: {{ selectedPortfolio }}<br /><br /> -->
             <v-expand-transition>
-                <waterfall :line-gap="240" :watch="portfolios">
+                <waterfall line="v" :line-gap="240" align="center" :watch="portfolios">
                     <waterfall-slot v-for="(portfolio, index) in portfolios" :width="frontImage(portfolio)['width']" :height="frontImage(portfolio)['height']" :order="index" :key="index">
-                        <v-img
-                            :lazy-src="`/thumbnails${frontImage(portfolio)['thumbnail_path']}`"
-                            :src="`/thumbnails${frontImage(portfolio)['thumbnail_path']}`"
-                            class="image"
-                            style="margin: .5em"
-                            @click="selectPortfolio(portfolio, index)"
-                            v-if="frontImage(portfolio)"
-                        ></v-img>
+                        <div class="pa-2">
+                            <v-img
+                                :lazy-src="`/thumbnails${frontImage(portfolio)['thumbnail_path']}`"
+                                :src="`/thumbnails${frontImage(portfolio)['thumbnail_path']}`"
+                                class="image"
+                                style=""
+                                @click="selectPortfolio(portfolio, index)"
+                                v-if="frontImage(portfolio)"
+                            ></v-img>
+                        </div>
                         <!-- {{ portfolio.images[0]['path'] }} -->
                         <!-- <v-img :lazy-src="`/medias/${portfolio.images[0]['path']}`" :src="`/medias/${portfolio.images[0]['path']}`" class="image" style="margin: 5px" @click="selectImage(portfolio)"></v-img> -->
                     </waterfall-slot>
@@ -94,7 +96,7 @@ export default {
             dialog: false,
             selectedPortfolio: null,
             selectedImage: null,
-            showAllPortfolios: false
+            showAllPortfolios: false,
         }
     },
     computed: {
@@ -107,12 +109,12 @@ export default {
             } else {
                 return this.$store.getters['portfolios/portfolios']
             }
-        }
+        },
     },
     methods: {
         frontImage(portfolio) {
             try {
-                return portfolio.portfolio_images.find(image => image.is_front_image == true)
+                return portfolio.portfolio_images.find((image) => image.is_front_image == true)
             } catch (error) {
                 console.log('error: ', error)
             }
@@ -140,8 +142,8 @@ export default {
             if (this.selectedPortfolio.index < this.portfolios.length - 1) {
                 this.selectPortfolio(this.portfolios[this.selectedPortfolio.index + 1], this.selectedPortfolio.index + 1)
             }
-        }
-    }
+        },
+    },
 }
 </script>
 

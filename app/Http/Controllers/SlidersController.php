@@ -12,7 +12,7 @@ class SlidersController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:admin')->except(['index']);
+        // $this->middleware('role:admin')->except(['index']);
     }
 
     /**

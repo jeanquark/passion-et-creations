@@ -1,9 +1,9 @@
 <template>
     <v-main>
         <v-breadcrumbs large :items="items"></v-breadcrumbs>
-        <h2>Admin Users Edit {{ $route.params.id }}</h2>
-        users: {{ users }}<br /><br />
-        user: {{ user }}<br /><br />
+        <h2>Editer utilisateur {{ $route.params.id }}</h2>
+        <!-- users: {{ users }}<br /><br /> -->
+        <!-- user: {{ user }}<br /><br /> -->
         <v-row no-gutters>
             <v-col cols="12">
                 <v-form @submit.prevent="resetPassword">

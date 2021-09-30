@@ -17,6 +17,6 @@ class ContactMessage extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'object', 'message', 'is_read'
+        'name', 'email', 'message', 'is_read'
     ];
 }

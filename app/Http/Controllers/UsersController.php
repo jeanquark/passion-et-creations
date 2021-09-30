@@ -12,7 +12,7 @@ class UsersController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:admin')->except(['index']);
+        // $this->middleware('role:admin')->except(['index']);
     }
 
     /**
@@ -36,14 +36,18 @@ class UsersController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'name' => 'string|max:64',
+            'email' => 'email|unique:users',
             'image' => 'mimes:jpg,jpeg,png',
+            'password' => 'min:8|confirmed'
         ]);
 
         $newUser = new User();
         $newUser->name = $request['name'];
         $newUser->email = $request['email'];
         $newUser->password = Hash::make($request['password']);
-        // $newUser->save();
+
+        $newUser->save();
 
         if ($request->hasfile('image')) {
             $image = $request['image'];
@@ -99,8 +103,12 @@ class UsersController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
-        //
+        User::where('id', '=', $id)->delete();
+
+        return response()->json([
+            'success' => true
+        ]);
     }
 }

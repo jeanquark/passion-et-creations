@@ -50,8 +50,14 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('/v1/contacts', [ContactMessagesController::class, 'index']);
     Route::get('/v1/contacts/{id}', [ContactMessagesController::class, 'show']);
     Route::put('/v1/contacts/{id}', [ContactMessagesController::class, 'update']);
+    Route::delete('/v1/contacts/{id}', [ContactMessagesController::class, 'destroy']);
 
-    Route::apiResource('/v1/users', UsersController::class);
+    // Route::apiResource('/v1/users', UsersController::class);
+    Route::get('/v1/users', [UsersController::class, 'index']);
+    Route::post('/v1/users', [UsersController::class, 'store']);
+    Route::get('/v1/users/{id}', [UsersController::class, 'show']);
+    Route::put('/v1/users/{id}', [UsersController::class, 'update']);
+    Route::delete('/v1/users/{id}', [UsersController::class, 'destroy']);
 });
 
 

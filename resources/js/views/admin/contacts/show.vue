@@ -2,50 +2,34 @@
     <v-main>
         <v-breadcrumbs large :items="items"></v-breadcrumbs>
         <v-row no-gutters justify="center">
-            <v-col cols="12">
-                <h2>Contacts show</h2>
-                sliders: {{ sliders }}<br /><br />
-            </v-col>
-        </v-row>
-        <v-row no-gutters>
-            <v-col cols="12" class="mx-3">
-                <v-data-table :headers="headers" :items="sliders" :items-per-page="5" :hide-default-header="true" class="elevation-1">
-                    <template v-slot:header="{ props }">
-                        <thead>
-                            <tr>
-                                <th class="text-left" v-for="(head, index) in props.headers" :key="index">
-                                    {{ head.text }}
-                                </th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                    </template>
-
-                    <template v-slot:[`item`]="{ item, index }">
-                        <tr style="" v-if="headers && headers.length">
-                            <td>
-                                {{ item.id }}
-                            </td>
-                            <td>
-                                {{ item.name }}
-                            </td>
-                            <td>
-                                {{ item.section }}
-                            </td>
-                            <td>
-                                {{ item.created_at | moment('DD MMM YYYY') }}
-                            </td>
-                            <td>
-                                {{ item.updated_at | moment('from') }}
-                            </td>
-                            <td style="white-space: nowrap">
-                                <v-btn small color="success" :to="`/admin/sliders/${item.id}`">Montrer</v-btn>
-                                <v-btn small color="info" :to="`/admin/sliders/${item.id}/edit`">Editer</v-btn>
-                                <v-btn small color="error">Supprimer</v-btn>
-                            </td>
-                        </tr>
-                    </template>
-                </v-data-table>
+            <v-col cols="12" md="11">
+                <v-list dense>
+                    <v-subheader class="text-center text-h5">Message ID {{ this.$route.params.id }}</v-subheader>
+                    <v-list-item>
+                        <v-list-item-icon> Nom </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title class="text-subtitle-2">{{ contact.name }}</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item>
+                        <v-list-item-icon> E-mail </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title class="text-subtitle-2">{{ contact.email }}</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item>
+                        <v-list-item-icon> Message </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title class="text-subtitle-2">{{ contact.message }}</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item>
+                        <v-list-item-icon> Envoyé le </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title class="text-subtitle-2">{{ contact.created_at | moment('ddd DD MMM YYYY HH:mm') }}</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
             </v-col>
         </v-row>
     </v-main>
@@ -56,9 +40,12 @@ export default {
     name: 'AdminContactsShow',
     async created() {
         try {
-            if (this.$store.getters['sliders/sliders'].length < 1) {
-                this.$store.dispatch('sliders/fetchSliders')
+            if (this.$store.getters['contacts/contacts'].length < 1) {
+                await this.$store.dispatch('contacts/fetchContacts')
             }
+            this.$store.dispatch('contacts/updateContacts', {
+                id: this.$route.params.id
+            })
         } catch (error) {
             console.log('error: ', error)
         }
@@ -68,42 +55,28 @@ export default {
         return {
             items: [
                 {
-                    text: 'Carousels',
-                    disabled: true,
-                    href: '/admin/sliders'
-                },
-                {
-                    text: 'Ajouter',
+                    text: 'Formulaire de contact',
                     disabled: false,
-                    to: '/admin/sliders/create'
-                }
+                    to: '/admin/contacts',
+                    exact: true,
+                },
+                {
+                    text: 'Montrer',
+                    disabled: true,
+                    to: '/admin/contacts',
+                },
             ],
-            headers: [
-                {
-                    text: 'ID',
-                    align: 'start',
-                    sortable: false,
-                    value: 'id'
-                },
-                {
-                    text: 'Nom',
-                    value: 'name'
-                },
-                {
-                    text: 'Section',
-                    value: 'section'
-                },
-                { text: 'Créé le', value: 'created_at' },
-                { text: 'Dernière modification', value: 'updated_at' }
-            ]
         }
     },
     computed: {
-        sliders() {
-            return this.$store.getters['sliders/sliders']
-        }
+        contacts() {
+            return this.$store.getters['contacts/contacts']
+        },
+        contact() {
+            return this.contacts.find((contact) => contact.id == this.$route.params.id)
+        },
     },
-    methods: {}
+    methods: {},
 }
 </script>
 

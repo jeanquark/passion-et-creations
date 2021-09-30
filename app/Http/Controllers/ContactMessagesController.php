@@ -5,13 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\ContactMessage;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ContactMessageForm;
+use App\Mail\ContactMessageConfirmation;
 
 
 class ContactMessagesController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:admin');
+        // $this->middleware('role:admin');
     }
 
     /**
@@ -26,6 +29,40 @@ class ContactMessagesController extends Controller
         return response()->json($contact_messages);
     }
 
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+        ]);
+
+        $updatedContact = ContactMessage::find($id);
+
+        $updatedContact->is_read = true;
+
+        $updatedContact->save();
+
+        return response()->json([
+            'success' => true,
+            'request' => $request,
+            'id' => $id
+        ], 200);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        ContactMessage::where('id', '=', $id)->delete();
+
+        return response()->json([
+            'success' => true,
+            'id' => $id
+        ]);
+    }
+
     public function send(Request $request)
     {
         $request->validate([
@@ -34,7 +71,7 @@ class ContactMessagesController extends Controller
             'message' => 'required|max:1000'
         ]);
 
-        $senderAddress = env('MAIL_SENDING_ADDRESS');
+        $senderAddress = env('MAIL_FROM_ADDRESS');
         
         // 1) Save message in database
         $contactMessage = new ContactMessage;
@@ -47,8 +84,8 @@ class ContactMessagesController extends Controller
         $contactMessage->save();
         
         // 2) Send message as email
-        // Mail::to($senderAddress)->send(new ContactForm($contactMessage));
-        // Mail::to($contactMessage->email)->send(new ContactFormSentConfirmation($contactMessage));
+        Mail::to($senderAddress)->send(new ContactMessageForm($contactMessage));
+        Mail::to($contactMessage->email)->send(new ContactMessageConfirmation($contactMessage));
 
         return response()->json([
             'success' => true
