@@ -133,14 +133,14 @@ class PortfoliosController extends Controller
 
         $portfolio = Portfolio::find($id);
 
-        // $portfolio->updateOrCreate(
-        //     ['id' => $id],
-        //     [
-        //         'title' => $request->title,
-        //         'description' => $request->description,
-        //         'updated_at' => \Carbon\Carbon::now(),
-        //     ]
-        // );
+        $portfolio->updateOrCreate(
+            ['id' => $id],
+            [
+                'title' => $request->title,
+                'description' => $request->description,
+                'updated_at' => \Carbon\Carbon::now(),
+            ]
+        );
 
         $portfolioImages = PortfolioImage::where('portfolio_id', '=', $id)->get();
 

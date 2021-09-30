@@ -1,14 +1,14 @@
 <template>
     <v-main>
         <v-breadcrumbs large :items="items"></v-breadcrumbs>
-        <!-- <p>content: {{ content }}</p> -->
+        <p>content: {{ content }}<br /><br />
+        <!-- content.section: {{ content.section }} -->
+        </p>
         <v-row no-gutters justify="center" v-if="content">
             <v-col cols="12" md="10">
-                <v-form @submit.prevent="updateContent">
-                    
-
+                <v-form @submit.prevent="updateContent" v-if="content && content.section">
                     <v-text-field label="Nom" :error-messages="form.errors.get('name')" v-model="form.name"></v-text-field>
-                    <v-select :items="sections" item-text="name" item-value="slug" label="Section (partie du site où le nouveau contenu sera affiché)" v-model="form.section"></v-select>
+                    <v-select :items="sections" item-text="name" item-value="slug" return-object label="Section (partie du site où le nouveau contenu sera affiché)" v-model="form.section"></v-select>
                     <TextEditorComponent :formContent="content.content" />
                     <small class="error--text" v-if="form.errors.get('content')">{{ form.errors.get('content') }}</small>
                     <v-checkbox v-model="form.is_published" label="Publié?"></v-checkbox>
@@ -33,6 +33,7 @@ export default {
             if (this.$store.getters['contents/contents'].length < 1) {
                 await this.$store.dispatch('contents/fetchContents')
             }
+            console.log('content: ', this.content)
             this.form.fill(this.content)
         } catch (error) {
             console.log('error: ', error)
@@ -40,7 +41,6 @@ export default {
     },
     data() {
         return {
-            // showHTML: false,
             showMediasModal: false,
             items: [
                 {
@@ -63,9 +63,8 @@ export default {
                 content: '',
                 is_published: false
             }),
-            // showHTML: false
             sections: [
-                { name: 'Bienvenue', slug: 'bienvenue' },
+                { name: 'Accueil', slug: 'accueil' },
                 { name: 'Portrait', slug: 'portrait' },
                 { name: 'Contact', slug: 'contact' },
             ],
@@ -80,10 +79,6 @@ export default {
         }
     },
     methods: {
-        // toggleShowHTML(value) {
-        //     console.log('toggleShowHTML2: ', value)
-        //     this.showHTML = value
-        // },
         async updateContent() {
             try {
                 console.log('updateContent: ', this.form)

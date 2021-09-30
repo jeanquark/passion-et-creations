@@ -48,7 +48,7 @@ export default {
                 is_published: false,
             }),
             sections: [
-                { name: 'Bienvenue', slug: 'bienvenue' },
+                { name: 'Accueil', slug: 'accueil' },
                 { name: 'Portrait', slug: 'portrait' },
                 { name: 'Contact', slug: 'contact' },
             ],

@@ -1,6 +1,6 @@
 <template>
-    <v-row no-gutters justify="center" id="portfolio" class="my-10" style="border: 1px solid red;">
-        <v-col cols="12" md="10" class="px-0" style="border: 1px dashed pink;">
+    <v-row no-gutters justify="center" id="portfolio" class="my-10" style="border: 0px solid red;">
+        <v-col cols="12" md="10" class="px-0" style="border: 0px dashed pink;">
             <h2 class="text-center my-2" style="color: #c49a6c;">Portfolio</h2>
             <!-- Start of page<br /> -->
             <!-- Images: {{ images }}<br /> -->

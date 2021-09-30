@@ -11,7 +11,7 @@
             </v-toolbar-title>
 
             <v-spacer></v-spacer>
-            authUser: {{ authUser }}
+            <!-- authUser: {{ authUser }} -->
             <!-- token: {{ authToken.substring(0, 4) }} -->
             <!-- <v-toolbar-title class="nav-link mx-2"><a href="/login" class="link">Login</a></v-toolbar-title> -->
 

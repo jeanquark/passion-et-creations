@@ -1,11 +1,12 @@
 <template>
     <v-main>
         <v-breadcrumbs large :items="items"></v-breadcrumbs>
-        <h2>Editer utilisateur {{ $route.params.id }}</h2>
         <!-- users: {{ users }}<br /><br /> -->
         <!-- user: {{ user }}<br /><br /> -->
-        <v-row no-gutters>
-            <v-col cols="12">
+        <v-row no-gutters justify="center">
+            <v-col cols="12" md="11">
+                <h3>Editer utilisateur {{ $route.params.id }}</h3>
+                <br />
                 <v-form @submit.prevent="resetPassword">
                     <v-text-field
                         prepend-icon="mdi-lock"
