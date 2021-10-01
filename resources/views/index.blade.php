@@ -42,13 +42,6 @@
             </v-col>
         </v-row>
         <a href="#welcome"></a>
-        @auth
-            <p>The user <span style="color: green;">is</span> authenticated</p>
-        @endauth
-
-        @guest
-            <p>The user is <span style="color: red;">not</span> authenticated</p>
-        @endguest
         <v-row no-gutters id="welcome" justify="center" align="center">
             <v-col cols="12" sm="6" md="6" class="px-4">
                 {!! $content->content !!}
