@@ -16,7 +16,7 @@
                         :error-messages="form.errors.get('password_confirmation')"
                         v-model="form.password_confirmation"
                     ></v-text-field>
-                    <v-file-input prepend-icon="mdi-camera" label="Image de l'utilisateur (optionel)" :clearable="false" show-size class="my-5" @change="onFileChange" v-model="form.image"></v-file-input>
+                    <v-file-input prepend-icon="mdi-camera" label="Image de l'utilisateur (optionel)" :clearable="false" show-size class="my-5" @change="onFileChange" v-model="form.picture"></v-file-input>
                     <div id="preview" class="mb-4" v-if="previewImage">
                         <!-- previewImage: {{ previewImage }}<br /> -->
                         <v-row no-gutters class="">
@@ -57,7 +57,8 @@ export default {
                 name: '',
                 email: '',
                 password: '',
-                password_confirmation: ''
+                password_confirmation: '',
+                picture: null
             }),
             previewImage: null
         }

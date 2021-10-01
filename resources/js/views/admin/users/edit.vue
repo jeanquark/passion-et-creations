@@ -19,7 +19,7 @@
                     <div id="preview" class="mb-4">
                         <!-- previewImage: {{ previewImage }}<br /> -->
                         <v-row no-gutters class="">
-                            <v-col cols="12" md="6" lg="4" class="ml-6 pa-2">
+                            <v-col cols="12" md="6" lg="4" class="ml-6 pa-2" v-if="formUser.picture">
                                 <p>Image actuelle:</p>
                                 <v-img :src="`/images/${formUser.picture}`" width="100"></v-img>
                             </v-col>

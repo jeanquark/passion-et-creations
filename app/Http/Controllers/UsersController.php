@@ -39,7 +39,8 @@ class UsersController extends Controller
             'name' => 'string|max:64',
             'email' => 'email|unique:users',
             'image' => 'mimes:jpg,jpeg,png',
-            'password' => 'min:8|confirmed'
+            'password' => 'min:8|confirmed',
+            'picture.*' => 'mimes:jpg,jpeg,png'
         ]);
 
         $newUser = new User();
@@ -47,10 +48,10 @@ class UsersController extends Controller
         $newUser->email = $request['email'];
         $newUser->password = Hash::make($request['password']);
 
-        $newUser->save();
+        // $newUser->save();
 
-        if ($request->hasfile('image')) {
-            $image = $request['image'];
+        if ($request->hasfile('picture')) {
+            $image = $request['picture'];
             $fileFullName = $image->getClientOriginalName();
             $fileName = pathinfo($fileFullName, PATHINFO_FILENAME);
             $fileExtension = pathinfo($fileFullName, PATHINFO_EXTENSION);
@@ -61,14 +62,42 @@ class UsersController extends Controller
 
                 // 1) Store original image
                 $originalImage = Intervention::make($image)->encode();
-                Storage::disk('images')->put($request->path . '/' . $fileFullName, $originalImage);
+                $uploadedFile = Storage::disk('images')->put($request->path . '/' . $fileFullName, $originalImage);
+
+                // 2) Save in DB
+                if ($uploadedFile) {
+                    $newUser->picture = $fileFullName;
+                }
             }
         }
+        // if ($request->hasfile('picture')) {
+        //     foreach($request->file('picture') as $file) {
+        //         $fileFullName = $file->getClientOriginalName();
+        //         $fileName = pathinfo($fileFullName, PATHINFO_FILENAME);
+        //         $fileExtension = pathinfo($fileFullName, PATHINFO_EXTENSION);
+        //         $filePath = $file->getPath();
+
+        //         $fileType = $file->getClientMimeType();
+        //         if( $fileType == 'image/jpeg' || $fileType == 'image/png') {
+
+        //             // 1) Store original image
+        //             $originalFile = Intervention::make($file)->encode();
+        //             $uploadedFile = Storage::disk('images')->put($request->path . '/' . $fileFullName, $originalFile);
+      
+        //             // 2) Save in DB
+        //             if ($uploadedFile) {
+        //                 $newUser->picture = $fileFullName;
+        //             }
+        //         }
+        //     }
+        // }
+
+        $newUser->save();
 
         return response()->json([
             'success' => true,
-            '$request->hasfile(image)' => $request->hasfile('image'),
-            '$request[image]' => $request['image'],
+            '$request->hasfile(picture)' => $request->hasfile('picture'),
+            '$request[picture]' => $request['picture'],
         ]);
     }
 

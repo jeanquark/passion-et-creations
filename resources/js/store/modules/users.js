@@ -26,9 +26,6 @@ export const actions = {
 	},
 	async createUser({ dispatch }, form) {
 		try {
-			// const data = await form.submit('post', '/api/v1/users')
-            // console.log('data: ', data)
-
 			const { data } = await form.submit('post', `/api/v1/users`, {
                 transformRequest: [
                     function(data, headers) {
