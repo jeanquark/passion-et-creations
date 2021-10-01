@@ -21,7 +21,7 @@ class ContentsController extends Controller
      */
     public function index()
     {
-        $contents = Content::orderBy('id', 'desc')->get();
+        $contents = Content::where('is_published', '=', true)->orderBy('id', 'desc')->get();
 
         return response()->json($contents);
     }

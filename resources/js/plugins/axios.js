@@ -3,7 +3,7 @@ import store from '../store'
 
 // Request interceptor
 axios.interceptors.request.use(request => {
-    console.log('[plugins] axios interceptor request: ', request)
+    // console.log('[plugins] axios interceptor request: ', request)
     // const token = store.getters['auth/token']
     // if (token) {
     //     request.headers.common['Authorization'] = `Bearer ${token}`
@@ -19,7 +19,7 @@ axios.interceptors.response.use(
     },
     error => {
         //Put your logic here to manage the error message coming from BE
-        console.log('[plugin] axios interceptor response error: ', error.response.status)
+        // console.log('[plugin] axios interceptor response error: ', error.response.status)
         if (error.response.status == 401) {
             store.commit('snackbars/SET_SNACKBAR', {
                 show: true,

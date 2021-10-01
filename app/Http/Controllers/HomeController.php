@@ -9,8 +9,10 @@ class HomeController extends Controller
 {
     public function index () {
         
+        $content = Content::where('section', '=', 'accueil')->where('is_published', '=', true)->first();
+
         return view('index', [
-            'content' => Content::where('section', '=', 'accueil')->first()
+            'content' => $content
         ]);
     }
 }

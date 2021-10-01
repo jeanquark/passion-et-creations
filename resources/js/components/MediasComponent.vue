@@ -9,7 +9,7 @@
                     <!-- medias.files_with_size: {{ medias.files_with_size }}<br /><br /> -->
                     <!-- folders: {{ folders }}<br /><br /> -->
                     <!-- files: {{ files }}<br /><br /> -->
-                    path: {{ path }}<br /><br />
+                    <!-- path: {{ path }}<br /><br /> -->
                     <!-- items: {{ items }}<br /><br /> -->
                     <!-- showUploadFile: {{ showUploadFile }}<br /><br /> -->
                 </v-col>

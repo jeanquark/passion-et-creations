@@ -1,14 +1,8 @@
 <template>
     <v-main>
         <v-breadcrumbs large :items="items"></v-breadcrumbs>
-        <v-row no-gutters justify="center">
+        <v-row no-gutters class="mx-6">
             <v-col cols="12">
-                <h2>Sliders</h2>
-                sliders: {{ sliders }}<br /><br />
-            </v-col>
-        </v-row>
-        <v-row no-gutters>
-            <v-col cols="12" class="mx-3">
                 <v-data-table :headers="headers" :items="sliders" :items-per-page="5" :hide-default-header="true" class="elevation-1">
                     <template v-slot:header="{ props }">
                         <thead>
@@ -21,7 +15,7 @@
                         </thead>
                     </template>
 
-                    <template v-slot:[`item`]="{ item, index }">
+                    <template v-slot:[`item`]="{ item }">
                         <tr style="" v-if="headers && headers.length">
                             <td>
                                 {{ item.id }}
@@ -39,7 +33,6 @@
                                 {{ item.updated_at | moment('from') }}
                             </td>
                             <td style="white-space: nowrap">
-                                <v-btn small color="success" :to="`/admin/sliders/${item.id}`">Montrer</v-btn>
                                 <v-btn small color="info" :to="`/admin/sliders/${item.id}/edit`">Editer</v-btn>
                                 <v-btn small color="error">Supprimer</v-btn>
                             </td>
@@ -71,11 +64,6 @@ export default {
                     text: 'Carousels',
                     disabled: true,
                     href: '/admin/sliders'
-                },
-                {
-                    text: 'Ajouter',
-                    disabled: false,
-                    to: '/admin/sliders/create'
                 }
             ],
             headers: [

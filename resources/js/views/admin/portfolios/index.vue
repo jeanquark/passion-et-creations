@@ -3,8 +3,8 @@
         <v-breadcrumbs large :items="items"></v-breadcrumbs>
         <v-row no-gutters justify="center" class="my-2">
             <v-col cols="11">
-                updatedOrder: {{ updatedOrder }}<br /><br />
-                indexClicked: {{ indexClicked }}<br /><br />
+                <!-- updatedOrder: {{ updatedOrder }}<br /><br /> -->
+                <!-- indexClicked: {{ indexClicked }}<br /><br /> -->
 
                 <v-btn icon color="primary" class="mx-1" :disabled="displayImage" @click="displayImage = true"><v-icon>mdi-format-list-text</v-icon></v-btn>
                 <v-btn icon color="primary" class="mx-1" :disabled="!displayImage" @click="displayImage = false"><v-icon>mdi-format-list-bulleted</v-icon></v-btn>

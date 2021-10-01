@@ -90,10 +90,47 @@ class UsersController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
+        $request->validate([
+            'name' => 'string|max:64',
+            'new_picture.*' => 'mimes:jpg,jpeg,png'
+        ]);
+
+        $updatedUser = User::find($id);
+        $updatedUser->name = $request->name;
+
+        if ($request->hasfile('new_picture')) {
+            foreach($request->file('new_picture') as $file) {
+                $fileFullName = $file->getClientOriginalName();
+                $fileName = pathinfo($fileFullName, PATHINFO_FILENAME);
+                $fileExtension = pathinfo($fileFullName, PATHINFO_EXTENSION);
+                $filePath = $file->getPath();
+
+                $fileType = $file->getClientMimeType();
+                if( $fileType == 'image/jpeg' || $fileType == 'image/png') {
+
+                    // 1) Store original image
+                    $originalFile = Intervention::make($file)->encode();
+                    $uploadedFile = Storage::disk('images')->put($request->path . '/' . $fileFullName, $originalFile);
+      
+                    // 2) Delete old image & save in DB
+                    if ($uploadedFile) {
+                        Storage::disk('images')->delete($updatedUser->picture);
+                        $updatedUser->picture = $fileFullName;
+                    }
+                }
+            }
+        }
+        $updatedUser->save();
+
+
         return response()->json([
             'success' => true,
+            // '$id' => $id,
+            // '$request' => $request,
+            // '$request->hasfile(new_picture)' => $request->hasfile('new_picture'),
+            // '$request[new_picture]' => $request['new_picture']
         ], 200);
     }
 
@@ -105,6 +142,11 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
+        $updatedUser = User::find($id);
+        if ($updatedUser->picture) {
+            Storage::disk('images')->delete($updatedUser->picture);
+        }
+
         User::where('id', '=', $id)->delete();
 
         return response()->json([

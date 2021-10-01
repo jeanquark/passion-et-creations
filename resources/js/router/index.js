@@ -35,27 +35,8 @@ import AdminContactsShow from '../views/admin/contacts/show'
 import AdminUsers from '../views/admin/users/layout'
 import AdminUsersIndex from '../views/admin/users/index'
 import AdminUsersCreate from '../views/admin/users/create'
-import AdminUsersShow from '../views/admin/users/show'
 import AdminUsersEdit from '../views/admin/users/edit'
-// import AdminLawyers from '../views/admin/lawyers/layout'
-// import AdminLawyersHome from "../views/admin/lawyers/home"
-// import AdminLawyersIndex from '../views/admin/lawyers/index'
-// import AdminLawyersCreate from '../views/admin/lawyers/create'
-// import AdminLawyersEdit from '../views/admin/lawyers/edit'
-// import AdminTraineesIndex from '../views/admin/trainees/index'
-// import AdminPermanencesIndex from '../views/admin/permanences/index'
-// import AdminUsersIndex from "../views/admin/users/index";
-// import AdminUsersCreate from "../views/admin/users/create";
-// import AdminUsersEdit from "../views/admin/users/edit";
-// import AdminLawyers from "../views/admin/lawyers";
-// import AdminFilesIndex from '../views/admin/files/index'
-// import Student from '../views/student'
-// import Lawyer from '../views/lawyer'
-// import Permanences from '../views/permanences'
-// import Slider from '../views/slider'
-// import Portfolio from '../views/portfolio'
 import Home from '../views/index'
-// import Creatrice from '../views/creatrice'
 import Login from '../views/login'
 
 import log from '../middleware/log'
@@ -74,49 +55,6 @@ const router = new VueRouter({
             name: 'Login',
             component: Login
         },
-        // {
-        //     path: '/student',
-        //     name: 'student',
-        //     component: Student,
-        //     beforeEnter: (to, from, next) => {
-        //         console.log('to: ', to)
-        //         console.log('from: ', from)
-        //         console.log('store.state.auth.auth: ', store.state.auth.auth)
-        //         // if (store.state.auth.auth == 'student') {
-        //         //     next()
-        //         // } else {
-        //         //     alert('Not authorized!')
-        //         // }
-        //         next()
-        //     }
-        // },
-        // {
-        //     path: '/lawyer',
-        //     name: 'lawyer',
-        //     component: Lawyer
-        // },
-        // {
-        //     path: '/slider',
-        //     name: 'slider',
-        //     component: Slider,
-        //     meta: {
-        //         layout: 'no-sidebar',
-        //         middleware: log
-        //     }
-        // },
-        // {
-        //     path: '/portfolio',
-        //     name: 'portfolio',
-        //     component: Portfolio,
-        //     meta: {
-        //         middleware: log
-        //     }
-        // },
-        // {
-        //     path: '/creatrice',
-        //     name: 'creatrice',
-        //     component: Creatrice
-        // },
         {
             path: '/admin',
             name: 'adminLayout',
@@ -266,82 +204,11 @@ const router = new VueRouter({
                             name: 'adminUsersEdit',
                             component: AdminUsersEdit
                         },
-                        {
-                            path: ':id',
-                            name: 'adminUsersShow',
-                            component: AdminUsersShow
-                        }
                     ]
                 }
-                // {
-                //     path: 'avocats',
-                //     // name: "adminLawyers",
-                //     component: AdminLawyers,
-                //     children: [
-                //         {
-                //             path: '',
-                //             name: 'adminLawyersIndex',
-                //             component: AdminLawyersIndex
-                //         },
-                //         {
-                //             path: 'ajouter',
-                //             name: 'adminLawyersCreate',
-                //             component: AdminLawyersCreate
-                //         },
-                //         {
-                //             path: ':id/editer',
-                //             name: 'adminLawyersEdit',
-                //             component: AdminLawyersEdit
-                //         }
-                //     ]
-                // },
-                // {
-                //     path: 'stagiaires',
-                //     name: 'adminTraineesIndex',
-                //     component: AdminTraineesIndex
-                // },
-                // {
-                //     path: 'permanences',
-                //     name: 'adminPermanencesIndex',
-                //     component: AdminPermanencesIndex
-                // },
-                // {
-                //     path: 'files',
-                //     name: 'adminFilesIndex',
-                //     component: AdminFilesIndex
-                // }
             ]
         }
     ]
-    // routes: [
-    //     {
-    //         path: "/admin/index",
-    //         name: "adminIndex",
-    //         component: AdminIndex
-    //     },
-    //     {
-    //         path: "/admin/lawyers",
-    //         name: "adminLawyers",
-    //         component: AdminLawyers
-    //     },
-    //     {
-    //         path: "/admin/users",
-    //         name: "adminUsersIndex",
-    //         component: AdminUsersIndex,
-    //         children: [
-    //             {
-    //                 path: "create",
-    //                 name: "adminUsersCreate",
-    //                 component: AdminUsersCreate
-    //             },
-    //             {
-    //                 path: ":id/edit",
-    //                 name: "adminUsersEdit",
-    //                 component: AdminUsersEdit
-    //             }
-    //         ]
-    //     }
-    // ]
 })
 
 // Creates a `nextMiddleware()` function which not only

@@ -24,7 +24,7 @@ export const actions = {
 			throw error
 		}
 	},
-	async createSlider({ commit }, form) {
+	async createSlider({ dispatch }, form) {
 		try {
 			// const data = await form.submit('post', '/api/v1/sliders')
             // console.log('data: ', data)
@@ -37,16 +37,18 @@ export const actions = {
                 ]
             })
 			console.log('data: ', data)
+			await dispatch('fetchSliders')
 		} catch (error) {
 			console.log('error: ', error)
 			throw error
 		}
 	},
-	async updateSlider({ commit }, payload) {
+	async updateSlider({ dispatch }, payload) {
 		try {
 			const { id } = payload
 			const data = await axios.put(`/api/v1/sliders/${id}`, payload)
 			console.log('data: ', data)
+			await dispatch('fetchSliders')
 		} catch (error) {
 			console.log('error: ', error)
 			throw error

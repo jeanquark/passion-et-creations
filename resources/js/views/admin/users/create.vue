@@ -6,15 +6,7 @@
                 <v-form @submit.prevent="createUser">
                     <v-text-field prepend-icon="mdi-account" name="name" label="Nom" type="text" :error-messages="form.errors.get('name')" v-model="form.name"></v-text-field>
                     <v-text-field prepend-icon="mdi-email" name="email" label="Email" type="email" :error-messages="form.errors.get('email')" v-model="form.email"></v-text-field>
-                    <v-file-input prepend-icon="mdi-camera" label="Sélectionner une image (public)" :clearable="false" show-size @change="onFileChange" v-model="form.image"></v-file-input>
-                    <div id="preview" class="mb-4" v-if="previewImage">
-                        <!-- previewImage: {{ previewImage }}<br /> -->
-                        <v-row no-gutters class="">
-                            <v-col cols="12" md="6" lg="4" class="ml-6 pa-2">
-                                <v-img :src="previewImage" width="100"></v-img>
-                            </v-col>
-                        </v-row>
-                    </div>
+                    
                     <v-text-field prepend-icon="mdi-lock" name="password" label="Mot de passe" type="password" :error-messages="form.errors.get('password')" v-model="form.password"></v-text-field>
                     <v-text-field
                         prepend-icon="mdi-lock"
@@ -24,6 +16,15 @@
                         :error-messages="form.errors.get('password_confirmation')"
                         v-model="form.password_confirmation"
                     ></v-text-field>
+                    <v-file-input prepend-icon="mdi-camera" label="Image de l'utilisateur (optionel)" :clearable="false" show-size class="my-5" @change="onFileChange" v-model="form.image"></v-file-input>
+                    <div id="preview" class="mb-4" v-if="previewImage">
+                        <!-- previewImage: {{ previewImage }}<br /> -->
+                        <v-row no-gutters class="">
+                            <v-col cols="12" md="6" lg="4" class="ml-6 pa-2">
+                                <v-img :src="previewImage" width="100"></v-img>
+                            </v-col>
+                        </v-row>
+                    </div>
                     <div class="text-center">
                         <v-btn small type="submit" color="success" :loading="form.busy">Créer utilisateur</v-btn>
                     </div>
@@ -53,10 +54,10 @@ export default {
                 }
             ],
             form: new Form({
-                name: 'John Doe',
-                email: 'john.doe@example.com',
-                password: 'secret',
-                password_confirmation: 'secret'
+                name: '',
+                email: '',
+                password: '',
+                password_confirmation: ''
             }),
             previewImage: null
         }

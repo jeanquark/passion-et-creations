@@ -1,9 +1,7 @@
 <template>
-    <div>
-        Admin index<br />
-        auth: {{ auth }}
-        <!-- <router-view /> -->
-    </div>
+    <v-main>
+        <h2 class="text-center">Console d'administration</h2>
+    </v-main>
 </template>
 
 <script>

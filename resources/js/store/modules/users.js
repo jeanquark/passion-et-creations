@@ -43,11 +43,16 @@ export const actions = {
 			throw error
 		}
 	},
-	async updateUser({ dispatch }, payload) {
+	async updateUser({ dispatch }, form) {
         try {
-            console.log('[VUEX] updateOrder payload: ', payload)
-			const { id } = payload
-            const data = await axios.put(`/api/v1/users/${id}`, payload)
+            const { data } = await form.submit('post', `/api/v1/users/${form.id}`, {
+                transformRequest: [
+                    function(data, headers) {
+                        // data['_method'] = 'PUT'
+                        return serialize(data)
+                    }
+                ]
+            })
             console.log('data: ', data)
 			await dispatch('fetchUsers')
         } catch (error) {

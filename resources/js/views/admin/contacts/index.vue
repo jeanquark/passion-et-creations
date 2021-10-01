@@ -6,8 +6,8 @@
                 <!-- contacts: {{ contacts }}<br /><br /> -->
             </v-col>
         </v-row>
-        <v-row no-gutters>
-            <v-col cols="12" class="mx-3">
+        <v-row no-gutters class="mx-6">
+            <v-col cols="12">
                 <v-data-table :headers="headers" :items="contacts" :items-per-page="5" :hide-default-header="true" class="elevation-1">
                     <template v-slot:header="{ props }">
                         <thead>

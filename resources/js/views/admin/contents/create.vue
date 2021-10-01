@@ -49,6 +49,7 @@ export default {
             }),
             sections: [
                 { name: 'Accueil', slug: 'accueil' },
+                { name: 'Info', slug: 'info' },
                 { name: 'Portrait', slug: 'portrait' },
                 { name: 'Contact', slug: 'contact' },
             ],

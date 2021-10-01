@@ -1,9 +1,8 @@
 <template>
     <v-main>
         <v-breadcrumbs large :items="items"></v-breadcrumbs>
-        <p>content: {{ content }}<br /><br />
+        <!-- content: {{ content }}<br /><br /> -->
         <!-- content.section: {{ content.section }} -->
-        </p>
         <v-row no-gutters justify="center" v-if="content">
             <v-col cols="12" md="10">
                 <v-form @submit.prevent="updateContent" v-if="content && content.section">
@@ -65,6 +64,7 @@ export default {
             }),
             sections: [
                 { name: 'Accueil', slug: 'accueil' },
+                { name: 'Info', slug: 'info' },
                 { name: 'Portrait', slug: 'portrait' },
                 { name: 'Contact', slug: 'contact' },
             ],
