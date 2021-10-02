@@ -78,7 +78,6 @@ class ContactMessagesController extends Controller
 
         $contactMessage->name = $request->name;
         $contactMessage->email = $request->email;
-        $contactMessage->object = $request->object;
         $contactMessage->message = $request->message;
 
         $contactMessage->save();

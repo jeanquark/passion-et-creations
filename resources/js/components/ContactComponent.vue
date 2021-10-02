@@ -2,9 +2,14 @@
     <v-main>
         <v-row no-gutters justify="center" id="contact" class="px-0" style="border: 0px solid orange">
             <v-col cols="12" md="6" class="pr-5">
-                <GmapMap :center="{ lat: 46.4776, lng: 6.4272 }" :zoom="14" map-type-id="terrain" style="width: 100%; height: 300px">
+                <!-- <GmapMap :center="{ lat: 46.4776, lng: 6.4272 }" :zoom="14" map-type-id="terrain" style="width: 100%; height: 300px">
                     <GmapMarker :key="index" v-for="(m, index) in markers" :position="m.position" :clickable="true" :draggable="true" @click="center = m.position" />
-                </GmapMap>
+                </GmapMap> -->
+                <l-map style="" :zoom="zoom" :center="center">
+                    <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+                    <!-- <l-marker :lat-lng="markerLatLng"></l-marker> -->
+                    <l-circle-marker :lat-lng="circle.center" :radius="circle.radius" :color="circle.color" />
+                </l-map>
             </v-col>
             <v-col cols="12" md="4" class="px-10">
                 <v-list dense class="mb-3">
@@ -15,7 +20,9 @@
                     <v-text-field prepend-icon="mdi-lock" name="email" label="E-mail" type="email" :error-messages="form.errors.get('email')" v-model="form.email"></v-text-field>
                     <v-textarea prepend-icon="mdi-message" name="message" label="Votre message" rows="4" counter hint="Max. 1000 caractères" v-model="form.message"></v-textarea>
                     <div class="text-center">
-                        <v-btn small type="submit" color="success" :loading="form.busy">Envoyer</v-btn>
+                        <vue-recaptcha sitekey="6Lf2kDsUAAAAAG_Ri3CprPGeRm_m3XpFi0QETCCv">
+                            <v-btn small type="submit" color="success" :loading="form.busy">Envoyer</v-btn>
+                        </vue-recaptcha>
                     </div>
                 </v-form>
             </v-col>
@@ -49,7 +56,6 @@
                                             <span>Adresse e-mail copiée</span>
                                         </v-tooltip>
                                         <v-btn icon @click="copyEmailAddress"><v-icon small>mdi-content-copy</v-icon></v-btn>
-                                        <!-- show: {{ showTooltip}} -->
                                     </v-list-item-title>
                                 </v-list-item-content>
                             </v-list-item>
@@ -87,7 +93,20 @@
 
 <script>
 import Form from 'vform'
+import VueRecaptcha from 'vue-recaptcha'
+import { LMap, LTileLayer, LMarker, LCircleMarker } from 'vue2-leaflet'
+import 'leaflet/dist/leaflet.css'
+
+// import { Icon } from 'leaflet';
+// delete Icon.Default.prototype._getIconUrl;
+// Icon.Default.mergeOptions({
+//   iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+//   iconUrl: require('leaflet/dist/images/marker-icon.png'),
+//   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+// });
+
 export default {
+    components: { VueRecaptcha, LMap, LTileLayer, LMarker, LCircleMarker },
     data() {
         return {
             form: new Form({
@@ -97,7 +116,17 @@ export default {
             }),
             markers: [],
             showTooltip: false,
-            show: false
+            show: false,
+            url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            attribution: '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+            zoom: 15,
+            center: [46.477716, 6.427522],
+            markerLatLng: [46.477716, 6.427522],
+            circle: {
+                center: [46.477716, 6.427522],
+                radius: 10,
+                color: 'red'
+            }
         }
     },
     computed: {
