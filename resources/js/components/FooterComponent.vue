@@ -8,7 +8,7 @@
         </v-row>
     </v-footer> -->
 
-    <v-footer padless class="secondary--text hidden-sm-and-down" style="background: url('/images/footer-background.svg') no-repeat; background-size: cover; border: 0px dashed red">
+    <v-footer padless class="secondary--text" style="background: url('/images/footer-background.svg') no-repeat; background-size: cover; border: 0px dashed red">
         <v-container class="pa-0" style="">
             <v-row no-gutters align="center" justify="center" class="mt-15 mb-3" style="border: 0px solid blue">
                 <v-col cols="12" class="mt-15 mb-5 d-flex justify-center">

@@ -1,12 +1,12 @@
 <template>
     <v-main>
-        <v-row no-gutters justify="center" id="contact" class="ma-5 px-0">
+        <v-row no-gutters justify="center" id="contact" class="px-0" style="border: 0px solid orange">
             <v-col cols="12" md="6" class="pr-5">
                 <GmapMap :center="{ lat: 46.4776, lng: 6.4272 }" :zoom="14" map-type-id="terrain" style="width: 100%; height: 300px">
                     <GmapMarker :key="index" v-for="(m, index) in markers" :position="m.position" :clickable="true" :draggable="true" @click="center = m.position" />
                 </GmapMap>
             </v-col>
-            <v-col cols="12" md="4" class="pl-10">
+            <v-col cols="12" md="4" class="px-10">
                 <v-list dense class="mb-3">
                     <v-subheader class="text-center text-h5">Formulaire de contact</v-subheader>
                 </v-list>
@@ -20,59 +20,66 @@
                 </v-form>
             </v-col>
         </v-row>
-        <v-row no-gutters justify="start">
-            <v-col cols="12" md="4" offset="1" class="pa-3">
-                <v-list dense>
-                    <v-subheader class="text-center text-h5">Informations de contact</v-subheader>
-                    <v-list-item>
-                        <v-list-item-icon>
-                            <v-icon>mdi-phone</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                            <v-list-item-title class="text-subtitle-2">079 124 64 71</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                    <v-list-item>
-                        <v-list-item-icon>
-                            <v-icon class="mt-2">mdi-email</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                            <v-list-item-title class="text-subtitle-2">
-                                <v-tooltip v-model="showTooltip" top :open-on-hover="false" :open-on-focus="false" :open-on-click="false">
-                                    <template v-slot:activator="{ on, attrs }">
-                                        <span v-bind="attrs" v-on="on" class="no-click2" @click="hideTooltip"> <a href="mailto:info@passionetcreations.ch">info@passionetcreations.ch</a>&nbsp; </span>
-                                    </template>
-                                    <span>Adresse e-mail copiée</span>
-                                </v-tooltip>
-                                <v-btn icon @click="copyEmailAddress"><v-icon small>mdi-content-copy</v-icon></v-btn>
-                                <!-- show: {{ showTooltip}} -->
-                            </v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                    <v-list-item>
-                        <v-list-item-icon>
-                            <v-icon>mdi-map-marker</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                            <v-list-item-title class="text-subtitle-2" style="line-height: 1.5em">
-                                Passion & Créations<br />
-                                Les Ateliers de la Côte<br />
-                                Rte de Pallatex 5<br />
-                                1163 Etoy
-                            </v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list>
-            </v-col>
-            <v-col cols="12" md="4" class="pa-3" v-for="content in contents" :key="content.id">
-                <v-list dense>
-                    <v-subheader class="text-center text-h5">{{ content.name }}</v-subheader>
-                    <v-list-item>
-                        <v-list-item-content>
-                            <div v-html="content.content"></div>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list>
+        <v-row no-gutters justify="center" class="my-5">
+            <v-col cols="12" md="10">
+                <v-row no-gutters justify="start">
+                    <v-col cols="12" md="3" offset-md="0" class="pa-0">
+                        <v-list dense>
+                            <v-subheader class="text-center text-h5">Informations de contact</v-subheader>
+                            <v-list-item>
+                                <v-list-item-icon>
+                                    <v-icon>mdi-phone</v-icon>
+                                </v-list-item-icon>
+                                <v-list-item-content>
+                                    <v-list-item-title class="text-subtitle-2">079 124 64 71</v-list-item-title>
+                                </v-list-item-content>
+                            </v-list-item>
+                            <v-list-item>
+                                <v-list-item-icon>
+                                    <v-icon class="mt-2">mdi-email</v-icon>
+                                </v-list-item-icon>
+                                <v-list-item-content>
+                                    <v-list-item-title class="text-subtitle-2">
+                                        <v-tooltip v-model="showTooltip" top :open-on-hover="false" :open-on-focus="false" :open-on-click="false">
+                                            <template v-slot:activator="{ on, attrs }">
+                                                <span v-bind="attrs" v-on="on" class="no-click2" @click="hideTooltip">
+                                                    <a href="mailto:info@passionetcreations.ch">info@passionetcreations.ch</a>&nbsp;
+                                                </span>
+                                            </template>
+                                            <span>Adresse e-mail copiée</span>
+                                        </v-tooltip>
+                                        <v-btn icon @click="copyEmailAddress"><v-icon small>mdi-content-copy</v-icon></v-btn>
+                                        <!-- show: {{ showTooltip}} -->
+                                    </v-list-item-title>
+                                </v-list-item-content>
+                            </v-list-item>
+                            <v-list-item>
+                                <v-list-item-icon>
+                                    <v-icon>mdi-map-marker</v-icon>
+                                </v-list-item-icon>
+                                <v-list-item-content>
+                                    <v-list-item-title class="text-subtitle-2" style="line-height: 1.5em">
+                                        Passion & Créations<br />
+                                        Les Ateliers de la Côte<br />
+                                        Rte de Pallatex 5<br />
+                                        1163 Etoy
+                                    </v-list-item-title>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-list>
+                    </v-col>
+
+                    <v-col cols="12" md="3" class="pa-3" v-for="content in contents" :key="content.id">
+                        <v-list dense>
+                            <v-subheader class="text-center text-h5">{{ content.name }}</v-subheader>
+                            <v-list-item>
+                                <v-list-item-content>
+                                    <div v-html="content.content"></div>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-list>
+                    </v-col>
+                </v-row>
             </v-col>
         </v-row>
     </v-main>
@@ -86,17 +93,17 @@ export default {
             form: new Form({
                 name: '',
                 email: '',
-                message: '',
+                message: ''
             }),
             markers: [],
             showTooltip: false,
-            show: false,
+            show: false
         }
     },
     computed: {
         contents() {
-            return this.$store.getters['contents/contents'].filter((content) => content.section === 'contact')
-        },
+            return this.$store.getters['contents/contents'].filter(content => content.section === 'contact')
+        }
     },
     methods: {
         hideTooltip() {
@@ -129,8 +136,8 @@ export default {
             setTimeout(() => {
                 this.show = false
             }, 3000)
-        },
-    },
+        }
+    }
 }
 </script>
 

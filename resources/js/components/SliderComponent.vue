@@ -1,8 +1,8 @@
 <template>
-    <div v-if="slider">
+    <div v-if="slider" >
         <!-- slider: {{ slider }} -->
         <v-carousel cycle :hide-delimiters="true" :show-arrows="showArrows" :interval="interval">
-            <v-carousel-item v-for="(image, i) in slider.slider_images" :key="i" :src="`/medias/${image.image_path}`" transition="slide-fade"></v-carousel-item>
+            <v-carousel-item v-for="(image, i) in slider.slider_images" :key="i" :src="`/medias/${image.image_path}`"></v-carousel-item>
         </v-carousel>
         <!-- <v-carousel cycle :hide-delimiters="true" :show-arrows="false" :interval="interval">
             <v-carousel-item v-for="(image, i) in slider.slider_images" :key="i">
@@ -64,5 +64,12 @@ export default {
     /* .slide-fade-leave-active below version 2.1.8 */ {
     transform: translateY(30px);
     opacity: 0;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 1.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>

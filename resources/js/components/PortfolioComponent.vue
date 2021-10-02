@@ -30,8 +30,8 @@
             </v-expand-transition>
 
             <div class="text-center my-3">
-                <v-icon size="60" class="icon" @click="showAllPortfolios = true" v-if="!showAllPortfolios">mdi-plus</v-icon>
-                <v-icon size="60" class="icon" @click="showAllPortfolios = false" v-else>mdi-minus</v-icon>
+                <v-icon size="60" class="icon" @click="showMore" v-if="!showAllPortfolios">mdi-plus</v-icon>
+                <v-icon size="60" class="icon" @click="showLess" v-else>mdi-minus</v-icon>
             </div>
             <!-- <v-btn small color="primary" class="text-center">Afficher plus</v-btn> -->
             <!-- <p>End of page</p> -->
@@ -96,7 +96,7 @@ export default {
             dialog: false,
             selectedPortfolio: null,
             selectedImage: null,
-            showAllPortfolios: false,
+            showAllPortfolios: false
         }
     },
     computed: {
@@ -109,12 +109,12 @@ export default {
             } else {
                 return this.$store.getters['portfolios/portfolios']
             }
-        },
+        }
     },
     methods: {
         frontImage(portfolio) {
             try {
-                return portfolio.portfolio_images.find((image) => image.is_front_image == true)
+                return portfolio.portfolio_images.find(image => image.is_front_image == true)
             } catch (error) {
                 console.log('error: ', error)
             }
@@ -130,6 +130,14 @@ export default {
             console.log('selectImage image: ', image)
             this.selectedImage = image
         },
+        showMore() {
+            this.showAllPortfolios = true
+        },
+        showLess() {
+            this.showAllPortfolios = false
+            const el = document.getElementById('portfolio')
+            el.scrollIntoView({ behavior: 'smooth' })
+        },
         moveLeft() {
             console.log('moveLeft index: ', this.selectedPortfolio.index)
             if (this.selectedPortfolio.index > 0) {
@@ -142,8 +150,8 @@ export default {
             if (this.selectedPortfolio.index < this.portfolios.length - 1) {
                 this.selectPortfolio(this.portfolios[this.selectedPortfolio.index + 1], this.selectedPortfolio.index + 1)
             }
-        },
-    },
+        }
+    }
 }
 </script>
 
