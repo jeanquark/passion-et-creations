@@ -112,7 +112,7 @@ export default {
         async sendContactForm() {
             try {
                 console.log('sendContactForm')
-                await this.$recaptchaLoaded()
+                // await this.$recaptchaLoaded()
                 await this.form.post(`/api/v1/send-contact-form`)
                 this.$store.commit('snackbars/SET_SNACKBAR', { color: 'success', content: 'Message envoyé avec succès.', show: true, timeout: 5000 })
             } catch (error) {
