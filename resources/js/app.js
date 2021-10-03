@@ -71,69 +71,68 @@ const app = new Vue({
         // }
     },
     methods: {
-        async register() {
-            try {
-                console.log('register')
-                const data = await axios.post('/register', {
-                    name: 'John Doe',
-                    email: 'john2.doe@example.com',
-                    password: 'pingpong',
-                    password_confirmation: 'pingpong'
-                })
-                console.log('data: ', data)
-            } catch (error) {
-                console.log('error: ', error)
-            }
-        },
-        async login() {
-            try {
-                console.log('login')
-                const response = await axios.get('/sanctum/csrf-cookie')
-                console.log('response: ', response)
-                // Login...
-                const response2 = await axios.post('/login', {
-                    email: 'admin@example.com',
-                    password: 'secret'
-                })
-                console.log('response2: ', response2)
-            } catch (error) {
-                console.log('error: ', error)
-            }
-        },
-        async logout() {
-            try {
-                console.log('logout')
-                // const response = $user = request()->user()
-                const response = await axios.post('/logout')
-                console.log('response: ', response)
-                location.href = '/'
-            } catch (error) {
-                console.log('error: ', error)
-            }
-        },
-        async forgotPassword() {
-            try {
-                console.log('forgotPassword')
-                const data = await axios.post('/forgot-password', {
-                    email: 'lawyer@example.com'
-                })
-                console.log('data: ', data)
-            } catch (error) {
-                console.log('error: ', error)
-            }
-        },
-        async getUser() {
-            try {
-                const user = await axios.get('/api/user')
-                console.log('user: ', user)
-            } catch (error) {
-                console.log('error: ', error)
-            }
-        },
-        incrementCounter() {
-            console.log('incrementCounter')
-            // this.$store.commit("INCREMENT");
-        },
-        
+        // async register() {
+        //     try {
+        //         console.log('register')
+        //         const data = await axios.post('/register', {
+        //             name: 'John Doe',
+        //             email: 'john2.doe@example.com',
+        //             password: 'pingpong',
+        //             password_confirmation: 'pingpong'
+        //         })
+        //         console.log('data: ', data)
+        //     } catch (error) {
+        //         console.log('error: ', error)
+        //     }
+        // },
+        // async login() {
+        //     try {
+        //         console.log('login')
+        //         const response = await axios.get('/sanctum/csrf-cookie')
+        //         console.log('response: ', response)
+        //         // Login...
+        //         const response2 = await axios.post('/login', {
+        //             email: 'admin@example.com',
+        //             password: 'secret'
+        //         })
+        //         console.log('response2: ', response2)
+        //     } catch (error) {
+        //         console.log('error: ', error)
+        //     }
+        // },
+        // async logout() {
+        //     try {
+        //         console.log('logout')
+        //         // const response = $user = request()->user()
+        //         const response = await axios.post('/logout')
+        //         console.log('response: ', response)
+        //         location.href = '/'
+        //     } catch (error) {
+        //         console.log('error: ', error)
+        //     }
+        // },
+        // async forgotPassword() {
+        //     try {
+        //         console.log('forgotPassword')
+        //         const data = await axios.post('/forgot-password', {
+        //             email: 'lawyer@example.com'
+        //         })
+        //         console.log('data: ', data)
+        //     } catch (error) {
+        //         console.log('error: ', error)
+        //     }
+        // },
+        // async getUser() {
+        //     try {
+        //         const user = await axios.get('/api/user')
+        //         console.log('user: ', user)
+        //     } catch (error) {
+        //         console.log('error: ', error)
+        //     }
+        // },
+        // incrementCounter() {
+        //     console.log('incrementCounter')
+        //     // this.$store.commit("INCREMENT");
+        // },
     }
 })

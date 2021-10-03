@@ -14,9 +14,9 @@ export const mutations = {
 export const actions = {
 	async fetchUsers({ commit }, payload) {
 		try {
-			console.log('[VUEX] fetchFiles: ', payload)
+			// console.log('[VUEX] fetchFiles: ', payload)
 			const { data } = await axios.get(`/api/v1/users`)
-			console.log('data: ', data)
+			// console.log('data: ', data)
 			// return data
             commit('SET_USERS', data)
 		} catch (error) {
@@ -33,7 +33,7 @@ export const actions = {
                     }
                 ]
             })
-			console.log('data: ', data)
+			// console.log('data: ', data)
 			await dispatch('fetchUsers')
 		} catch (error) {
 			console.log('error: ', error)
@@ -50,7 +50,7 @@ export const actions = {
                     }
                 ]
             })
-            console.log('data: ', data)
+            // console.log('data: ', data)
 			await dispatch('fetchUsers')
         } catch (error) {
 			console.log('error: ', error)

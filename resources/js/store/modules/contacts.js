@@ -14,9 +14,9 @@ export const mutations = {
 export const actions = {
 	async fetchContacts({ commit }) {
 		try {
-			console.log('[VUEX] fetchContacts')
+			// console.log('[VUEX] fetchContacts')
 			const { data } = await axios.get(`/api/v1/contacts`)
-			console.log('data: ', data)
+			// console.log('data: ', data)
 			// return data
 			commit('SET_CONTACTS', data)
 		} catch (error) {
@@ -28,7 +28,7 @@ export const actions = {
 		try {
 			const { id } = payload
 			const data = await axios.put(`/api/v1/contacts/${id}`, payload)
-			console.log('data: ', data)
+			// console.log('data: ', data)
 			await dispatch('fetchContacts')
 		} catch (error) {
 			console.log('error: ', error)

@@ -5,9 +5,8 @@
                 <!-- <GmapMap :center="{ lat: 46.4776, lng: 6.4272 }" :zoom="14" map-type-id="terrain" style="width: 100%; height: 300px">
                     <GmapMarker :key="index" v-for="(m, index) in markers" :position="m.position" :clickable="true" :draggable="true" @click="center = m.position" />
                 </GmapMap> -->
-                <l-map style="" :zoom="zoom" :center="center">
+                <l-map :zoom="zoom" :center="center" class="" style="z-index: 0;">
                     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-                    <!-- <l-marker :lat-lng="markerLatLng"></l-marker> -->
                     <l-circle-marker :lat-lng="circle.center" :radius="circle.radius" :color="circle.color" />
                 </l-map>
             </v-col>
@@ -18,12 +17,30 @@
                 <v-form @submit.prevent="sendContactForm">
                     <v-text-field prepend-icon="mdi-account" name="name" label="Nom" type="text" :error-messages="form.errors.get('name')" v-model="form.name"></v-text-field>
                     <v-text-field prepend-icon="mdi-lock" name="email" label="E-mail" type="email" :error-messages="form.errors.get('email')" v-model="form.email"></v-text-field>
-                    <v-textarea prepend-icon="mdi-message" name="message" label="Votre message" rows="4" counter hint="Max. 1000 caractères" v-model="form.message"></v-textarea>
-                    <div class="text-center">
-                        <vue-recaptcha sitekey="6Lf2kDsUAAAAAG_Ri3CprPGeRm_m3XpFi0QETCCv">
+                    <v-textarea
+                        prepend-icon="mdi-message"
+                        name="message"
+                        label="Votre message"
+                        rows="4"
+                        counter
+                        hint="Max. 1000 caractères"
+                        :error-messages="form.errors.get('message')"
+                        v-model="form.message"
+                    ></v-textarea>
+                    <v-row no-gutters justify="center" class="my-3">
+                    <!-- <div class="text-center mb-2"> -->
+                        <!-- <vue-recaptcha sitekey="6Lf2kDsUAAAAAG_Ri3CprPGeRm_m3XpFi0QETCCv">
                             <v-btn small type="submit" color="success" :loading="form.busy">Envoyer</v-btn>
+                        </vue-recaptcha> -->
+                        <vue-recaptcha ref="recaptcha" :loadRecaptchaScript="true" @verify="onCaptchaVerified" @expired="onCaptchaExpired" sitekey="6Lf2kDsUAAAAAG_Ri3CprPGeRm_m3XpFi0QETCCv" class="text-center">
                         </vue-recaptcha>
-                    </div>
+                        
+                    <!-- </div> -->
+                    </v-row>
+                    <v-row no-gutters justify="center" align="center">
+                        <v-btn small type="submit" color="success" class="mr-2" :disabled="!formIsVerified" :loading="form.busy">Envoyer</v-btn>
+                        <v-btn x-small color="info" @click="resetRecaptcha">Réactualiser captcha</v-btn>
+                    </v-row>
                 </v-form>
             </v-col>
         </v-row>
@@ -97,14 +114,6 @@ import VueRecaptcha from 'vue-recaptcha'
 import { LMap, LTileLayer, LMarker, LCircleMarker } from 'vue2-leaflet'
 import 'leaflet/dist/leaflet.css'
 
-// import { Icon } from 'leaflet';
-// delete Icon.Default.prototype._getIconUrl;
-// Icon.Default.mergeOptions({
-//   iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-//   iconUrl: require('leaflet/dist/images/marker-icon.png'),
-//   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
-// });
-
 export default {
     components: { VueRecaptcha, LMap, LTileLayer, LMarker, LCircleMarker },
     data() {
@@ -117,11 +126,12 @@ export default {
             markers: [],
             showTooltip: false,
             show: false,
+            formIsVerified: false,
             url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             attribution: '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
             zoom: 15,
             center: [46.477716, 6.427522],
-            markerLatLng: [46.477716, 6.427522],
+            // markerLatLng: [46.477716, 6.427522],
             circle: {
                 center: [46.477716, 6.427522],
                 radius: 10,
@@ -138,10 +148,23 @@ export default {
         hideTooltip() {
             this.showTooltip = false
         },
+        onCaptchaVerified(response) {
+            console.log('onVerify: ', response)
+            this.formIsVerified = true
+        },
+        onCaptchaExpired() {
+            console.log('onExpired')
+            this.formIsVerified = false
+            this.$refs.recaptcha.reset()
+        },
+        resetRecaptcha() {
+            this.$refs.recaptcha.reset() // Direct call reset method
+            this.formIsVerified = false
+        },
         async sendContactForm() {
             try {
                 console.log('sendContactForm')
-                // await this.$recaptchaLoaded()
+                // this.$refs.recaptcha.execute()
                 await this.form.post(`/api/v1/send-contact-form`)
                 this.$store.commit('snackbars/SET_SNACKBAR', { color: 'success', content: 'Message envoyé avec succès.', show: true, timeout: 5000 })
             } catch (error) {

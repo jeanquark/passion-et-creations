@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-app-bar app flat class="hidden-sm-and-down">
+        <v-app-bar app flat class="hidden-sm-and-down" style="">
             <v-toolbar-title class="d-flex align-center">
                 <v-img src="/images/logo_thumbnail.png" max-width="80"></v-img>
                 <span class="ml-2"> | Sabine Pirat</span>
@@ -56,7 +56,6 @@
                     <v-list-item-title class="my-2"><v-btn small color="#c49a6c" class="white--text" @click="logout" v-if="authUser">Logout</v-btn></v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
-
             <v-divider></v-divider>
         </v-navigation-drawer>
     </div>
@@ -104,7 +103,7 @@ export default {
         async checkAuth() {
             try {
                 const { data } = await axios.get('/api/auth-user')
-                console.log('data: ', data)
+                // console.log('data: ', data)
                 this.authUser = data.name
             } catch (error) {
                 console.log('error: ', error)

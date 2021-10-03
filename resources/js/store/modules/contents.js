@@ -14,9 +14,9 @@ export const mutations = {
 export const actions = {
     async fetchContents({ commit }) {
         try {
-            console.log('[VUEX] fetchContents')
+            // console.log('[VUEX] fetchContents')
             const { data } = await axios.get(`/api/v1/contents`)
-            console.log('data: ', data)
+            // console.log('data: ', data)
             commit('SET_CONTENTS', data)
         } catch (error) {
             console.log('error: ', error)
@@ -30,8 +30,7 @@ export const actions = {
             const data = await axios.get(`/api/v1/contents/${imagePath}`, {
                 responseType: 'blob'
             });
-            // const data = await axios.get(`/api/v1/contents/${imagePath}`);
-            console.log('data: ', data)
+            // console.log('data: ', data)
             return data
         } catch (error) {
             console.log("error: ", error);
@@ -58,9 +57,9 @@ export const actions = {
     },
     async updateOrder({}, payload) {
         try {
-            console.log('[VUEX] updateOrder payload: ', payload)
+            // console.log('[VUEX] updateOrder payload: ', payload)
             const data = await axios.post('/api/v1/contents/update-order', payload)
-            console.log('data: ', data)
+            // console.log('data: ', data)
         } catch (error) {
             throw error
         }

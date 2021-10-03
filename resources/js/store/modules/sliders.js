@@ -14,9 +14,9 @@ export const mutations = {
 export const actions = {
 	async fetchSliders({ commit }, payload) {
 		try {
-			console.log('[VUEX] fetchFiles: ', payload)
+			// console.log('[VUEX] fetchFiles: ', payload)
 			const { data } = await axios.get(`/api/v1/sliders`)
-			console.log('data: ', data)
+			// console.log('data: ', data)
 			// return data
             commit('SET_SLIDERS', data)
 		} catch (error) {
@@ -26,9 +26,6 @@ export const actions = {
 	},
 	async createSlider({ dispatch }, form) {
 		try {
-			// const data = await form.submit('post', '/api/v1/sliders')
-            // console.log('data: ', data)
-
 			const { data } = await form.submit('post', `/api/v1/sliders`, {
                 transformRequest: [
                     function(data, headers) {
@@ -36,7 +33,7 @@ export const actions = {
                     }
                 ]
             })
-			console.log('data: ', data)
+			// console.log('data: ', data)
 			await dispatch('fetchSliders')
 		} catch (error) {
 			console.log('error: ', error)
@@ -47,7 +44,7 @@ export const actions = {
 		try {
 			const { id } = payload
 			const data = await axios.put(`/api/v1/sliders/${id}`, payload)
-			console.log('data: ', data)
+			// console.log('data: ', data)
 			await dispatch('fetchSliders')
 		} catch (error) {
 			console.log('error: ', error)

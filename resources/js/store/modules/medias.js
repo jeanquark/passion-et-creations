@@ -15,9 +15,9 @@ export const mutations = {
 export const actions = {
     async fetchMedias({ commit }, payload) {
         try {
-            console.log('[VUEX] fetchMedias: ', payload)
+            // console.log('[VUEX] fetchMedias: ', payload)
             const { data } = await axios.get(`/api/v1/medias`)
-            console.log('[VUEX] data: ', data)
+            // console.log('[VUEX] data: ', data)
             commit('SET_MEDIAS', data)
             return data
         } catch (error) {
@@ -27,7 +27,7 @@ export const actions = {
     },
     async uploadMedias({}, form) {
 		try {
-			console.log('[VUEX] uploadFiles: ', form)
+			// console.log('[VUEX] uploadFiles: ', form)
 			const { data } = await form.submit('post', '/api/v1/medias', {
 				transformRequest: [
 					function (data, headers) {
@@ -42,28 +42,28 @@ export const actions = {
 		}
 	},
     
-    async uploadImage({}, form) {
-        try {
-            // await axios.post('/api/v1/images', {
-            //     payload
-            // })
-            console.log('[VUEX] images/uploadImage: ', form)
-            const { data } = await form.submit('post', `/api/v1/images`, {
-                transformRequest: [
-                    function(data, headers) {
-                        return serialize(data)
-                    }
-                ]
-            })
-            console.log('data: ', data)
-        } catch (error) {
-            console.log('error: ', error)
-        }
-    },
+    // async uploadImage({}, form) {
+    //     try {
+    //         // await axios.post('/api/v1/images', {
+    //         //     payload
+    //         // })
+    //         console.log('[VUEX] images/uploadImage: ', form)
+    //         const { data } = await form.submit('post', `/api/v1/images`, {
+    //             transformRequest: [
+    //                 function(data, headers) {
+    //                     return serialize(data)
+    //                 }
+    //             ]
+    //         })
+    //         console.log('data: ', data)
+    //     } catch (error) {
+    //         console.log('error: ', error)
+    //     }
+    // },
     async deleteFile({ dispatch }, payload) {
         try {
             const { data } = await axios.post(`/api/v1/medias/delete`, { path: payload })
-            console.log('[VUEX] data: ', data)
+            // console.log('[VUEX] data: ', data)
             await dispatch('fetchMedias')
             await dispatch('portfolios/fetchPortfolios', {}, { root: true })
         } catch (error) {

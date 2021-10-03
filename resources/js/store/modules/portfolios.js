@@ -14,9 +14,9 @@ export const mutations = {
 export const actions = {
     async fetchPortfolios({ commit }) {
         try {
-            console.log('[VUEX] fetchPortfolios')
+            // console.log('[VUEX] fetchPortfolios')
             const { data } = await axios.get(`/api/v1/portfolios`)
-            console.log('data: ', data)
+            // console.log('data: ', data)
             commit('SET_PORTFOLIOS', data.portfolios)
         } catch (error) {
             console.log('error: ', error)
@@ -26,12 +26,12 @@ export const actions = {
     async fetchPortfolio({ }, payload) {
         try {
             const { imagePath } = payload
-            console.log('imagePath: ', imagePath)
+            // console.log('imagePath: ', imagePath)
             const data = await axios.get(`/api/v1/portfolios/${imagePath}`, {
                 responseType: 'blob'
             });
             // const data = await axios.get(`/api/v1/portfolios/${imagePath}`);
-            console.log('data: ', data)
+            // console.log('data: ', data)
             return data
         } catch (error) {
             console.log("error: ", error);
@@ -41,7 +41,7 @@ export const actions = {
     async createPortfolio({ dispatch }, form) {
         try {
             const data = await form.post(`/api/v1/portfolios`, form)
-            console.log('data: ', data)
+            // console.log('data: ', data)
             dispatch('fetchPortfolios')
         } catch (error) {
             console.log('error: ', error)
@@ -50,9 +50,9 @@ export const actions = {
     },
     async updateOrder({ dispatch }, payload) {
         try {
-            console.log('[VUEX] updateOrder payload: ', payload)
+            // console.log('[VUEX] updateOrder payload: ', payload)
             const data = await axios.post('/api/v1/portfolios/update-order', payload)
-            console.log('data: ', data)
+            // console.log('data: ', data)
             dispatch('fetchPortfolios')
         } catch (error) {
             throw error
@@ -60,9 +60,9 @@ export const actions = {
     },
     async updatePortfolio({ dispatch }, form) {
         try {
-            console.log('[VUEX] updatePortfolio form: ', form)
+            // console.log('[VUEX] updatePortfolio form: ', form)
             const data = await form.put(`/api/v1/portfolios/${form.id}`, form)
-            console.log('[VUEX] data: ', data)
+            // console.log('[VUEX] data: ', data)
             dispatch('fetchPortfolios')
         } catch (error) {
             throw error
@@ -71,7 +71,7 @@ export const actions = {
     async deletePortfolio({ dispatch }, form) {
         try {
             const { data } = await form.delete(`/api/v1/portfolios/${form.id}`)
-            console.log('[VUEX] data: ', data)
+            // console.log('[VUEX] data: ', data)
             dispatch('fetchPortfolios')
         } catch (error) {
             console.log("[VUEX] error: ", error);
