@@ -6,14 +6,13 @@
                 <h2 class="text-center my-2" style="color: #c49a6c;">Info</h2>
                 <v-card>
                     <v-card-title></v-card-title>
-                    <v-card-text>
+                    <v-card-text @click="abc">
                         <iframe
                             width="100%"
                             height="300"
                             src="https://www.rts.ch/play/embed?urn=urn:rts:video:12405396&subdivisions=false"
                             allowfullscreen
                             allow="geolocation *; autoplay; encrypted-media"
-                            @click="abc"
                         ></iframe>
                         <p>Participation à l'émission de la RTS "Bon débarras" diffusée le 13 août 2021 (46 min).</p>
                     </v-card-text>
@@ -44,6 +43,15 @@ export default {
             console.log('error: ', error)
         }
     },
+    mounted () {
+        window.addEventListener("blur", () => {
+            setTimeout(() => {
+                if (document.activeElement.tagName === "IFRAME") {
+                    console.log("clicked");
+                }
+            })
+        }, { once: true })
+    },
     data() {
         return {}
     },
@@ -55,7 +63,8 @@ export default {
     methods: {
         abc () {
             console.log('abc')
-        }
+        },
+
     }
 }
 </script>

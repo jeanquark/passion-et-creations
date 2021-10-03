@@ -4,6 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Artisane, créatrice de mobilier intérieur établie à Etoy">
+    <meta name="keywords" content="mobilier, artisanat, etoy, intérieur, décoration">
+    <meta name="author" content="Sabine Pirat">
     {{-- <meta name="csrf-token" content="{{ csrf_token() }}" /> --}}
 
     <title>Passion et Créations</title>
@@ -36,15 +39,15 @@
                 </v-col>
             </v-row>
             <a href="#welcome"></a>
-            @if ($content) 
-                <v-row no-gutters id="welcome" justify="center" align="center">
-                    <v-col cols="12" sm="6" md="6" class="px-4">
-                        {!! $content->content !!}
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4" class="px-4">
-                        <v-img src="/images/welcome.jpg" width="100%"></v-img>
-                    </v-col>
-                </v-row>
+            @if ($content)
+            <v-row no-gutters id="welcome" justify="center" align="center">
+                <v-col cols="12" sm="6" md="6" class="px-4">
+                    {!! $content->content !!}
+                </v-col>
+                <v-col cols="12" sm="6" md="4" class="px-4">
+                    <v-img src="/images/welcome.jpg" width="100%"></v-img>
+                </v-col>
+            </v-row>
             @endif
             <info-component></info-component>
             <portfolio-component></portfolio-component>
