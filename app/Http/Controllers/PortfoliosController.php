@@ -45,11 +45,15 @@ class PortfoliosController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'title' => ['required'],
+            // 'description' => ['required']
+        ]);
+
         // 1) Save portfolios
         $newPortfolio = new Portfolio();
-        $newPortfolio->title = $request['title'];
-        $newPortfolio->description = $request['description'];
-        // $newPortfolio->front_image_id = $request['images'][0]['id'];
+        $newPortfolio->title = $request->title;
+        $newPortfolio->description = $request->description;
         $newPortfolio->save();
 
         // 2) Save images
@@ -67,11 +71,11 @@ class PortfoliosController extends Controller
             $newImage->save();
         }
 
-        
-
         return response()->json([
             'success' => true,
-            'request->all()' => $request->all()
+            'request->all()' => $request->all(),
+            'request->description' => $request->description
+
         ]);
     }
 
@@ -92,30 +96,8 @@ class PortfoliosController extends Controller
         return response()->json([
             'success' => true,
             'request->all()' => $request->all(),
-            'portfolios' => $portfolios
+            'portfolios' => $portfolios,
         ]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**

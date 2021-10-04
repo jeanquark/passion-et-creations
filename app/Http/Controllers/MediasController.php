@@ -65,26 +65,18 @@ class MediasController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display the specified resource.
      *
+     * @param  \App\Models\File  $image
      * @return \Illuminate\Http\Response
      */
-    // public function index()
-    // {
-    //     $files_with_size = array();
-    //     $files = Storage::disk('portfolio')->allFiles();
-    //     foreach ($files as $key => $file) {
-    //         $files_with_size[$key]['name'] = $file;
-    //         $files_with_size[$key]['size'] = Storage::disk('portfolio')->size($file);
-    //         list($width, $height, $type, $attr) = getimagesize('images/portfolio/' . $file);
-    //         $files_with_size[$key]['width'] = $width;
-    //         $files_with_size[$key]['height'] = $height;
-    //     }
+    public function downloadMedia(Request $request)
+    {
+        $filePath = $request->path;
 
-    //     return response()->json([
-    //         'images' => $files_with_size
-    //     ]);
-    // }
+        return Storage::disk('medias')->download(urldecode($filePath));
+        // return Storage::disk('medias')->download(urldecode($filePath), '', ['Content-Type' => 'image/jpeg']);
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -138,54 +130,6 @@ class MediasController extends Controller
                 }
             }
         }
-
-        // return response()->json([
-        //     'success' => true,
-        //     'file' => $file,
-        //     'fileFullName' => $fileFullName,
-        //     'fileName' => $fileName,
-        //     'fileExtension' => $fileExtension,
-        //     'fileType' => $fileType,
-        //     'filePath' => $filePath,
-        //     'request->path' => $request->path,
-        //     // 'originalFile' => $originalFile
-        // ], 200);
-
-        // if (File::exists($request->image)) { // Upload single image
-
-        //     $request->validate([
-        //         'image' => 'required|image|max:1024'
-        //     ]);
-
-        //     // 1) Store original image
-        //     $image = $request->image->getClientOriginalName();
-        //     $imageName = pathinfo($image, PATHINFO_FILENAME);
-        //     $imageExtension = pathinfo($image, PATHINFO_EXTENSION);
-        //     $originalImage = Intervention::make($request->image)->encode();
-        //     Storage::disk('portfolio')->put($image, $originalImage);
-
-        //     // 2) Store thumbnail
-        //     $thumbnailName = $imageName . '_thumbnail' . '.' . $imageExtension;
-        //     $small = Intervention::make($request->image)->fit(512)->encode();
-        //     Storage::disk('portfolio')->put($thumbnailName, $small);
-
-        //     // 3) Store blurry image
-        //     // $blurryName = $imageName . '_blurred' . '.' . $imageExtension;
-        //     // $blurry = Image::make($request->image)->blur(15)->encode();
-        //     // Storage::disk('portfolio')->put($blurryName, $blurry);
-
-        //     // 4) Store blurry thumbnail
-        //     $thumbnailBlurryName = $imageName . '_thumbnail_blurred' . '.' . $imageExtension;
-        //     $smallBlurry = Intervention::make($request->image)->fit(512)->blur(25)->encode();
-        //     Storage::disk('portfolio')->put($thumbnailBlurryName, $smallBlurry);
-
-        //     return response()->json([
-        //         'success' => true,
-        //         'request' => $request,
-        //         'request->image' => $request->image,
-        //         '$imageName' => $imageName,
-        //     ], 200);
-        // }
     }
 
     /**
@@ -194,39 +138,22 @@ class MediasController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    // public function deleteImage(Request $request)
-    // {
-    //     return response()->json([
-    //         'status' => 'success',
-    //         '$request->path' => $request->path
-    //     ]);
-    // }
-
-
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function createFolder(Request $request)
     {
-        return response()->json([
-            'status' => 'success',
-            'function' => 'store'
+        $request->validate([
+            'name' => 'required|max:32',
         ]);
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\File  $image
-     * @return \Illuminate\Http\Response
-     */
-    public function download($imagePath)
-    {
-        return Storage::disk('images')->download(urldecode($imagePath));
+        $name = $request->name;
+        $path = $request->path;
+        $newDirectoryPath = $path . '/' . $name;
+        $createdDirectory = Storage::disk('medias')->makeDirectory($newDirectoryPath);
+
+        return response()->json([
+            'success' => true,
+            'name' => $name,
+            'path' => $path
+        ]);
     }
 
     /**
@@ -248,27 +175,30 @@ class MediasController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Remove the specified resource from storage.
      *
-     * @param  \App\Models\File  $image
-     * @return \Illuminate\Http\Response
-     */
-    public function getLastModified(Request $request)
-    {
-        $imagePath = $request->imagePath;
-        return Storage::disk('images')->lastModified(urldecode($imagePath));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function deleteFolder(Request $request)
     {
-        //
+        $path = $request->path;
+
+        $deletedFolder = Storage::disk('medias')->deleteDirectory($path);
+
+        if ($deletedFolder) {
+            return response()->json([
+                'success'   => true,
+                'message'   => 'Deleted folder successfully'
+            ], 200);
+        }
+
+        return response()->json([
+            'success'   => false,
+            'request->all()' => $request->all(),
+            'path' => $path,
+            'deletedFolder' => $deletedFolder
+        ], 500);
     }
 
     /**
@@ -277,7 +207,7 @@ class MediasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function deleteMedia(Request $request)
     {
         $path = $request->path;
 
@@ -301,6 +231,5 @@ class MediasController extends Controller
             'path' => $path,
             'portfolioImages' => $portfolioImages
         ], 500);
-        
     }
 }

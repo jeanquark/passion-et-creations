@@ -71,7 +71,9 @@
                     <v-list-item-icon>
                         <v-icon>mdi-message</v-icon>
                     </v-list-item-icon>
-                    <v-list-item-title>Formulaire de contact</v-list-item-title>
+                    <v-list-item-title>Formulaires
+                        <v-badge :content="contacts.length" class="ml-2" v-if="contacts.length > 0"></v-badge>
+                    </v-list-item-title>
                 </v-list-item>
                 <v-list-item to="/admin/users">
                     <v-list-item-icon>
@@ -109,6 +111,7 @@ export default {
     name: "AdminIndex",
     async created () {
         await this.$store.dispatch('auth/setAuthUser')
+            await this.$store.dispatch('contacts/fetchContacts')
         if (!this.authUser) {
             this.$store.commit('snackbars/SET_SNACKBAR', {
                 color: 'dark',
@@ -144,6 +147,9 @@ export default {
         authUser(){
             return this.$store.getters['auth/user']
         },
+        contacts () {
+            return this.$store.getters['contacts/contacts'].filter(contact => !contact.is_read)
+        }
     },
     methods: {
         async logout () {

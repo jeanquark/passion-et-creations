@@ -5,6 +5,7 @@
             <v-col cols="11">
                 <!-- updatedOrder: {{ updatedOrder }}<br /><br /> -->
                 <!-- indexClicked: {{ indexClicked }}<br /><br /> -->
+                <!-- portfolios: {{ portfolios }}<br /><br /> -->
 
                 <v-btn icon color="primary" class="mx-1" :disabled="displayImage" @click="displayImage = true"><v-icon>mdi-format-list-text</v-icon></v-btn>
                 <v-btn icon color="primary" class="mx-1" :disabled="!displayImage" @click="displayImage = false"><v-icon>mdi-format-list-bulleted</v-icon></v-btn>
@@ -13,7 +14,6 @@
         </v-row>
         <v-row no-gutters justify="center">
             <v-col cols="11">
-                <!-- portfolios: {{ portfolios }}<br /><br /> -->
                 <v-expansion-panels>
                     <draggable v-model="portfolios" group="people" @start="drag = true" @end="drag = false" style="width: 100%">
                         <v-expansion-panel v-for="(portfolio, i) in portfolios" :key="i">
@@ -55,7 +55,7 @@
             </v-col>
         </v-row>
 
-        <v-snackbar color="dark" v-model="showSnackbar">
+        <v-snackbar color="dark" :timeout="5000" v-model="showSnackbar">
             <v-btn small color="success" @click="updateOrder">Enregistrer le nouvel ordre</v-btn>
             <template v-slot:action="{ attrs }">
                 <v-btn icon color="red" v-bind="attrs" @click="showSnackbar = false"><v-icon>mdi-close</v-icon></v-btn>
@@ -71,9 +71,9 @@ export default {
     name: 'AdminPortfoliosIndex',
     components: { draggable },
     async created() {
-        // if (this.$store.getters['portfolios/portfolios'].length < 1) {
+        if (this.$store.getters['portfolios/portfolios'].length < 1) {
             await this.$store.dispatch('portfolios/fetchPortfolios')
-        // }
+        }
     },
     mounted() {},
     data() {
@@ -92,10 +92,10 @@ export default {
             ],
             showSnackbar: false,
             displayImage: true,
+            indexClicked: null,
             form: new Form({
                 id: null
             }),
-            indexClicked: null
         }
     },
     computed: {

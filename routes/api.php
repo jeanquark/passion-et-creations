@@ -43,7 +43,10 @@ Route::middleware('auth:sanctum')->group(function() {
 
     Route::get('/v1/medias', [MediasController::class, 'getMedias']);
     Route::post('/v1/medias', [MediasController::class, 'uploadMedias']);
-    Route::post('/v1/medias/delete', [MediasController::class, 'destroy']);
+    Route::post('/v1/medias/download', [MediasController::class, 'downloadMedia']);
+    Route::post('/v1/medias/create-folder', [MediasController::class, 'createFolder']);
+    Route::post('/v1/medias/delete-media', [MediasController::class, 'deleteMedia']);
+    Route::post('/v1/medias/delete-folder', [MediasController::class, 'deleteFolder']);
 
     Route::put('/v1/sliders/{id}', [SlidersController::class, 'update']);
 
@@ -52,7 +55,6 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::put('/v1/contacts/{id}', [ContactMessagesController::class, 'update']);
     Route::delete('/v1/contacts/{id}', [ContactMessagesController::class, 'destroy']);
 
-    // Route::apiResource('/v1/users', UsersController::class);
     Route::get('/v1/users', [UsersController::class, 'index']);
     Route::post('/v1/users', [UsersController::class, 'store']);
     Route::get('/v1/users/{id}', [UsersController::class, 'show']);

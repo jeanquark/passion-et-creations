@@ -28,10 +28,6 @@
                         v-model="form.message"
                     ></v-textarea>
                     <v-row no-gutters justify="center" class="my-3">
-                    <!-- <div class="text-center mb-2"> -->
-                        <!-- <vue-recaptcha sitekey="6Lf2kDsUAAAAAG_Ri3CprPGeRm_m3XpFi0QETCCv">
-                            <v-btn small type="submit" color="success" :loading="form.busy">Envoyer</v-btn>
-                        </vue-recaptcha> -->
                         <vue-recaptcha ref="recaptcha" :loadRecaptchaScript="true" @verify="onCaptchaVerified" @expired="onCaptchaExpired" sitekey="6Lf2kDsUAAAAAG_Ri3CprPGeRm_m3XpFi0QETCCv" class="text-center">
                         </vue-recaptcha>
                         
@@ -47,7 +43,7 @@
         <v-row no-gutters justify="center" class="my-5">
             <v-col cols="12" md="10">
                 <v-row no-gutters justify="start">
-                    <v-col cols="12" md="3" offset-md="0" class="pa-0">
+                    <v-col cols="12" md="4" offset-md="0" class="pa-0">
                         <v-list dense>
                             <v-subheader class="text-center text-h5">Informations de contact</v-subheader>
                             <v-list-item>
@@ -92,7 +88,7 @@
                         </v-list>
                     </v-col>
 
-                    <v-col cols="12" md="3" class="pa-3" v-for="content in contents" :key="content.id">
+                    <v-col cols="12" md="4" class="pa-3" v-for="content in contents" :key="content.id">
                         <v-list dense>
                             <v-subheader class="text-center text-h5">{{ content.name }}</v-subheader>
                             <v-list-item>
@@ -127,6 +123,7 @@ export default {
             showTooltip: false,
             show: false,
             formIsVerified: false,
+            sitekey: process.env.RECAPTCHA_SITE_KEY,
             url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             attribution: '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
             zoom: 15,

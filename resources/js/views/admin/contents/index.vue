@@ -15,8 +15,8 @@
                         </thead>
                     </template>
 
-                    <template v-slot:[`item`]="{ item, index }">
-                        <tr style="" v-if="headers && headers.length">
+                    <template v-slot:[`item`]="{ item }">
+                        <tr class="text-center" v-if="headers && headers.length">
                             <td>
                                 {{ item.id }}
                             </td>
@@ -32,9 +32,9 @@
                             <td>
                                 {{ item.is_published ? 'Oui' : 'Non' }}
                             </td>
-                            <td>
+                            <!-- <td>
                                 {{ item.created_at | moment('DD MMM YYYY') }}
-                            </td>
+                            </td> -->
                             <td>
                                 {{ item.updated_at | moment('from') }}
                             </td>
@@ -92,7 +92,7 @@ export default {
                 { text: 'Section', value: 'section' },
                 { text: 'Contenu', value: 'content' },
                 { text: 'Publié?', value: 'is_published' },
-                { text: 'Créé le', value: 'created_at' },
+                // { text: 'Créé le', value: 'created_at' },
                 { text: 'Dernière modification', value: 'updated_at' },
             ],
         }

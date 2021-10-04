@@ -20,4 +20,4 @@ This application makes use of Laravel Sanctum and Laravel fortify for the authen
 
 ## Auto-deploy
 
-Run <code>npm run prod</code> before push to Github. Auto deploy with Github actions.
+Run <code>npm run prod</code> before push to Github. Auto deploy configured with Github Actions.

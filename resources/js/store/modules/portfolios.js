@@ -41,7 +41,7 @@ export const actions = {
     async createPortfolio({ dispatch }, form) {
         try {
             const data = await form.post(`/api/v1/portfolios`, form)
-            // console.log('data: ', data)
+            console.log('data: ', data)
             dispatch('fetchPortfolios')
         } catch (error) {
             console.log('error: ', error)

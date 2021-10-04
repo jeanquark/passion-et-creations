@@ -25,6 +25,20 @@ export const actions = {
             throw error
         }
     },
+
+    async downloadMedia({}, payload) {
+		try {
+			const { data } = await axios.post('/api/v1/medias/download', payload, {
+                responseType: 'blob'
+            })
+			// console.log('data: ', data)
+            return data
+		} catch (error) {
+			console.log('error: ', error)
+			throw error
+		}
+	},
+
     async uploadMedias({}, form) {
 		try {
 			// console.log('[VUEX] uploadFiles: ', form)
@@ -42,27 +56,32 @@ export const actions = {
 		}
 	},
     
-    // async uploadImage({}, form) {
-    //     try {
-    //         // await axios.post('/api/v1/images', {
-    //         //     payload
-    //         // })
-    //         console.log('[VUEX] images/uploadImage: ', form)
-    //         const { data } = await form.submit('post', `/api/v1/images`, {
-    //             transformRequest: [
-    //                 function(data, headers) {
-    //                     return serialize(data)
-    //                 }
-    //             ]
-    //         })
-    //         console.log('data: ', data)
-    //     } catch (error) {
-    //         console.log('error: ', error)
-    //     }
-    // },
+    async createFolder({ dispatch }, form) {
+        try {
+            const { data } = await form.submit('post', '/api/v1/medias/create-folder', form)
+            console.log('[VUEX] data: ', data)
+            await dispatch('fetchMedias')
+        } catch (error) {
+            console.log("[VUEX] error: ", error);
+            throw error
+        }
+    },
+
+    async deleteFolder({ dispatch }, payload) {
+        try {
+            const { data } = await axios.post(`/api/v1/medias/delete-folder`, { path: payload })
+            // const { data } = await form.submit('post', '/api/v1/medias/delete-folder', form)
+            console.log('[VUEX] data: ', data)
+            await dispatch('fetchMedias')
+        } catch (error) {
+            console.log("[VUEX] error: ", error);
+            throw error
+        }
+    },
+
     async deleteFile({ dispatch }, payload) {
         try {
-            const { data } = await axios.post(`/api/v1/medias/delete`, { path: payload })
+            const { data } = await axios.post(`/api/v1/medias/delete-media`, { path: payload })
             // console.log('[VUEX] data: ', data)
             await dispatch('fetchMedias')
             await dispatch('portfolios/fetchPortfolios', {}, { root: true })

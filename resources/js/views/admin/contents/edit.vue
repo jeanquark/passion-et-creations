@@ -75,7 +75,13 @@ export default {
             return this.$store.getters['contents/contents']
         },
         content() {
-            return this.$store.getters['contents/contents'].find(content => content.id == this.$route.params.id)
+            // return this.$store.getters['contents/contents'].find(content => content.id == this.$route.params.id)
+            if (this.contents.length > 0) {
+
+                const cloneCopy = JSON.parse(JSON.stringify(this.contents.find((content) => content.id == this.$route.params.id)))
+                return cloneCopy
+            }
+            return null
         }
     },
     methods: {

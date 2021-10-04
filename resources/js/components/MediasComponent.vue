@@ -1,7 +1,7 @@
 <template>
     <v-card>
         <v-card-title></v-card-title>
-        <v-card-text >
+        <v-card-text>
             <v-row no-gutters>
                 <v-col cols="12">
                     <!-- medias.allDirectories: {{ medias.allDirectories }}<br /><br /> -->
@@ -12,10 +12,11 @@
                     <!-- path: {{ path }}<br /><br /> -->
                     <!-- items: {{ items }}<br /><br /> -->
                     <!-- showUploadFile: {{ showUploadFile }}<br /><br /> -->
+                    <!-- route: {{ this.$route.path }}<br /><br /> -->
                 </v-col>
             </v-row>
 
-            <v-row no-gutters >
+            <v-row no-gutters>
                 <v-navigation-drawer app bottom right temporary :width="showUploadFile ? 512 : 256" v-model="showSidebar">
                     <!-- selectedFile: {{ selectedFile }}<br /> -->
                     <!-- selectedFolder: {{ selectedFolder }}<br /> -->
@@ -26,20 +27,28 @@
                             Size: {{ selectedFile.size }}KB<br />
                             Width: {{ selectedFile.width }}px<br />
                             Height: {{ selectedFile.height }}px<br />
-                            Last updated: {{ selectedFile.last_updated | moment('DD-MM-YYYY HH:mm') }}<br />
+                            Last updated: {{ selectedFile.last_updated | moment('ddd DD MMM YYYY HH:mm') }}<br />
                         </p>
-                        <div class="text-center">
+                        <div class="text-center" v-if="$route.path != '/admin/medias'">
                             <v-btn small color="primary" @click="addFile(selectedFile)">Ajouter</v-btn>
+                        </div>
+                        <div class="text-center mt-2">
+                            <v-btn small color="success" @click="downloadFile()">Télécharger</v-btn>
                         </div>
                         <div class="text-center mt-2">
                             <v-btn small color="error" :loading="loading" @click="deleteFile()">Supprimer</v-btn>
                         </div>
                     </div>
-                    <div v-if="selectedFolder">
-                        selectedFolder: {{ selectedFolder }}
+                    <div v-if="selectedFolder" class="mt-2">
+                        <!-- selectedFolder: {{ selectedFolder }} -->
+                        <v-img src="/images/icons/folder.svg"></v-img>
+                        <p class="text-center" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap">{{ selectedFolder.name }}</p>
+                        <div class="text-center">
+                            <v-btn small color="error" :loading="loading" @click="deleteFolder()">Supprimer</v-btn>
+                        </div>
                     </div>
                     <div v-if="showUploadFile">
-                        <upload-multiple-files :items="items" @fileUploaded="onFileUploaded"></upload-multiple-files>
+                        <upload-multiple-files :items="items" @folderCreated="onFolderCreated" @fileUploaded="onFileUploaded"></upload-multiple-files>
                     </div>
                 </v-navigation-drawer>
 
@@ -60,7 +69,7 @@
                     </v-row>
                 </v-col>
                 <v-col cols="12">
-                    <v-row no-gutters align="end" class="mx-0" style="border: 2px solid #e9ecef; border-radius: 5px;" @click="handleClick">
+                    <v-row no-gutters align="end" class="mx-0" style="border: 2px solid #e9ecef; border-radius: 5px; min-height: 200px;" @click="handleClick">
                         <v-col cols="12" md="3" lg="2" class="pa-3" v-for="(folder, index) of folders" :key="`folder_${index}`">
                             <v-hover v-slot="{ hover }">
                                 <v-img
@@ -72,7 +81,6 @@
                                     :data-name="folder.name"
                                     :data-path="folder.path"
                                 ></v-img>
-                                    <!-- @click.stop="clickOnFolder(folder)" -->
                             </v-hover>
                             <p class="text-center" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap">{{ folder.name }}</p>
                         </v-col>
@@ -91,6 +99,7 @@
 </template>
 
 <script>
+var fileDownload = require('js-file-download')
 import UploadMultipleFiles from './UploadMultipleFiles'
 export default {
     name: 'AdminMediasIndex',
@@ -148,17 +157,6 @@ export default {
                             type: 'folder',
                         })
                     )
-                // this.medias.allFiles
-                //     .map((filePath) => filePath.split('/'))
-                //     .filter((filePath) => filePath.length === 1)
-                //     .map((file) => file[0])
-                //     .forEach((file) =>
-                //         this.files.push({
-                //             name: file,
-                //             path: '/' + file,
-                //             extension: file.substring(file.lastIndexOf('.') + 1),
-                //         })
-                //     )
 
                 this.medias.files_with_size
                     .filter((file) => file.path.split('/').length === 1)
@@ -199,16 +197,7 @@ export default {
                             type: 'folder',
                         })
                     )
-                // this.medias.allFiles
-                //     .map(filePath => filePath.split('/'))
-                //     .filter(a => a[a.length - 2] === folderName)
-                //     .forEach(file =>
-                //         this.files.push({
-                //             name: file[file.length - 1],
-                //             path: '/' + file.join('/'),
-                //             extension: file.join('/').substring(file.join('/').lastIndexOf('.') + 1)
-                //         })
-                //     )
+
                 this.medias.files_with_size
                     .filter((file) => file.path.split('/').length > 1)
                     .forEach((file) => {
@@ -243,15 +232,11 @@ export default {
         },
         clickOnFile(file) {
             console.log('clickOnFile file: ', file)
+            this.selectedFolder = null
             this.selectedFile = file
             this.showUploadFile = false
             this.showSidebar = true
         },
-        // clickOnFolder(folder) {
-        //     console.log('clickOnFolder')
-        //     this.selectedFolder = folder
-        //     this.showSidebar = true
-        // },
         handleClick(e) {
             console.log('handleClick e: ', e)
             // console.log('e.target: ', e.target)
@@ -271,10 +256,11 @@ export default {
                         console.log('Clicked on folder')
                         console.log(e.target.parentNode.getAttribute('data-path'))
                         const folderPath = e.target.parentNode.getAttribute('data-path')
-                        this.selectedFolder = this.folders.find(folder => folder.path === folderPath)
+                        this.selectedFolder = this.folders.find((folder) => folder.path === folderPath)
                     } else if (e.target.parentNode.getAttribute('data-type') === 'file') {
                         console.log('Clicked on file')
-                        this.selectedFile = ''
+                        this.selectedFile = null
+                        this.selectedFolder = null
                     } else {
                         console.log('Clicked on blank')
                         this.showUploadFile = true
@@ -301,6 +287,37 @@ export default {
                 console.log('error: ', error)
             }
         },
+        async downloadFile() {
+            try {
+                console.log('downloadFile: ', this.selectedFile.path)
+                const data = await this.$store.dispatch('medias/downloadMedia', {
+                    path: this.selectedFile.path,
+                })
+                fileDownload(data, this.selectedFile.name);
+            } catch (error) {
+                console.log('error: ', error)
+            }
+        },
+        async onFolderCreated() {
+            try {
+                console.log('onFolderCreated')
+                await this.$store.dispatch('medias/fetchMedias')
+                this.showSidebar = false
+                this.goTo(this.path, this.formatFileName(this.path))
+                this.$store.commit('snackbars/SET_SNACKBAR', {
+                    show: true,
+                    color: 'success',
+                    content: 'Dossier ajouté avec succès.',
+                })
+            } catch (error) {
+                console.log('error: ', error)
+                this.$store.commit('snackbars/SET_SNACKBAR', {
+                    show: true,
+                    color: 'error',
+                    content: "Une erreur est survenue et le dossier n'a pas pu être créé.",
+                })
+            }
+        },
         async onFileUploaded() {
             try {
                 console.log('onFileUploaded')
@@ -310,14 +327,35 @@ export default {
                 this.$store.commit('snackbars/SET_SNACKBAR', {
                     show: true,
                     color: 'success',
-                    content: 'Fichier ajouté avec succès.'
+                    content: 'Fichier ajouté avec succès.',
                 })
             } catch (error) {
                 console.log('error: ', error)
                 this.$store.commit('snackbars/SET_SNACKBAR', {
                     show: true,
                     color: 'error',
-                    content: 'Une erreur est survenue et le fichier n\'a pas pu être téléversé.'
+                    content: "Une erreur est survenue et le fichier n'a pas pu être téléversé.",
+                })
+            }
+        },
+        async deleteFolder() {
+            try {
+                this.loading = true
+                await this.$store.dispatch('medias/deleteFolder', this.selectedFolder.path)
+                this.showSidebar = false
+                this.goTo(this.path, this.formatFileName(this.path))
+                this.loading = false
+                this.$store.commit('snackbars/SET_SNACKBAR', {
+                    show: true,
+                    color: 'success',
+                    content: 'Dossier supprimé avec succès.',
+                })
+            } catch (error) {
+                this.loading = false
+                this.$store.commit('snackbars/SET_SNACKBAR', {
+                    show: true,
+                    color: 'error',
+                    content: "Une erreur est survenue et le dossier n'a pas été supprimé.",
                 })
             }
         },
@@ -331,7 +369,7 @@ export default {
                 this.$store.commit('snackbars/SET_SNACKBAR', {
                     show: true,
                     color: 'success',
-                    content: 'Fichier supprimé avec succès.'
+                    content: 'Fichier supprimé avec succès.',
                 })
             } catch (error) {
                 console.log('error: ', error)
@@ -339,7 +377,7 @@ export default {
                 this.$store.commit('snackbars/SET_SNACKBAR', {
                     show: true,
                     color: 'error',
-                    content: "Une erreur est survenue et le fichier n'a pas été supprimé."
+                    content: "Une erreur est survenue et le fichier n'a pas été supprimé.",
                 })
             }
         },

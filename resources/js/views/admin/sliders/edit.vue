@@ -14,7 +14,7 @@
                                     <v-card-text>
                                         <v-img :src="`/medias/${image.image_path}`" height="150" :class="hover ? 'image' : 'transparent'"> </v-img>
                                     </v-card-text>
-                                    <v-card-actions class="justify-center">
+                                    <v-card-actions class="justify-center mt-0">
                                         <v-btn x-small color="error" class="mb-0" :class="hover ? '' : 'transparent'" @click="deleteImage(image)">Supprimer</v-btn>
                                     </v-card-actions>
                                 </v-card>
