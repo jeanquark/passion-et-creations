@@ -26,13 +26,13 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 //     return view('auth.register');
 // })->name('register');
 
-// Route::get('/forgot-password', function () {
-//     return view('auth/forgot-password');
-// });
+Route::get('/forgot-password', function () {
+    return view('auth/forgot-password');
+});
 
-// Route::get('/reset-password/{token}', function () {
-//     return view('auth/reset-password');
-// })->name('password.reset');
+Route::get('/reset-password/{token}', function () {
+    return view('auth/reset-password');
+})->name('password.reset');
 
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('/admin/{any}', [App\Http\Controllers\AdminController::class, 'index'])->where('any', '.*');

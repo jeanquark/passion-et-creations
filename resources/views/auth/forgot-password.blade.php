@@ -1,31 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Forgot Password</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {{-- <meta name="csrf-token" content="{{ csrf_token() }}" /> --}}
+
+    <title>Mot de passe oublié</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="/images/favicon.png" type="image/x-icon">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <style>
+        body {
+            font-family: 'Nunito';
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+    </style>
 </head>
 
-<body>
-    <div>
-        @if (session('status'))
-        <div class="">
-            {{ session('status') }}
-        </div>
-        @endif
-        <form method="POST" action="{{ route('password.email') }}">
-            @csrf
-            @error('email')
-                {{ $message }}
-            @enderror
-            <label for="email">Email</label>
-            <input type="email" name="email" value="lawyer@example.com" />
-            
-            <button type="submit">Reset Password</button>
-        </form>
-    </div>
+<body class="" style="border: 0px solid green">
+    <v-app id="app" v-cloak style="border: 0px solid red">
+        <v-main>
+            {{-- <navbar-component></navbar-component> --}}
+            <forgot-password-component></forgot-password-component>
+        </v-main>
+    </v-app>
+    <script src="{{ mix('js/app.js') }}"></script>
 </body>
 
 </html>

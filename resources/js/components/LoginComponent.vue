@@ -1,7 +1,7 @@
 <template>
     <v-main>
         <!-- <navbar-component></navbar-component> -->
-        <!-- form.errors.has('email'): {{ form.errors }} -->
+        <!-- form.errors: {{ form.errors }} -->
         <v-container fill-height>
             <v-row align="center" justify="center">
                 <v-col cols="12" sm="8" md="4">
@@ -34,6 +34,9 @@
                                     <v-btn color="#c49a6c" class="white--text" :loading="form.busy" @click="login">Login</v-btn>
                                 </v-col>
                                 <v-col cols="4">
+                                </v-col>
+                                <v-col cols="12" class="d-flex justify-end mt-3">
+                                    <small><a href="/forgot-password">Mot de passe oublié &rarr;</a></small>
                                 </v-col>
                             </v-row>
                         </v-card-actions>

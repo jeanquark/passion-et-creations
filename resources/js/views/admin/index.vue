@@ -36,7 +36,7 @@
                                 {{ item.element_name }}
                             </td>
                             <td>
-                                <v-img :src="`/medias${item.element_path}`" width="70"></v-img>
+                                <v-img :src="`/thumbnails${item.element_path}`" width="70"></v-img>
                             </td>
                             <td>
                                 <v-chip>{{ item.clicks }}</v-chip>
@@ -59,7 +59,7 @@
         </v-row>
         <v-row no-gutters class="my-3 mx-6">
             <v-col cols="12" class="">
-                <p>Les détails de fréquentation du site sont à consulter sur le portail de Google Analytics (<a href="https://analytics.google.com/analytics/web/#/p288633030/reports/reportinghub" target="_blank">lien</a>). Pour avoir l'accès, il faut être connecté avec son compte Gmail.</p>
+                <p>Les détails de fréquentation du site sont à consulter sur le portail de Google Analytics (<a href="https://analytics.google.com/analytics/web/#/p288633030/reports/reportinghub" target="_blank">lien</a>). Pour obtenir l'accès, il faut être se connecter avec son compte Gmail.</p>
             </v-col>
         </v-row>
     </v-main>

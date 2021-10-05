@@ -34,6 +34,11 @@
                                 <v-col cols="4">
                                 </v-col>
                             </v-row>
+                            <v-row no-gutters align="left">
+                                <v-col cols="12">
+                                    <a href="/forgot-password">Mot de passe oublié</a>
+                                </v-col>
+                            </v-row>
                         </v-card-actions>
                     </v-card>
                 </v-col>
