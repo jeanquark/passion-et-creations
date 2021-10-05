@@ -1,7 +1,7 @@
 <template>
-    <v-row no-gutters justify="center" id="portfolio" class="my-10" style="border: 0px solid red;">
-        <v-col cols="12" md="10" class="px-0" style="border: 0px dashed pink;">
-            <h2 class="text-center my-2" style="color: #c49a6c;">Portfolio</h2>
+    <v-row no-gutters justify="center" id="portfolio" class="my-10" style="border: 0px solid red">
+        <v-col cols="12" md="10" class="px-0" style="border: 0px dashed pink">
+            <h2 class="text-center my-2" style="color: #c49a6c">Portfolio</h2>
             <!-- Start of page<br /> -->
             <!-- Images: {{ images }}<br /> -->
             <!-- selectedImage: {{ selectedImage }} -->
@@ -20,8 +20,6 @@
                                 v-if="frontImage(portfolio)"
                             ></v-img>
                         </div>
-                        <!-- {{ portfolio.images[0]['path'] }} -->
-                        <!-- <v-img :lazy-src="`/medias/${portfolio.images[0]['path']}`" :src="`/medias/${portfolio.images[0]['path']}`" class="image" style="margin: 5px" @click="selectImage(portfolio)"></v-img> -->
                     </waterfall-slot>
                     <!-- <waterfall-slot v-for="(item, index) in items" :width="item.width" :height="item.height" :order="index" :key="index">
                     <v-img :lazy-src="item.src" :src="item.src" class="image" style="margin: 5px" @click="selectImage(item)"></v-img>
@@ -35,7 +33,7 @@
             </div>
             <!-- <v-btn small color="primary" class="text-center">Afficher plus</v-btn> -->
             <!-- <p>End of page</p> -->
-            <v-dialog v-model="dialog" max-width="60%" v-if="selectedPortfolio">
+            <v-dialog v-model="dialog" max-width="80%" v-if="selectedPortfolio">
                 <v-card>
                     <v-card-title class="text-h5 grey lighten-2">
                         <div v-html="selectedPortfolio.title"></div>
@@ -51,7 +49,7 @@
                             </v-col>
                             <v-col cols="4" class="px-4 py-1">
                                 <v-row no-gutters>
-                                    <v-col cols="4" class="pa-1" v-for="(image, index) in selectedPortfolio.portfolio_images" :key="index">
+                                    <v-col cols="12" sm="6" lg="4" class="pa-1" v-for="(image, index) in selectedPortfolio.portfolio_images" :key="index">
                                         <v-img
                                             :src="`/medias${image.path}`"
                                             aspect-ratio="1"
@@ -96,7 +94,7 @@ export default {
             dialog: false,
             selectedPortfolio: null,
             selectedImage: null,
-            showAllPortfolios: false
+            showAllPortfolios: false,
         }
     },
     computed: {
@@ -105,26 +103,36 @@ export default {
         // },
         portfolios() {
             if (!this.showAllPortfolios) {
-                return [...this.$store.getters['portfolios/portfolios']].splice(0, 20)
+                return [...this.$store.getters['portfolios/portfolios']].filter(portfolio => portfolio.is_active).splice(0, 20)
             } else {
-                return this.$store.getters['portfolios/portfolios']
+                return this.$store.getters['portfolios/portfolios'].filter(portfolio => portfolio.is_active)
             }
-        }
+        },
     },
     methods: {
         frontImage(portfolio) {
             try {
-                return portfolio.portfolio_images.find(image => image.is_front_image == true)
+                return portfolio.portfolio_images.find((image) => image.is_front_image == true)
             } catch (error) {
                 console.log('error: ', error)
             }
         },
         selectPortfolio(portfolio, index) {
-            console.log('selectPortfolio portfolio: ', portfolio, index)
-            this.selectedPortfolio = portfolio
-            this.selectedPortfolio['index'] = index
-            this.selectedImage = this.selectedPortfolio.portfolio_images[0]
-            this.dialog = true
+            try {
+                console.log('selectPortfolio portfolio: ', portfolio, index)
+                this.selectedPortfolio = portfolio
+                this.selectedPortfolio['index'] = index
+                this.selectedImage = this.selectedPortfolio.portfolio_images[0]
+                this.dialog = true
+                this.$store.dispatch('statistics/incrementCounter', {
+                    section: 'portfolio',
+                    element_id: portfolio.id,
+                    element_name: portfolio.title,
+                    element_path: portfolio.portfolio_images ? portfolio.portfolio_images[0]['path'] : ''
+                })
+            } catch (error) {
+                console.log('error: ', error)
+            }
         },
         selectImage(image) {
             console.log('selectImage image: ', image)
@@ -141,7 +149,6 @@ export default {
         moveLeft() {
             console.log('moveLeft index: ', this.selectedPortfolio.index)
             if (this.selectedPortfolio.index > 0) {
-                // this.selectedPortfolio = this.portfolios[this.selectedPortfolio.index - 1]
                 this.selectPortfolio(this.portfolios[this.selectedPortfolio.index - 1], this.selectedPortfolio.index - 1)
             }
         },
@@ -150,16 +157,12 @@ export default {
             if (this.selectedPortfolio.index < this.portfolios.length - 1) {
                 this.selectPortfolio(this.portfolios[this.selectedPortfolio.index + 1], this.selectedPortfolio.index + 1)
             }
-        }
-    }
+        },
+    },
 }
 </script>
 
 <style scoped>
-/* .v-image:hover {
-    cursor: pointer;
-    border: 2px solid red;
-} */
 .image:hover {
     cursor: pointer;
     /* border: 2px solid #c49a6c; */

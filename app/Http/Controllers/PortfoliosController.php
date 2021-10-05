@@ -75,7 +75,6 @@ class PortfoliosController extends Controller
             'success' => true,
             'request->all()' => $request->all(),
             'request->description' => $request->description
-
         ]);
     }
 

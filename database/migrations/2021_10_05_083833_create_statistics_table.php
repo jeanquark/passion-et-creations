@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateClickStatisticsTable extends Migration
+class CreateStatisticsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class CreateClickStatisticsTable extends Migration
      */
     public function up()
     {
-        Schema::create('click_statistics', function (Blueprint $table) {
+        Schema::create('statistics', function (Blueprint $table) {
             $table->id();
             $table->string('section');
             $table->integer('element_id')->nullable();
             $table->string('element_name')->nullable();
+            $table->string('element_path')->nullable();
             $table->integer('clicks')->default(0);
+            $table->timestamp('reset_at')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +32,6 @@ class CreateClickStatisticsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('click_statistics');
+        Schema::dropIfExists('statistics');
     }
 }

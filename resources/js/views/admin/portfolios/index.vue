@@ -104,13 +104,11 @@ export default {
         // },
         portfolios: {
             get() {
-                // return this.$store.getters['portfolios/portfolios'].slice(0, 3)
                 return this.$store.getters['portfolios/portfolios']
             },
             set(value) {
                 console.log('set portfolio: ', value)
                 this.$store.commit('portfolios/SET_PORTFOLIOS', value)
-                // this.portfolios = value
             },
         },
         updatedOrder() {
@@ -181,6 +179,7 @@ export default {
                 this.indexClicked = index
                 this.form.id = id
                 await this.$store.dispatch('portfolios/deletePortfolio', this.form)
+                this.indexClicked = null
             } catch (error) {
                 console.log('error: ', error)
             }

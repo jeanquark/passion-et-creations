@@ -19,7 +19,8 @@
                     <!-- form.path: {{ form.path }}<br /><br /> -->
                     <!-- form.files: {{ form.files }}<br /><br /> -->
                     <!-- <span v-if="form.files"> form.files[0][size]: {{ form.files[0]['size'] }}<br /><br /></span> -->
-                    <v-file-input label="Sélectionner un ou des fichiers" filled :multiple="true" :clearable="false" show-size @change="onFileChange" v-model="formFiles.files"></v-file-input>
+                    <small>Vérifiez que l'image est bien minimisée <b>avant</b> l'upload. Utiliser un service de compression comme <a href="https://compressjpeg.com/fr/" target="_blank">compressjpeg</a> pour obtenir des images de taille inférieur tout en maintenant la qualité (gain de 50% en moyenne et un site se chargeant plus rapidement).</small>
+                    <v-file-input label="Sélectionner un ou des fichiers" filled :multiple="true" :clearable="false" show-size class="mt-3" @change="onFileChange" v-model="formFiles.files"></v-file-input>
                     <div id="preview">
                         <!-- previewImages: {{ previewImages }}<br /> -->
                         <v-row no-gutters class="my-2">

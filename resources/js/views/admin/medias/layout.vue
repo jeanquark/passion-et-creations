@@ -1,6 +1,5 @@
 <template>
     <div>
-        <!-- <p>Medias Layout</p> -->
         <router-view></router-view>
     </div>
 </template>

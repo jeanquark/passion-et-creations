@@ -9,6 +9,7 @@ use App\Http\Controllers\MediasController;
 use App\Http\Controllers\SlidersController;
 use App\Http\Controllers\ContactMessagesController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\StatisticsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,7 @@ Route::get('/v1/contents', [ContentsController::class, 'index']);
 Route::get('/v1/portfolios', [PortfoliosController::class, 'index']);
 Route::get('/v1/sliders', [SlidersController::class, 'index']);
 Route::post('/v1/send-contact-form', [ContactMessagesController::class, 'send']);
+Route::post('/v1/statistics', [StatisticsController::class, 'store']);
 Route::get('/auth-user', function (Request $request) {
     return $request->user();
 });
@@ -60,6 +62,10 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('/v1/users/{id}', [UsersController::class, 'show']);
     Route::post('/v1/users/{id}', [UsersController::class, 'update']);
     Route::delete('/v1/users/{id}', [UsersController::class, 'destroy']);
+
+    Route::get('/v1/statistics', [StatisticsController::class, 'index']);
+    Route::put('/v1/statistics/{id}', [StatisticsController::class, 'resetOne']);
+    Route::put('/v1/statistics', [StatisticsController::class, 'resetAll']);
 });
 
 

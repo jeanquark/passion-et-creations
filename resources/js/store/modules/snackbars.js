@@ -10,9 +10,10 @@ export const mutations = {
 		// console.log('[VUEX] SET_SNACKBAR')
 		state.snackbar = payload
 	},
-	CLEAR_SNACKBAR (state) {
+	CLEAR_SNAKCBAR (state) {
 		state.snackbar = {}
-	}
+	},
+
 }
 
 export const actions = {
