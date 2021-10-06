@@ -9,7 +9,6 @@
 
                 <v-btn icon color="primary" class="mx-1" :disabled="displayImage" @click="displayImage = true"><v-icon>mdi-format-list-text</v-icon></v-btn>
                 <v-btn icon color="primary" class="mx-1" :disabled="!displayImage" @click="displayImage = false"><v-icon>mdi-format-list-bulleted</v-icon></v-btn>
-                <!-- <v-btn small color="success" class="mx-1" :disabled="!updatedOrder" @click="updateOrder">Enregistrer le nouvel ordre</v-btn> -->
             </v-col>
         </v-row>
         <v-row no-gutters justify="center">
@@ -24,6 +23,10 @@
                                         <v-img :src="frontImagePath(portfolio.portfolio_images)" max-width="80" aspect-ratio="1" class="mr-3" v-if="displayImage"></v-img>
 
                                         <p class="ml-2 my-0">{{ portfolio.title }}</p>
+                                        <div>
+                                            <v-chip small color="success" v-if="portfolio.is_active" class="ml-2">Publié</v-chip>
+                                            <v-chip small color="warning" class="ml-2" v-else>Non publié</v-chip>
+                                        </div>
                                         <!-- index: {{ i }} id: {{ portfolio.id }} order: {{ portfolio.order }} -->
                                     </v-col>
                                     <!-- <v-spacer></v-spacer> -->

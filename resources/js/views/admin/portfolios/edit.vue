@@ -26,6 +26,9 @@
                         <v-col cols="12">
                             <text-editor-component @toggleShowHTML="toggleShowHTML" :formContent="form.description" v-if="form.description" />
                         </v-col>
+                        <v-col cols="12">
+                            <v-checkbox v-model="form.is_active" label="Actif?"></v-checkbox>
+                        </v-col>
                     </v-row>
                     <v-row no-gutters style="border: 0px solid green">
                         <v-col cols="12" md="4">
@@ -102,6 +105,7 @@
                                     </v-card-text>
                                 </v-card>
                             </v-row>
+                            
                         </v-col>
                     </v-row>
                 </v-card-text>
@@ -154,6 +158,7 @@ export default {
             form: new Form({
                 title: '',
                 description: '',
+                is_active: false,
                 portfolio_images: [],
             }),
             showHTML: false,

@@ -31,19 +31,23 @@
                 <v-icon size="60" class="icon" @click="showMore" v-if="!showAllPortfolios">mdi-plus</v-icon>
                 <v-icon size="60" class="icon" @click="showLess" v-else>mdi-minus</v-icon>
             </div>
-            <!-- <v-btn small color="primary" class="text-center">Afficher plus</v-btn> -->
-            <!-- <p>End of page</p> -->
             <v-dialog v-model="dialog" max-width="80%" v-if="selectedPortfolio">
                 <v-card>
                     <v-card-title class="text-h5 grey lighten-2">
-                        <div v-html="selectedPortfolio.title"></div>
-                        <v-spacer></v-spacer>
-                        <v-icon large @click="moveLeft" class="mx-1 icon">mdi-arrow-left-bold-circle-outline</v-icon>
-                        <v-icon large class="mx-1 icon" @click="moveRight">mdi-arrow-right-bold-circle-outline</v-icon>
-                        <v-icon large class="ml-2 icon" @click="dialog = false">mdi-close</v-icon>
+                        <v-row no-gutter class="m-1">
+                            <v-col cols="6" class="d-flex justify-start">
+                                <div v-html="selectedPortfolio.title"></div>
+                                <!-- <v-spacer></v-spacer> -->
+                            </v-col>
+                            <v-col cols="6" class="d-flex justify-end">
+                                <v-icon large @click="moveLeft" class="mx-1 icon">mdi-arrow-left-bold-circle-outline</v-icon>
+                                <v-icon large class="mx-1 icon" @click="moveRight">mdi-arrow-right-bold-circle-outline</v-icon>
+                                <v-icon large class="ml-2 icon" @click="dialog = false">mdi-close</v-icon>
+                            </v-col>              
+                        </v-row>
                     </v-card-title>
                     <v-card-text>
-                        <v-row no-gutters>
+                        <v-row no-gutters class="hidden-sm-and-down">
                             <v-col cols="8" class="pa-2" v-if="selectedImage">
                                 <v-img :src="`/medias${selectedImage.path}`"></v-img>
                             </v-col>
@@ -62,11 +66,30 @@
                                 </v-row>
                             </v-col>
                         </v-row>
+                        <v-row no-gutters class="hidden-md-and-up">
+                            <v-col cols="12" class="pa-2" v-if="selectedImage">
+                                <v-img :src="`/medias${selectedImage.path}`"></v-img>
+                            </v-col>
+                            <v-col cols="12" class="px-4 py-1">
+                                <v-row no-gutters>
+                                    <v-col cols="6" sm="4" class="pa-1" v-for="(image, index) in selectedPortfolio.portfolio_images" :key="index">
+                                        <v-img
+                                            :src="`/medias${image.path}`"
+                                            aspect-ratio="1"
+                                            class="thumbnail"
+                                            :class="[selectedImage.path !== image.path ? 'transparent' : '']"
+                                            @click="selectImage(image)"
+                                        >
+                                        </v-img>
+                                    </v-col>
+                                </v-row>
+                            </v-col>
+                        </v-row>
                     </v-card-text>
 
                     <v-divider></v-divider>
 
-                    <v-card-text class="mt-3">
+                    <v-card-text class="pa-8">
                         <div v-html="selectedPortfolio.description"></div>
                     </v-card-text>
                 </v-card>
@@ -103,9 +126,9 @@ export default {
         // },
         portfolios() {
             if (!this.showAllPortfolios) {
-                return [...this.$store.getters['portfolios/portfolios']].filter(portfolio => portfolio.is_active).splice(0, 20)
+                return [...this.$store.getters['portfolios/portfolios']].filter((portfolio) => portfolio.is_active).splice(0, 20)
             } else {
-                return this.$store.getters['portfolios/portfolios'].filter(portfolio => portfolio.is_active)
+                return this.$store.getters['portfolios/portfolios'].filter((portfolio) => portfolio.is_active)
             }
         },
     },
@@ -128,7 +151,7 @@ export default {
                     section: 'portfolio',
                     element_id: portfolio.id,
                     element_name: portfolio.title,
-                    element_path: portfolio.portfolio_images ? portfolio.portfolio_images[0]['path'] : ''
+                    element_path: portfolio.portfolio_images ? portfolio.portfolio_images[0]['path'] : '',
                 })
             } catch (error) {
                 console.log('error: ', error)

@@ -3,7 +3,7 @@
         <v-col cols="12" sm="6" md="4" class="px-4" style="border: 0px dashed pink">
             <slider-component :slider="slider" :interval="3000" :showArrows="false" style="margin: 0em" />
         </v-col>
-        <v-col cols="12" sm="6" md="6" class="px-4" v-if="content">
+        <v-col cols="12" sm="6" md="6" class="px-4" :class="$vuetify.breakpoint.xsOnly ? 'mt-5' : 'mt-0'" v-if="content">
             <div v-html="content.content"></div>
         </v-col>
     </v-row>
@@ -39,4 +39,5 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

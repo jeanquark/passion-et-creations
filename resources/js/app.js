@@ -24,6 +24,7 @@ Vue.component('about-component', require('./components/AboutComponent.vue').defa
 Vue.component('portfolio-component', require('./components/PortfolioComponent.vue').default)
 Vue.component('snackbar-component', require('./components/SnackbarComponent.vue').default)
 Vue.component('forgot-password-component', require('./components/ForgotPasswordComponent.vue').default)
+Vue.component('reset-password-component', require('./components/ResetPasswordComponent.vue').default)
 
 const app = new Vue({
     el: '#app',

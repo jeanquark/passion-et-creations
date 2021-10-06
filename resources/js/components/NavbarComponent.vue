@@ -8,7 +8,7 @@
 
             <v-spacer></v-spacer>
 
-            <scrollactive class="my-nav d-flex align-center" :offset="80" active-class="active">
+            <scrollactive class="my-nav d-flex align-center" :offset="80" :duration="1000" active-class="active">
                 <a href="#welcome" class="link mx-1 scrollactive-item">Accueil</a> <span style="font-size: 1.2em">|</span>
                 <a href="#info" class="link mx-1 scrollactive-item">Info</a>
                 <span style="font-size: 1.2em">|</span>
@@ -21,15 +21,12 @@
             </scrollactive>
         </v-app-bar>
         <v-app-bar app flat fixed class="hidden-md-and-up">
-            <v-app-bar-nav-icon @click.stop="drawer = !drawer">
-                
-            </v-app-bar-nav-icon>
+            <v-app-bar-nav-icon @click.stop="drawer = !drawer"> </v-app-bar-nav-icon>
             <v-toolbar-title class="d-flex align-center">
-                    <v-img src="/images/logo_thumbnail.png" max-width="80"></v-img>
-                    <span class="ml-2"> | Sabine Pirat</span>
-                </v-toolbar-title>
-                <v-spacer></v-spacer>
-
+                <v-img src="/images/logo_thumbnail.png" max-width="80"></v-img>
+                <span class="ml-2"> | Sabine Pirat</span>
+            </v-toolbar-title>
+            <v-spacer></v-spacer>
         </v-app-bar>
         <v-navigation-drawer fixed temporary v-model="drawer">
             <v-list-item v-if="authUser">
@@ -37,23 +34,19 @@
                     <v-img :src="`/images/${authUser.picture}`" v-if="authUser.picture"></v-img>
                     <v-img src="/images/logo.png" v-else></v-img>
                 </v-list-item-avatar>
-
-                <v-list-item-content>
-                    <v-list-item-title class="title">
-                        {{ authUser.name }}
-                    </v-list-item-title>
-                    <v-list-item-subtitle>{{ authUser.email }}</v-list-item-subtitle>
-                </v-list-item-content>
+                <small>{{ authUser }}</small>
             </v-list-item>
             <v-list-item>
                 <v-list-item-content>
-                    <v-list-item-title class="my-2"><a href="#welcome" class="link mx-1 scrollactive-item">Accueil</a></v-list-item-title>
-                    <v-list-item-title class="my-2"><a href="#info" class="link mx-1 scrollactive-item">Info</a></v-list-item-title>
-                    <v-list-item-title class="my-2"><a href="#portfolio" class="link mx-1 scrollactive-item">Portfolio</a></v-list-item-title>
-                    <v-list-item-title class="my-2"><a href="#about" class="link mx-1 scrollactive-item">Portrait</a></v-list-item-title>
-                    <v-list-item-title class="my-2"><a href="#contact" class="link mx-1 scrollactive-item">Contact</a></v-list-item-title>
-                    <v-list-item-title class="my-2"><a href="/admin/index" class="link mx-1" v-if="authUser">Admin</a></v-list-item-title>
-                    <v-list-item-title class="my-2"><v-btn small color="#c49a6c" class="white--text" @click="logout" v-if="authUser">Logout</v-btn></v-list-item-title>
+                    <scrollactive class="" :offset="60" :duration="800" active-class="active">
+                        <v-list-item-title class="my-3"><a href="#welcome" class="link mx-1 scrollactive-item">Accueil</a></v-list-item-title>
+                        <v-list-item-title class="my-3"><a href="#info" class="link mx-1 scrollactive-item">Info</a> </v-list-item-title>
+                        <v-list-item-title class="my-3"><a href="#portfolio" class="link mx-1 scrollactive-item">Portfolio</a></v-list-item-title>
+                        <v-list-item-title class="my-3"><a href="#about" class="link mx-1 scrollactive-item">Portrait</a></v-list-item-title>
+                        <v-list-item-title class="my-3"><a href="#contact" class="link mx-1 scrollactive-item">Contact</a></v-list-item-title>
+                        <v-list-item-title class="my-3"><a href="/admin/index" class="link mx-1" v-if="authUser">Admin</a></v-list-item-title>
+                        <v-list-item-title class="my-3"><v-btn small color="#c49a6c" class="white--text" @click="logout" v-if="authUser">Logout</v-btn></v-list-item-title>
+                    </scrollactive>
                 </v-list-item-content>
             </v-list-item>
             <v-divider></v-divider>
@@ -73,7 +66,7 @@ export default {
             duration: 1200,
             offset: 0,
             easing: 'easeInOutCubic',
-            authUser: null
+            authUser: null,
         }
     },
     computed: {
@@ -92,12 +85,12 @@ export default {
             return {
                 duration: this.duration,
                 offset: this.offset,
-                easing: this.easing
+                easing: this.easing,
             }
         },
         intersect() {
             return this.$store.getters['intersect/intersect']
-        }
+        },
     },
     methods: {
         async checkAuth() {
@@ -116,11 +109,11 @@ export default {
         navigateTo(path) {
             // this.$router.push(path)
             location.href = path
-        }
+        },
         // onItemChanged(event, currentItem, lastActiveItem) {
         //     console.log('onItemChanged: ', currentItem)
         // }
-    }
+    },
 }
 </script>
 

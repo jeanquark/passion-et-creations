@@ -28,10 +28,11 @@
 
 <body class="" style="border: 0px solid green">
     <v-app id="app" v-cloak style="border: 0px solid red">
-        <v-main>
+        {{-- <v-main> --}}
             {{-- <navbar-component></navbar-component> --}}
             <forgot-password-component></forgot-password-component>
-        </v-main>
+            <snackbar-component></snackbar-component>
+        {{-- </v-main> --}}
     </v-app>
     <script src="{{ mix('js/app.js') }}"></script>
 </body>

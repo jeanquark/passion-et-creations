@@ -26,6 +26,12 @@
         [v-cloak] {
             display: none;
         }
+        a.anchor {
+            display: block;
+            position: relative;
+            top: -70px;
+            visibility: hidden;
+        }
     </style>
 </head>
 
@@ -39,6 +45,7 @@
                 </v-col>
             </v-row>
             <a href="#welcome"></a>
+            <a class="anchor" id="welcome-responsive"></a>
             @if ($content)
             <v-row no-gutters id="welcome" justify="center" align="center">
                 <v-col cols="12" sm="6" md="6" class="px-4">
