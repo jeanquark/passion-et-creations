@@ -1,4 +1,10 @@
 <IfModule mod_rewrite.c>
+
+    # Redirect to https
+    RewriteEngine on
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule (.*) https://passionetcreations.ch/$1 [R=301,L]
+
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
     </IfModule>
@@ -19,3 +25,5 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+
