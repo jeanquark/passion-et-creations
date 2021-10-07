@@ -16,7 +16,7 @@ export default {
     },
     data() {
         return {
-            showSnackbar: true
+            // showSnackbar: true
         }
     },
     computed: {

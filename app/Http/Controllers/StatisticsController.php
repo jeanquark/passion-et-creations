@@ -86,7 +86,7 @@ class StatisticsController extends Controller
     public function resetOne(Request $request, $id)
     {
         $statistic = Statistic::where('id', '=', $id)->update(['clicks' => 0, 'reset_at' => \Carbon\Carbon::now()]);
-        sleep(3);
+        // sleep(3);
 
         return response()->json([
             'success' => true
@@ -107,7 +107,7 @@ class StatisticsController extends Controller
             $statistic->update(['clicks' => 0, 'reset_at' => \Carbon\Carbon::now()]);
         }
 
-        sleep(3);
+        // sleep(3);
 
         return response()->json([
             'success' => true

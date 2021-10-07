@@ -9,6 +9,8 @@
 <script>
 const default_layout = "default"
 export default {
+    mounted () {
+    },
     computed: {
         layout () {
             console.log('abc')

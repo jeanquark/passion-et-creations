@@ -61,14 +61,16 @@
                         href="https://analytics.google.com/analytics/web/#/p288633030/reports/reportinghub"
                         target="_blank"
                         >lien</a
-                    >). Pour obtenir l'accès, il faut être se connecter avec son compte Gmail.
+                    >). Pour obtenir l'accès, il faut se connecter avec son compte Gmail.
                 </p>
             </v-col>
         </v-row>
         <v-row no-gutters class="my-3 mx-6">
             <v-col cols="12" class="d-flex justify-end">
                 <small class=""
-                    >Webmaster: Jean-Marc Kleger<br />
+                    >
+                    Dernier compilation: {{ lastBuildDate | moment('ddd DD MMM YYYY HH:mm') }}<br />
+                    Webmaster: Jean-Marc Kleger<br />
                     jm.kleger@gmail.com
                 </small>
             </v-col>
@@ -77,6 +79,7 @@
 </template>
 
 <script>
+import lastBuildDate from '/last_build_date.json'
 export default {
     name: 'AdminIndex',
     async created() {
@@ -109,6 +112,7 @@ export default {
             ],
             loading: null,
             indexClicked: null,
+            lastBuildDate: lastBuildDate
         }
     },
     computed: {

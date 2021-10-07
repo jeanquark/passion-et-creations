@@ -48,12 +48,15 @@ class PortfoliosController extends Controller
         $request->validate([
             'title' => ['required'],
             // 'description' => ['required']
+            'images' => ['required', 'min:1']
         ]);
 
         // 1) Save portfolios
         $newPortfolio = new Portfolio();
         $newPortfolio->title = $request->title;
         $newPortfolio->description = $request->description;
+        $newPortfolio->is_active = $request->is_active;
+        $newPortfolio->order = 0;
         $newPortfolio->save();
 
         // 2) Save images
@@ -69,6 +72,12 @@ class PortfoliosController extends Controller
             $newImage->is_front_image = $image['is_front_image'];
             $newImage->order = $image['order'];
             $newImage->save();
+        }
+
+        // 3) Increment order for all existing porfolios
+        $portfolios = Portfolio::all();
+        foreach($portfolios as $portfolio) {
+            $portfolio->increment('order');
         }
 
         return response()->json([
@@ -119,6 +128,7 @@ class PortfoliosController extends Controller
             [
                 'title' => $request->title,
                 'description' => $request->description,
+                'is_active' => $request->is_active,
                 'updated_at' => \Carbon\Carbon::now(),
             ]
         );

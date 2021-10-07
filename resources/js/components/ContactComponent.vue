@@ -138,7 +138,7 @@ export default {
     },
     computed: {
         contents() {
-            return this.$store.getters['contents/contents'].filter(content => content.section === 'contact')
+            return this.$store.getters['contents/contents'].filter(content => content.section === 'contact' && content.is_published == true)
         }
     },
     methods: {

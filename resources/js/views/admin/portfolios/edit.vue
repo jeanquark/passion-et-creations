@@ -36,7 +36,7 @@
                             <v-row no-gutters justify="center" class="my-2">
                                 <v-chip small color="primary" class="">Image principale</v-chip>
                             </v-row>
-                            <draggable class="" group="images" handle=".draggable" style="border: 0px dashed grey; min-height: 150px" v-model="frontImages">
+                            <draggable class="pa-0" group="images" handle=".draggable" style="border: 0px dashed grey; min-height: 150px" v-model="frontImages">
                                 <div v-if="frontImages.length > 0" style="border: 0px dashed red">
                                     <v-col cols="12" class="ma-0 py-0 px-3" style="" v-for="(image, index) in frontImagesList" :key="index">
                                         <v-hover v-slot="{ hover }" v-if="showMainImage">
@@ -65,47 +65,44 @@
                                 </div>
                             </draggable>
                         </v-col>
-                        <v-col cols="12" md="8">
+                        <v-col cols="12" md="8" style="border: 0px solid grey">
                             <v-row no-gutters justify="center" class="my-2">
                                 <v-chip small color="primary" class="">Images annexes</v-chip>
                             </v-row>
                             <v-row no-gutters style="border: 0px dashed grey">
-                                <v-card>
-                                    <v-card-text>
-                                        <draggable class="row no-gutters" group="images" handle=".draggable" v-model="backImages">
-                                            <v-col cols="12" md="4" class="pa-2 draggable" v-for="(image, index) in backImagesList" :key="index">
-                                                <v-hover v-slot="{ hover }">
-                                                    <v-card>
-                                                        <v-card-text>
-                                                            <v-img :src="`/medias/${image.path}`" width="200" :class="'image'"> </v-img>
-                                                        </v-card-text>
-                                                        <v-card-actions class="justify-center pt-0">
-                                                            <v-btn x-small color="error" class="mb-0" :class="hover ? '' : 'transparent'" @click="deletePortfolioImage(image)">Supprimer</v-btn>
-                                                        </v-card-actions>
-                                                    </v-card>
-                                                </v-hover>
-                                            </v-col>
-                                            <v-col cols="12" md="4" class="pa-2">
-                                                <v-hover v-slot="{ hover }">
-                                                    <v-card
-                                                        height="140"
-                                                        :elevation="hover ? 12 : 2"
-                                                        :class="{ 'on-hover': hover }"
-                                                        class="d-flex justify-center align-center"
-                                                        style="border: 2px dashed #ccc"
-                                                        @click="dialog = !dialog"
-                                                    >
-                                                        <v-card-text class="text-center" style="">
-                                                            <v-icon x-large>mdi-plus</v-icon>
-                                                        </v-card-text>
-                                                    </v-card>
-                                                </v-hover>
-                                            </v-col>
-                                        </draggable>
-                                    </v-card-text>
+                                <v-card width="100%">
+                                    <draggable class="row no-gutters" group="images" handle=".draggable" v-model="backImages">
+                                        <v-col cols="12" md="4" class="pa-2 draggable" v-for="(image, index) in backImagesList" :key="index">
+                                            <v-hover v-slot="{ hover }">
+                                                <v-card flat>
+                                                    <v-card-text>
+                                                        <v-img :src="`/medias/${image.path}`" width="200" :class="'image'"> </v-img>
+                                                    </v-card-text>
+                                                    <v-card-actions class="justify-center pt-0">
+                                                        <v-btn x-small color="error" class="mb-0" :class="hover ? '' : 'transparent'" @click="deletePortfolioImage(image)">Supprimer</v-btn>
+                                                    </v-card-actions>
+                                                </v-card>
+                                            </v-hover>
+                                        </v-col>
+                                        <v-col cols="12" md="4" class="px-4 py-6">
+                                            <v-hover v-slot="{ hover }">
+                                                <v-card
+                                                    height="140"
+                                                    :elevation="hover ? 12 : 2"
+                                                    :class="{ 'on-hover': hover }"
+                                                    class="d-flex justify-center align-center"
+                                                    style="border: 2px dashed #ccc"
+                                                    @click="dialog = !dialog"
+                                                >
+                                                    <v-card-text class="text-center" style="">
+                                                        <v-icon x-large>mdi-plus</v-icon>
+                                                    </v-card-text>
+                                                </v-card>
+                                            </v-hover>
+                                        </v-col>
+                                    </draggable>
                                 </v-card>
                             </v-row>
-                            
                         </v-col>
                     </v-row>
                 </v-card-text>
@@ -274,15 +271,15 @@ export default {
                 this.$store.commit('snackbars/SET_SNACKBAR', {
                     show: true,
                     content: 'Portfolio modifié avec succès.',
-                    color: 'success'
+                    color: 'success',
                 })
                 this.$router.push('/admin/portfolios')
             } catch (error) {
                 console.log('error: ', error)
                 this.$store.commit('snackbars/SET_SNACKBAR', {
                     show: true,
-                    content: 'Une erreur est survenue et le portfolio n\'a pas pu être modifié avec succès.',
-                    color: 'error'
+                    content: "Une erreur est survenue et le portfolio n'a pas pu être modifié avec succès.",
+                    color: 'error',
                 })
             }
         },

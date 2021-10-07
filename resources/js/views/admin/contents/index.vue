@@ -30,11 +30,9 @@
                                 <div v-html="truncate(item.content, 50)"></div>
                             </td>
                             <td>
-                                {{ item.is_published ? 'Oui' : 'Non' }}
+                                <v-chip small color="success" v-if="item.is_published">Oui</v-chip>
+                                <v-chip small color="warning" v-else>Non</v-chip>
                             </td>
-                            <!-- <td>
-                                {{ item.created_at | moment('DD MMM YYYY') }}
-                            </td> -->
                             <td>
                                 {{ item.updated_at | moment('from') }}
                             </td>
@@ -108,13 +106,15 @@ export default {
         },
         async deleteContent(id) {
             try {
-                console.log('deleteContent ', id)
-                await this.$store.dispatch('contents/deleteContent', id)
-                this.$store.commit('snackbars/SET_SNACKBAR', {
-                    show: true,
-                    color: 'success',
-                    content: 'Contenu supprimé avec succès.',
-                })
+                if (await this.$root.$confirm('Supprimer', 'Etes-vous sûr?', { color: 'error' })) {
+                    console.log('deleteContent ', id)
+                    await this.$store.dispatch('contents/deleteContent', id)
+                    this.$store.commit('snackbars/SET_SNACKBAR', {
+                        show: true,
+                        color: 'success',
+                        content: 'Contenu supprimé avec succès.',
+                    })
+                }
             } catch (error) {
                 console.log('error: ', error)
                 this.$store.commit('snackbars/SET_SNACKBAR', {

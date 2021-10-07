@@ -101,14 +101,17 @@
         >
             <!-- auth: {{ auth }} -->
             <router-view></router-view>
+            <confirm ref="confirm"></confirm>
         </v-container>
     </v-main>
 </template>
 
 <script>
 import axios from 'axios'
+import confirm from '../../components/DialogComponent.vue'
 export default {
     name: "AdminIndex",
+    components: { confirm },
     async created () {
         await this.$store.dispatch('auth/setAuthUser')
             await this.$store.dispatch('contacts/fetchContacts')
@@ -121,6 +124,9 @@ export default {
                 type: 'session_expired'
             })
         }
+    },
+    mounted () {
+        this.$root.$confirm = this.$refs.confirm.open
     },
     data() {
         return {

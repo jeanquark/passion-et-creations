@@ -33,7 +33,7 @@
                         <v-btn small color="success" type="submit" :loading="formFiles.busy">Uploader</v-btn>
                     </div>
                 </v-form>
-            <v-divider class="mt-5"></v-divider>
+                <v-divider class="mt-10"></v-divider>
             </v-col>
         </v-row>
         <v-row no-gutters class="my-3 mx-7">

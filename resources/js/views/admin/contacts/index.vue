@@ -110,20 +110,22 @@ export default {
         },
         async deleteContact(id) {
             try {
-                await this.$store.dispatch('contacts/deleteContact', {
-                    id
-                })
-                this.$store.commit('snackbars/SET_SNACKBAR', {
-                    show: true,
-                    content: 'Message supprimé avec succès.',
-                    color: 'success'
-                })
+                if (await this.$root.$confirm('Supprimer', 'Etes-vous sûr?', { color: 'error' })) {
+                    await this.$store.dispatch('contacts/deleteContact', {
+                        id,
+                    })
+                    this.$store.commit('snackbars/SET_SNACKBAR', {
+                        show: true,
+                        content: 'Message supprimé avec succès.',
+                        color: 'success',
+                    })
+                }
             } catch (error) {
                 console.log('error: ', error)
                 this.$store.commit('snackbars/SET_SNACKBAR', {
                     show: true,
-                    content: 'Une erreur est survenue et le message n\'a pas pu être supprimé.',
-                    color: 'error'
+                    content: "Une erreur est survenue et le message n'a pas pu être supprimé.",
+                    color: 'error',
                 })
             }
         },

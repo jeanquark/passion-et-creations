@@ -6,8 +6,9 @@
         "watch": "mix watch",
         "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
-        "prod": "npm run production",
-        "production": "mix --production"
+        "prod": "npm run write-date && npm run production",
+        "production": "mix --production",
+        "write-date": "node -p \"require('moment')().unix()\" > public/last_build_date.json"
     },
     "devDependencies": {
         "axios": "^0.21",

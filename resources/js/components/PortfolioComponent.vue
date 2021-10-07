@@ -21,6 +21,7 @@
                             ></v-img>
                         </div>
                     </waterfall-slot>
+                    <!--  -->
                     <!-- <waterfall-slot v-for="(item, index) in items" :width="item.width" :height="item.height" :order="index" :key="index">
                     <v-img :lazy-src="item.src" :src="item.src" class="image" style="margin: 5px" @click="selectImage(item)"></v-img>
                 </waterfall-slot> -->

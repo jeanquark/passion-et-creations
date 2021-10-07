@@ -120,8 +120,12 @@ class MediasController extends Controller
 
                     // 2) Store thumbnail
                     $thumbnailName = $fileName . '_thumbnail' . '.' . $fileExtension;
-                    $thumbnailImage = Intervention::make($file)->fit(512)->encode();
+                    // $thumbnailImage = Intervention::make($file)->fit(512)->encode();
+                    $thumbnailImage = Intervention::make($file)->resize(512, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->encode();
                     Storage::disk('thumbnails')->put($request->path . '/' .$thumbnailName, $thumbnailImage);
+                    
 
                     // 3) Store blurred thumbnail
                     // $thumbnailBlurryName = $fileName . '_thumbnail_blurred' . '.' . $fileExtension;

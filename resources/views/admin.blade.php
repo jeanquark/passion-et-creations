@@ -15,6 +15,8 @@
         <v-app>
             <router-view></router-view>
             <snackbar-component></snackbar-component>
+            {{-- <dialog-component @confirm="onConfirm"></dialog-component> --}}
+            {{-- <dialog-component ref="confirm"></dialog-component> --}}
         </v-app>
     </div>
 

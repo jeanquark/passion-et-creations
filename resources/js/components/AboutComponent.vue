@@ -26,7 +26,7 @@ export default {
             return this.$store.getters['contents/contents']
         },
         content() {
-            return this.$store.getters['contents/contents'].find((content) => content.section === 'portrait')
+            return this.$store.getters['contents/contents'].find((content) => content.section === 'portrait' && content.is_published == true)
         },
         sliders() {
             return this.$store.getters['sliders/sliders']

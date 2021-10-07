@@ -72,7 +72,7 @@ export default {
     },
     computed: {
         contents() {
-            return this.$store.getters['contents/contents'].filter((content) => content.section == 'info')
+            return this.$store.getters['contents/contents'].filter((content) => content.section == 'info' && content.is_published == true)
         },
     },
     methods: {

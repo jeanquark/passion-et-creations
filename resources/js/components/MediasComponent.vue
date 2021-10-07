@@ -74,7 +74,7 @@
                             <v-hover v-slot="{ hover }">
                                 <v-img
                                     :src="hover ? '/images/icons/folder_hover.svg' : '/images/icons/folder.svg'"
-                                    class="link"
+                                    class="folder"
                                     id="clickableElement"
                                     data-type="folder"
                                     :data-value="{ name: folder.name, path: folder.path }"
@@ -86,7 +86,7 @@
                         </v-col>
                         <v-col cols="12" md="3" lg="2" class="pa-3" v-for="(file, index) of files" :key="`file_${index}`">
                             <div v-if="getFileType(file.name) === 'image'" @click.stop="clickOnFile(file)" class="image">
-                                <v-img :src="`/medias${file.path}`" id="clickableElement" aspect-ratio="1" class="link" data-type="file"></v-img>
+                                <v-img :src="`/medias${file.path}`" id="clickableElement" aspect-ratio="1" class="" data-type="file"></v-img>
                                 <p class="text-center" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap">{{ file.name }}</p>
                             </div>
                             <div v-else>Not an image</div>
@@ -161,11 +161,11 @@ export default {
                 this.medias.files_with_size
                     .filter((file) => file.path.split('/').length === 1)
                     .forEach((file) => {
-                        const fileName = file.path.substring(file.path.lastIndexOf('/') + 1)
+                        const fileName = this.formatFileName(file.path)
                         this.files.push({
                             name: fileName,
                             path: '/' + file.path,
-                            thumbnail_path: '/' + file.path,
+                            thumbnail_path: '/' + this.formatRemoveFileExtension(file.path) + '_thumbnail.' + this.formatFileExtension(fileName),
                             size: file.size,
                             width: file.width,
                             height: file.height,
@@ -203,11 +203,11 @@ export default {
                     .forEach((file) => {
                         const pathArray = file.path.split('/')
                         if (pathArray[pathArray.length - 2] === folderName) {
-                            const fileName = file.path.substring(file.path.lastIndexOf('/') + 1)
+                            const fileName = this.formatFileName(file.path)
                             this.files.push({
                                 name: fileName,
                                 path: '/' + file.path,
-                                thumbnail_path: '/' + file.path,
+                                thumbnail_path: '/' + this.formatRemoveFileExtension(file.path) + '_thumbnail.' + this.formatFileExtension(fileName),
                                 size: file.size,
                                 width: file.width,
                                 height: file.height,
@@ -399,6 +399,10 @@ export default {
                     return null
             }
         },
+        formatFileExtension(fileName) {
+            const index = fileName.lastIndexOf('.')
+            return fileName.substring(index + 1)
+        },
         formatFileName(file) {
             const index = file.lastIndexOf('/')
             return file.substring(index + 1)
@@ -412,22 +416,20 @@ export default {
 </script>
 
 <style scoped>
-.link:hover {
-    cursor: pointer;
-    /* background: #e9ecef; */
-    /* border: 2px solid #e9ecef; */
-}
-/* .folder:hover {
-    cursor: pointer;
-    background: #e9ecef;
-} */
-.image:hover {
-    cursor: pointer;
-    /* border: 4px solid #e9ecef; */
-    background: #e9ecef;
-}
 #breadcrumbs {
     background-color: #e9ecef;
     border-radius: 5px;
 }
+.image:hover {
+    cursor: pointer;
+    /* border: 4px solid #e9ecef; */
+    background: #e9ecef;
+    /* -webkit-box-shadow:inset 0px 0px 0px 10px #f00; */
+    /* -moz-box-shadow:inset 0px 0px 0px 10px #f00; */
+    /* box-shadow:inset 10px 10px 10px 10px #f00; */
+}
+.folder:hover {
+    cursor: pointer;
+}
+
 </style>

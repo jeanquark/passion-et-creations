@@ -90,31 +90,33 @@ export default {
         users() {
             return this.$store.getters['users/users']
         },
-        authUser () {
+        authUser() {
             return this.$store.getters['auth/user']
-        }
+        },
     },
     methods: {
-        async deleteUser (id) {
+        async deleteUser(id) {
             try {
-                await this.$store.dispatch('users/deleteUser', {
-                    id
-                })
-                this.$store.commit('snackbars/SET_SNACKBAR', {
-                    show: true,
-                    content: 'Utilisateur supprimé avec succès.',
-                    color: 'success'
-                })
+                if (await this.$root.$confirm('Supprimer', 'Etes-vous sûr?', { color: 'error' })) {
+                    await this.$store.dispatch('users/deleteUser', {
+                        id,
+                    })
+                    this.$store.commit('snackbars/SET_SNACKBAR', {
+                        show: true,
+                        content: 'Utilisateur supprimé avec succès.',
+                        color: 'success',
+                    })
+                }
             } catch (error) {
                 console.log('error: ', error)
                 this.$store.commit('snackbars/SET_SNACKBAR', {
                     show: true,
-                    content: 'Une erreur est survenue et l\'utilisateur n\'a pas pu être supprimé.',
-                    color: 'error'
+                    content: "Une erreur est survenue et l'utilisateur n'a pas pu être supprimé.",
+                    color: 'error',
                 })
             }
-        }
-    }
+        },
+    },
 }
 </script>
 

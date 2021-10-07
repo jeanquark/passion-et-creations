@@ -64,12 +64,14 @@
                 <v-btn icon color="red" v-bind="attrs" @click="showSnackbar = false"><v-icon>mdi-close</v-icon></v-btn>
             </template>
         </v-snackbar>
+        <!-- <confirm ref="confirm"></confirm> -->
     </v-main>
 </template>
 
 <script>
 import Form from 'vform'
 import draggable from 'vuedraggable'
+// import confirm from '../../../components/DialogComponent'
 export default {
     name: 'AdminPortfoliosIndex',
     components: { draggable },
@@ -78,7 +80,10 @@ export default {
             await this.$store.dispatch('portfolios/fetchPortfolios')
         }
     },
-    mounted() {},
+    mounted() {
+        console.log('mounted')
+        // this.updatedOrder
+    },
     data() {
         return {
             items: [
@@ -97,22 +102,24 @@ export default {
             displayImage: true,
             indexClicked: null,
             form: new Form({
-                id: null
+                id: null,
             }),
         }
     },
     computed: {
-        // portfolios() {
-        //     return this.$store.getters['portfolios/portfolios']
-        // },
         portfolios: {
             get() {
-                return this.$store.getters['portfolios/portfolios']
+                // return this.$store.getters['portfolios/portfolios']
+                const cloneCopy = JSON.parse(JSON.stringify(this.$store.getters['portfolios/portfolios']))
+                return cloneCopy
             },
             set(value) {
                 console.log('set portfolio: ', value)
                 this.$store.commit('portfolios/SET_PORTFOLIOS', value)
             },
+        },
+        updatedOrder2() {
+            return this.portfolios !== this.$store.getters['portfolios/portfolios']
         },
         updatedOrder() {
             let updatedOrder = false
@@ -147,7 +154,7 @@ export default {
         goToPage(id) {
             this.$router.push(`/admin/portfolios/${id}/edit`)
         },
-        
+
         async updateOrder() {
             try {
                 console.log('updateOrder')
@@ -157,34 +164,45 @@ export default {
                     this.portfolios.map((portfolio, index) => ({ id: portfolio.id, order: index + 1 }))
                 )
                 this.showSnackbar = false
-                this.$store.commit(
-                    'snackbars/SET_SNACKBAR',{
-                        show: true,
-                        color: 'success',
-                        content: 'Nouvel ordre sauvegardé avec succès.'
-                    }
-                )
+                this.$store.commit('snackbars/SET_SNACKBAR', {
+                    show: true,
+                    color: 'success',
+                    content: 'Nouvel ordre sauvegardé avec succès.',
+                })
             } catch (error) {
                 console.log('error: ', error)
                 this.showSnackbar = false
-                this.$store.commit(
-                    'snackbars/SET_SNACKBAR',{
-                        show: true,
-                        color: 'error',
-                        content: 'Une erreur est survenue et le nouvel ordre n\'a pas pu être sauvegardé.'
-                    }
-                )
+                this.$store.commit('snackbars/SET_SNACKBAR', {
+                    show: true,
+                    color: 'error',
+                    content: "Une erreur est survenue et le nouvel ordre n'a pas pu être sauvegardé.",
+                })
             }
         },
         async deletePortfolio(id, index) {
             try {
-                console.log('deletePortfolio id: ', id)
-                this.indexClicked = index
-                this.form.id = id
-                await this.$store.dispatch('portfolios/deletePortfolio', this.form)
-                this.indexClicked = null
+                if (await this.$root.$confirm('Supprimer', 'Etes-vous sûr?', { color: 'error' })) {
+                    console.log('deletePortfolio id: ', id)
+                    this.indexClicked = index
+                    this.form.id = id
+                    await this.$store.dispatch('portfolios/deletePortfolio', this.form)
+                    this.indexClicked = null
+                    this.$store.commit('snackbars/SET_SNACKBAR', {
+                        show: true,
+                        color: 'success',
+                        content: 'Portfolio supprimé avec succès.',
+                    })
+                } else {
+                    console.log('cancel')
+                    
+                }
             } catch (error) {
                 console.log('error: ', error)
+                this.$store.commit('snackbars/SET_SNACKBAR', {
+                    show: true,
+                    color: 'error',
+                    content: "Une erreur est survenue et le portfolio n'a pas pu être effacé.",
+                })
             }
         },
     },
