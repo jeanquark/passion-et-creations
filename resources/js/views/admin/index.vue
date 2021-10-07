@@ -69,7 +69,7 @@
             <v-col cols="12" class="d-flex justify-end">
                 <small class=""
                     >
-                    Dernier compilation: {{ lastBuildDate | moment('ddd DD MMM YYYY HH:mm') }}<br />
+                    Dernière compilation: {{ lastBuildDate | moment('ddd DD MMM YYYY HH:mm') }}<br />
                     Webmaster: Jean-Marc Kleger<br />
                     jm.kleger@gmail.com
                 </small>
