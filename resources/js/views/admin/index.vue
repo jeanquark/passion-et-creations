@@ -11,17 +11,18 @@
                 <!-- indexClicked: {{ indexClicked }}<br /><br /> -->
                 <h3 class="text-center">Statistiques des visites</h3>
                 <v-btn x-small color="warning" class="my-2" :loading="loading" @click="resetAll">Remettre les compteurs à 0</v-btn>
-                <v-data-table :headers="headers" :items="statistics" :items-per-page="5" :hide-default-header="true" class="elevation-1">
-                    <template v-slot:header="{ props }">
+                <v-data-table :headers="headers" :items="statistics" :items-per-page="5" :hide-default-header="false" class="elevation-1">
+                    <!-- <template v-slot:header="{ props }">
                         <thead>
                             <tr>
-                                <th class="text-left" v-for="(head, index) in props.headers" :key="index">
-                                    {{ head.text }}
+                                <th class="text-left" :class="[header.sortable ? 'sortable' : '']"  v-for="(header, index) in props.headers" :key="index">
+                                    {{ header.text }}
+                                     <v-icon class="v-data-table-header__icon" small>mdi-arrow-up</v-icon>
                                 </th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                    </template>
+                    </template> -->
 
                     <template v-slot:[`item`]="{ item, index }">
                         <tr class="text-left" v-if="headers && headers.length">
@@ -103,12 +104,14 @@ export default {
                 {
                     text: 'Section',
                     value: 'section',
+                    sortable: false,
                 },
                 { text: 'Nom', value: 'name' },
-                { text: 'Image', value: 'element_path' },
+                { text: 'Image', value: 'element_path', sortable: false },
                 { text: 'Nb clicks', value: 'clicks', sortable: true },
                 { text: 'Dernier reset', value: 'reset_at' },
                 { text: 'Dernière modification', value: 'updated_at' },
+                { text: 'Actions', sortable: false },
             ],
             loading: null,
             indexClicked: null,

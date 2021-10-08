@@ -420,6 +420,9 @@ export default {
     background-color: #e9ecef;
     border-radius: 5px;
 }
+.link:hover {
+    cursor: pointer;
+}
 .image:hover {
     cursor: pointer;
     /* border: 4px solid #e9ecef; */

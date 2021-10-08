@@ -3,9 +3,9 @@
         <v-container fill-height>
             <v-row align="center" justify="center">
                 <v-col cols="12" sm="8" md="4">
-                    form.errors: {{ form.errors }}<br /><br />
-                    token: {{ token }}<br /><br />
-                    email: {{ email }}<br /><br />
+                    <!-- form.errors: {{ form.errors }}<br /><br /> -->
+                    <!-- token: {{ token }}<br /><br /> -->
+                    <!-- email: {{ email }}<br /><br /> -->
                     <v-card class="elevation-12">
                         <v-toolbar color="#c49a6c" class="">
                             <v-toolbar-title class="white--text">Réinitialiser mot de passe</v-toolbar-title>
