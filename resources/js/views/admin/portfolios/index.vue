@@ -81,8 +81,6 @@ export default {
         }
     },
     mounted() {
-        console.log('mounted')
-        // this.updatedOrder
     },
     data() {
         return {
@@ -206,6 +204,11 @@ export default {
             }
         },
     },
+    watch: {
+        updatedOrder() {
+            console.log('updatedOrder!')
+        }
+    }
 }
 </script>
 

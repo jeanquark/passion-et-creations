@@ -11,8 +11,8 @@
                             <!-- <v-spacer></v-spacer> -->
                             <v-toolbar-title class="primary-color">Login</v-toolbar-title>
                         </v-toolbar>
-                        <v-card-text>
-                            <v-form>
+                        <v-form @submit.prevent="login">
+                            <v-card-text>
                                 <v-text-field prepend-icon="mdi-account" name="email" label="Email" type="text" :error-messages="[]" v-model="form.email"></v-text-field>
                                 <v-text-field
                                     id="password"
@@ -23,23 +23,23 @@
                                     :error-messages="form.errors.get('email')"
                                     v-model="form.password"
                                 ></v-text-field>
-                            </v-form>
-                        </v-card-text>
-                        <v-card-actions class="">
-                            <v-row no-gutters align="center">
-                                <v-col cols="4">
-                                    <v-btn small outlined color="#c49a6c" class="" href="/"> <v-icon>mdi-arrow-left</v-icon>Retour</v-btn>
-                                </v-col>
-                                <v-col cols="4" class="d-flex justify-center">
-                                    <v-btn color="#c49a6c" class="white--text" :loading="form.busy" @click="login">Login</v-btn>
-                                </v-col>
-                                <v-col cols="4">
-                                </v-col>
-                                <v-col cols="12" class="d-flex justify-end mt-3">
-                                    <small><a href="/forgot-password">Mot de passe oublié &rarr;</a></small>
-                                </v-col>
-                            </v-row>
-                        </v-card-actions>
+                            </v-card-text>
+                            <v-card-actions class="">
+                                <v-row no-gutters align="center">
+                                    <v-col cols="4">
+                                        <v-btn small outlined color="#c49a6c" class="" href="/"> <v-icon>mdi-arrow-left</v-icon>Retour</v-btn>
+                                    </v-col>
+                                    <v-col cols="4" class="d-flex justify-center">
+                                        <!-- <v-btn color="#c49a6c" class="white--text" :loading="form.busy" @click="login">Login</v-btn> -->
+                                        <v-btn type="submit" color="#c49a6c" class="white--text" :loading="form.busy">Login</v-btn>
+                                    </v-col>
+                                    <v-col cols="4"> </v-col>
+                                    <v-col cols="12" class="d-flex justify-end mt-3">
+                                        <small><a href="/forgot-password">Mot de passe oublié &rarr;</a></small>
+                                    </v-col>
+                                </v-row>
+                            </v-card-actions>
+                        </v-form>
                     </v-card>
                 </v-col>
             </v-row>
@@ -60,8 +60,8 @@ export default {
         return {
             form: new Form({
                 email: '',
-                password: '',
-            }),
+                password: ''
+            })
         }
     },
     computed: {},
@@ -78,20 +78,19 @@ export default {
             } catch (error) {
                 console.log('error: ', error)
             }
-        },
-    },
+        }
+    }
 }
 </script>
 
 <style scoped>
-    .background-image {
-        background-image: url('/images/logo_toolbar.png');
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: right;
-    }
-    .primary-color {
-        color: #c49a6c;
-
-    }
+.background-image {
+    background-image: url('/images/logo_toolbar.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: right;
+}
+.primary-color {
+    color: #c49a6c;
+}
 </style>

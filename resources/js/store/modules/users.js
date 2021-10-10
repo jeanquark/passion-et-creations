@@ -52,6 +52,7 @@ export const actions = {
             })
             // console.log('data: ', data)
 			await dispatch('fetchUsers')
+			await dispatch('auth/setAuthUser', {},  { root: true })
         } catch (error) {
 			console.log('error: ', error)
             throw error
