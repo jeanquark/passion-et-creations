@@ -19,8 +19,21 @@
                     <!-- form.path: {{ form.path }}<br /><br /> -->
                     <!-- form.files: {{ form.files }}<br /><br /> -->
                     <!-- <span v-if="form.files"> form.files[0][size]: {{ form.files[0]['size'] }}<br /><br /></span> -->
-                    <small>Vérifiez que l'image est bien minimisée <b>avant</b> l'upload. Utiliser un service de compression comme <a href="https://compressjpeg.com/fr/" target="_blank">compressjpeg</a> pour obtenir des images de taille inférieur tout en maintenant la qualité (gain de 50% en moyenne et un site se chargeant plus rapidement).</small>
-                    <v-file-input label="Sélectionner un ou des fichiers" filled :multiple="true" :clearable="false" show-size class="mt-3" @change="onFileChange" v-model="formFiles.files"></v-file-input>
+                    <small
+                        >Vérifiez que l'image est bien minimisée <b>avant</b> l'upload. Utiliser un service de compression comme
+                        <a href="https://compressjpeg.com/fr/" target="_blank">compressjpeg</a> pour obtenir des images de taille inférieur tout en maintenant la qualité (gain de 50% en moyenne et un
+                        site se chargeant plus rapidement).</small
+                    >
+                    <v-file-input
+                        label="Sélectionner un ou des fichiers"
+                        filled
+                        :multiple="true"
+                        :clearable="false"
+                        show-size
+                        class="mt-3"
+                        @change="onFileChange"
+                        v-model="formFiles.files"
+                    ></v-file-input>
                     <div id="preview">
                         <!-- previewImages: {{ previewImages }}<br /> -->
                         <v-row no-gutters class="my-2">
@@ -51,7 +64,6 @@
 
 <script>
 import Form from 'vform'
-// import axios from 'axios'
 export default {
     props: ['items'],
     async created() {},
@@ -64,7 +76,7 @@ export default {
             }),
             formFolder: new Form({
                 name: null,
-                path: ''
+                path: '',
             }),
             url: null,
             previewImages: [],
@@ -73,23 +85,27 @@ export default {
     computed: {},
     methods: {
         onFileChange(files) {
-            console.log('onFileChange: ', files)
-            // console.log(files[0].mozFullPath);
-            this.formFiles.path = this.items[this.items.length - 1]['path']
-            this.previewImages = []
-            for (let i = 0; i < files.length; i++) {
-                if (files[i]['type'].startsWith('image/')) {
-                    this.previewImages.push(URL.createObjectURL(files[i]))
+            try {
+                console.log('onFileChange: ', files)
+                // console.log(files[0].mozFullPath);
+                this.formFiles.path = this.items[this.items.length - 1]['path']
+                this.previewImages = []
+                for (let i = 0; i < files.length; i++) {
+                    if (files[i]['type'].startsWith('image/')) {
+                        this.previewImages.push(URL.createObjectURL(files[i]))
+                    }
                 }
+                // const file = e.target;
+                // console.log('file: ', file)
+                // this.url = URL.createObjectURL(file);
+                // const file = e.target.files[0]
+                // this.url = URL.createObjectURL(e[0])
+                // if (file) {
+                //     blah.src = URL.createObjectURL(file)
+                // }
+            } catch (error) {
+                console.log('error: ', error)
             }
-            // const file = e.target;
-            // console.log('file: ', file)
-            // this.url = URL.createObjectURL(file);
-            // const file = e.target.files[0]
-            // this.url = URL.createObjectURL(e[0])
-            // if (file) {
-            //     blah.src = URL.createObjectURL(file)
-            // }
         },
         async createFolder() {
             try {
@@ -106,7 +122,8 @@ export default {
                 await this.$store.dispatch('medias/uploadMedias', this.formFiles)
                 this.$emit('fileUploaded')
             } catch (error) {
-                console.log('error: ', error)
+                console.log('error from uploadMultipleFiles: ', error)
+                this.$emit('fileUploadError')
             }
         },
     },

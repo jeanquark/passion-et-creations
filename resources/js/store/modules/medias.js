@@ -51,7 +51,7 @@ export const actions = {
 			})
 			console.log('data: ', data)
 		} catch (error) {
-			console.log('error: ', error)
+			console.log('[VUEX] error: ', error)
 			throw error
 		}
 	},

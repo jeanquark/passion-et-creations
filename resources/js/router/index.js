@@ -40,7 +40,7 @@ import AdminUsersIndex from '../views/admin/users/index'
 import AdminUsersCreate from '../views/admin/users/create'
 import AdminUsersEdit from '../views/admin/users/edit'
 import Home from '../views/index'
-import Login from '../views/login'
+// import Login from '../views/login'
 
 import log from '../middleware/log'
 import auth from '../middleware/auth'
@@ -53,11 +53,11 @@ const router = new VueRouter({
             name: 'Home',
             component: Home
         },
-        {
-            path: '/login',
-            name: 'Login',
-            component: Login
-        },
+        // {
+        //     path: '/login',
+        //     name: 'Login',
+        //     component: Login
+        // },
         {
             path: '/admin',
             name: 'adminLayout',

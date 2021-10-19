@@ -1,14 +1,13 @@
 <template>
     <v-main>
         <!-- <navbar-component></navbar-component> -->
-        <!-- form.errors: {{ form.errors }} -->
+        <!-- form.errors: {{ form.errors }}<br /><br /> -->
+
         <v-container fill-height>
             <v-row align="center" justify="center">
                 <v-col cols="12" sm="8" md="4">
                     <v-card class="elevation-12">
                         <v-toolbar class="background-image">
-                            <!-- <v-img src="/images/favicon.png" max-height="100%" /> -->
-                            <!-- <v-spacer></v-spacer> -->
                             <v-toolbar-title class="primary-color">Login</v-toolbar-title>
                         </v-toolbar>
                         <v-form @submit.prevent="login">
@@ -20,7 +19,7 @@
                                     name="password"
                                     label="Password"
                                     type="password"
-                                    :error-messages="form.errors.get('email')"
+                                    :error-messages="form.errors.get('email') || form.errors.get('error')"
                                     v-model="form.password"
                                 ></v-text-field>
                             </v-card-text>
@@ -77,6 +76,9 @@ export default {
                 location.href = '/admin/index'
             } catch (error) {
                 console.log('error: ', error)
+                console.log('error.response: ', error.response)
+                console.log('error.response.data: ', error.response.data)
+                
             }
         }
     }

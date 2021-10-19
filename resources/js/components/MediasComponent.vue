@@ -4,6 +4,7 @@
         <v-card-text>
             <v-row no-gutters>
                 <v-col cols="12">
+                    <!-- medias: {{ medias }}<br /><br /> -->
                     <!-- medias.allDirectories: {{ medias.allDirectories }}<br /><br /> -->
                     <!-- medias.allFiles: {{ medias.allFiles }}<br /><br /> -->
                     <!-- medias.files_with_size: {{ medias.files_with_size }}<br /><br /> -->
@@ -13,6 +14,8 @@
                     <!-- items: {{ items }}<br /><br /> -->
                     <!-- showUploadFile: {{ showUploadFile }}<br /><br /> -->
                     <!-- route: {{ this.$route.path }}<br /><br /> -->
+                    order: {{ order }}<br /><br />
+                    <!-- abc: {{ abc }}<br /><br /> -->
                 </v-col>
             </v-row>
 
@@ -22,7 +25,7 @@
                     <!-- selectedFolder: {{ selectedFolder }}<br /> -->
                     <div v-if="selectedFile" class="ma-4">
                         <v-img :src="`/medias/${selectedFile.path}`"></v-img>
-                        <p class="text-center" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap">{{ selectedFile.name }}</p>
+                        <p class="text-center" style="">{{ selectedFile.name }}</p>
                         <p class="text-left">
                             Size: {{ selectedFile.size }}KB<br />
                             Width: {{ selectedFile.width }}px<br />
@@ -48,7 +51,7 @@
                         </div>
                     </div>
                     <div v-if="showUploadFile">
-                        <upload-multiple-files :items="items" @folderCreated="onFolderCreated" @fileUploaded="onFileUploaded"></upload-multiple-files>
+                        <upload-multiple-files :items="items" @folderCreated="onFolderCreated" @fileUploaded="onFileUploaded" @fileUploadError="onFileUploadError"></upload-multiple-files>
                     </div>
                 </v-navigation-drawer>
 
@@ -69,7 +72,17 @@
                     </v-row>
                 </v-col>
                 <v-col cols="12">
-                    <v-row no-gutters align="end" class="mx-0" style="border: 2px solid #e9ecef; border-radius: 5px; min-height: 200px;" @click="handleClick">
+                    <!-- <v-btn icon color="primary" class="my-2" @click="sort('alpha-asc')"><v-icon>mdi-sort-ascending</v-icon></v-btn>
+                    <v-btn icon color="primary" class="my-2" @click="sort('alpha-desc')"><v-icon>mdi-sort-descending</v-icon></v-btn> -->
+                    <v-btn icon color="primary" class="my-2" :class="[order == 'alpha-asc' ? 'active' : '']" @click="sort('alpha-asc')"><v-icon>mdi-sort-alphabetical-ascending</v-icon></v-btn>
+                    <v-btn icon color="primary" class="my-2" :class="[order == 'alpha-desc' ? 'active' : '']" @click="sort('alpha-desc')"><v-icon>mdi-sort-alphabetical-descending</v-icon></v-btn>
+                    <v-btn icon color="primary" class="my-2" :class="[order == 'num-asc' ? 'active' : '']" @click="sort('num-asc')"><v-icon>mdi-sort-numeric-ascending</v-icon></v-btn>
+                    <v-btn icon color="primary" class="my-2" :class="[order == 'num-desc' ? 'active' : '']" @click="sort('num-desc')"><v-icon>mdi-sort-numeric-descending</v-icon></v-btn>
+                    <v-btn icon color="primary" class="my-2" :class="[order == 'date-asc' ? 'active' : '']" @click="sort('date-asc')"><v-icon>mdi-sort-calendar-ascending</v-icon></v-btn>
+                    <v-btn icon color="primary" class="my-2" :class="[order == 'date-desc' ? 'active' : '']" @click="sort('date-desc')"><v-icon>mdi-sort-calendar-descending</v-icon></v-btn>
+                </v-col>
+                <v-col cols="12">
+                    <v-row no-gutters align="end" class="mx-0" style="border: 2px solid #e9ecef; border-radius: 5px; min-height: 200px" @click="handleClick">
                         <v-col cols="12" md="3" lg="2" class="pa-3" v-for="(folder, index) of folders" :key="`folder_${index}`">
                             <v-hover v-slot="{ hover }">
                                 <v-img
@@ -124,6 +137,7 @@ export default {
             clicksCount: 0,
             clicksTimer: null,
             loading: false,
+            order: 'date-desc',
         }
     },
     computed: {
@@ -132,77 +146,37 @@ export default {
         },
     },
     methods: {
-        async goTo(folderPath, folderName) {
-            console.log('goTo folderPath: ', folderPath)
-            console.log('goTo folderName: ', folderName)
-            this.items = []
-            this.folders = []
-            this.files = []
-
-            if (folderPath === '/') {
-                this.path = '/'
-                this.items.push({
-                    name: 'Dossier racine',
-                    path: '/',
-                    disabled: true,
-                })
-                this.medias.allDirectories
-                    .map((directory) => directory.split('/'))
-                    .filter((path) => path.length === 1)
-                    .map((folder) => folder[0])
-                    .forEach((folder) =>
-                        this.folders.push({
-                            name: folder,
-                            path: '/' + folder,
-                            type: 'folder',
-                        })
-                    )
-
-                this.medias.files_with_size
-                    .filter((file) => file.path.split('/').length === 1)
-                    .forEach((file) => {
-                        const fileName = this.formatFileName(file.path)
-                        this.files.push({
-                            name: fileName,
-                            path: '/' + file.path,
-                            thumbnail_path: '/' + this.formatRemoveFileExtension(file.path) + '_thumbnail.' + this.formatFileExtension(fileName),
-                            size: file.size,
-                            width: file.width,
-                            height: file.height,
-                            last_updated: file.last_updated,
-                            extension: fileName.substring(fileName.lastIndexOf('.') + 1),
-                        })
-                    })
-            } else {
-                this.path = folderPath
+        async goTo(folderPath, folderName, order = (a, b) => b.last_updated - a.last_updated) {
+            try {
+                console.log('goTo folderPath: ', folderPath)
+                console.log('goTo folderName: ', folderName)
                 this.items = []
-                const paths = folderPath.split('/')
-                console.log('paths: ', paths)
-                let array = []
-                paths.forEach((folderName, index, paths) => {
-                    array.push(folderName)
-                    this.items.push({
-                        name: folderName ? folderName : 'Dossier Racine',
-                        path: folderName ? array.join('/') : '/',
-                        disabled: index === paths.length - 1 ? true : false,
-                    })
-                })
-                this.medias.allDirectories
-                    .map((directory) => directory.split('/'))
-                    .filter((a) => a[a.length - 2] === folderName)
-                    .forEach((folder) =>
-                        this.folders.push({
-                            name: folder[folder.length - 1],
-                            path: '/' + folder.join('/'),
-                            type: 'folder',
-                        })
-                    )
+                this.folders = []
+                this.files = []
 
-                this.medias.files_with_size
-                    .filter((file) => file.path.split('/').length > 1)
-                    .forEach((file) => {
-                        const pathArray = file.path.split('/')
-                        if (pathArray[pathArray.length - 2] === folderName) {
+                if (folderPath === '/') {
+                    this.path = '/'
+                    this.items.push({
+                        name: 'Dossier racine',
+                        path: '/',
+                        disabled: true,
+                    })
+                    this.medias.allDirectories
+                        .map((directory) => directory.split('/'))
+                        .filter((path) => path.length === 1)
+                        .map((folder) => folder[0])
+                        .forEach((folder) =>
+                            this.folders.push({
+                                name: folder,
+                                path: '/' + folder,
+                                type: 'folder',
+                            })
+                        )
+
+                    this.medias.files_with_size
+                        .filter((file) => file.path.split('/').length === 1)
+                        .sort(order)
+                        .forEach((file) => {
                             const fileName = this.formatFileName(file.path)
                             this.files.push({
                                 name: fileName,
@@ -214,68 +188,152 @@ export default {
                                 last_updated: file.last_updated,
                                 extension: fileName.substring(fileName.lastIndexOf('.') + 1),
                             })
-                        }
+                        })
+                } else {
+                    this.path = folderPath
+                    this.items = []
+                    const paths = folderPath.split('/')
+                    console.log('paths: ', paths)
+                    let array = []
+                    paths.forEach((folderName, index, paths) => {
+                        array.push(folderName)
+                        this.items.push({
+                            name: folderName ? folderName : 'Dossier Racine',
+                            path: folderName ? array.join('/') : '/',
+                            disabled: index === paths.length - 1 ? true : false,
+                        })
                     })
+                    this.medias.allDirectories
+                        .map((directory) => directory.split('/'))
+                        .filter((a) => a[a.length - 2] === folderName)
+                        .forEach((folder) =>
+                            this.folders.push({
+                                name: folder[folder.length - 1],
+                                path: '/' + folder.join('/'),
+                                type: 'folder',
+                            })
+                        )
+
+                    this.medias.files_with_size
+                        .filter((file) => file.path.split('/').length > 1)
+                        .sort(order)
+                        .forEach((file) => {
+                            const pathArray = file.path.split('/')
+                            if (pathArray[pathArray.length - 2] === folderName) {
+                                const fileName = this.formatFileName(file.path)
+                                this.files.push({
+                                    name: fileName,
+                                    path: '/' + file.path,
+                                    thumbnail_path: '/' + this.formatRemoveFileExtension(file.path) + '_thumbnail.' + this.formatFileExtension(fileName),
+                                    size: file.size,
+                                    width: file.width,
+                                    height: file.height,
+                                    last_updated: file.last_updated,
+                                    extension: fileName.substring(fileName.lastIndexOf('.') + 1),
+                                })
+                            }
+                        })
+                }
+            } catch (error) {
+                console.log('error: ', error)
             }
         },
         goBack() {
-            console.log('goBack')
-            let path = this.path.substring(0, this.path.lastIndexOf('/'))
-            if (path == '') {
-                path = '/'
-            }
-            console.log('path: ', path)
+            try {
+                console.log('goBack')
+                let path = this.path.substring(0, this.path.lastIndexOf('/'))
+                if (path == '') {
+                    path = '/'
+                }
+                console.log('path: ', path)
 
-            const name = path.substring(path.lastIndexOf('/') + 1, path.length)
-            console.log('name: ', name)
-            this.goTo(path, name)
+                const name = path.substring(path.lastIndexOf('/') + 1, path.length)
+                console.log('name: ', name)
+                this.goTo(path, name)
+            } catch (error) {
+                console.log('error: ', error)
+            }
+        },
+        sort(order) {
+            try {
+                console.log('sort: ', order)
+                this.order = order
+                switch (this.order) {
+                    case 'alpha-asc':
+                        this.goTo(this.path, this.formatFileName(this.path), (a, b) => a.name - b.name)
+                        break;
+                    case 'alpha-desc':
+                        this.goTo(this.path, this.formatFileName(this.path), (a, b) => b.name - a.name)
+                        break;
+                    case 'num-asc':
+                        this.goTo(this.path, this.formatFileName(this.path), (a, b) => a.size - b.size)
+                        break;
+                    case 'num-desc':
+                        this.goTo(this.path, this.formatFileName(this.path), (a, b) => b.size - a.size)
+                        break;
+                    case 'date-asc':
+                        this.goTo(this.path, this.formatFileName(this.path), (a, b) => a.last_updated - b.last_updated)
+                        break;
+                    case 'date-desc':
+                        this.goTo(this.path, this.formatFileName(this.path), (a, b) => b.last_updated - a.last_updated)
+                        break;
+                    default:
+                        return (a, b) => a.name - b.name
+                }
+            } catch (error) {
+                console.log('error: ', error)
+            }
         },
         clickOnFile(file) {
-            console.log('clickOnFile file: ', file)
-            this.selectedFolder = null
-            this.selectedFile = file
-            this.showUploadFile = false
-            this.showSidebar = true
+            try {
+                console.log('clickOnFile file: ', file)
+                this.selectedFolder = null
+                this.selectedFile = file
+                this.showUploadFile = false
+                this.showSidebar = true
+            } catch (error) {
+                console.log('error: ', error)
+            }
         },
         handleClick(e) {
-            console.log('handleClick e: ', e)
-            // console.log('e.target: ', e.target)
-            // console.log('e.target.parentNode: ', e.target.parentNode)
-            // console.log('e.target.parentNode.id: ', e.target.parentNode.id)
-            // console.log('e.target.parentNode[data-value]: ', e.target.parentNode.getAttribute('data-value'))
-            this.selectedFile = null
-            this.selectedFolder = null
-            this.showUploadFile = false
-            this.clicksCount++
-            if (this.clicksCount === 1) {
-                this.clicksTimer = setTimeout(() => {
-                    console.log('Single click!')
+            try {
+                console.log('handleClick e: ', e)
+                this.selectedFile = null
+                this.selectedFolder = null
+                this.showUploadFile = false
+                this.clicksCount++
+                if (this.clicksCount === 1) {
+                    this.clicksTimer = setTimeout(() => {
+                        console.log('Single click!')
+                        this.clicksCount = 0
+                        this.showSidebar = !this.showSidebar
+                        if (e.target.parentNode.getAttribute('data-type') === 'folder') {
+                            console.log('Clicked on folder')
+                            console.log(e.target.parentNode.getAttribute('data-path'))
+                            const folderPath = e.target.parentNode.getAttribute('data-path')
+                            this.selectedFolder = this.folders.find((folder) => folder.path === folderPath)
+                        } else if (e.target.parentNode.getAttribute('data-type') === 'file') {
+                            console.log('Clicked on file')
+                            this.selectedFile = null
+                            this.selectedFolder = null
+                        } else {
+                            console.log('Clicked on blank')
+                            this.showUploadFile = true
+                        }
+                    }, 350)
+                } else {
+                    clearTimeout(this.clicksTimer)
+                    console.log('Double click!')
                     this.clicksCount = 0
-                    this.showSidebar = !this.showSidebar
+                    // this.navigateToFolder(folder)
                     if (e.target.parentNode.getAttribute('data-type') === 'folder') {
-                        console.log('Clicked on folder')
-                        console.log(e.target.parentNode.getAttribute('data-path'))
+                        const folderName = e.target.parentNode.getAttribute('data-name')
                         const folderPath = e.target.parentNode.getAttribute('data-path')
-                        this.selectedFolder = this.folders.find((folder) => folder.path === folderPath)
-                    } else if (e.target.parentNode.getAttribute('data-type') === 'file') {
-                        console.log('Clicked on file')
-                        this.selectedFile = null
-                        this.selectedFolder = null
-                    } else {
-                        console.log('Clicked on blank')
-                        this.showUploadFile = true
+                        this.goTo(folderPath, folderName)
                     }
-                }, 350)
-            } else {
-                clearTimeout(this.clicksTimer)
-                console.log('Double click!')
-                this.clicksCount = 0
-                // this.navigateToFolder(folder)
-                if (e.target.parentNode.getAttribute('data-type') === 'folder') {
-                    const folderName = e.target.parentNode.getAttribute('data-name')
-                    const folderPath = e.target.parentNode.getAttribute('data-path')
-                    this.goTo(folderPath, folderName)
                 }
+            } catch (error) {
+                console.log('error: ', error)
             }
         },
         addFile(file) {
@@ -293,7 +351,7 @@ export default {
                 const data = await this.$store.dispatch('medias/downloadMedia', {
                     path: this.selectedFile.path,
                 })
-                fileDownload(data, this.selectedFile.name);
+                fileDownload(data, this.selectedFile.name)
             } catch (error) {
                 console.log('error: ', error)
             }
@@ -330,12 +388,18 @@ export default {
                     content: 'Fichier ajouté avec succès.',
                 })
             } catch (error) {
-                console.log('error: ', error)
+                console.log('error from MediasComponent: ', error)
+            }
+        },
+        async onFileUploadError() {
+            try {
                 this.$store.commit('snackbars/SET_SNACKBAR', {
                     show: true,
                     color: 'error',
                     content: "Une erreur est survenue et le fichier n'a pas pu être téléversé.",
                 })
+            } catch (error) {
+                console.log('error: ', error)
             }
         },
         async deleteFolder() {
@@ -382,21 +446,25 @@ export default {
             }
         },
         getFileType(fileName) {
-            const fileExtension = fileName.substring(fileName.lastIndexOf('.'))
-            // console.log('fileExtension: ', fileExtension)
-            switch (fileExtension) {
-                case '.jpg':
-                case '.JPG':
-                case '.jpeg':
-                case '.JPEG':
-                case '.png':
-                case '.PNG':
-                    return 'image'
-                case '.pdf':
-                case '.PDF':
-                    return 'file'
-                default:
-                    return null
+            try {
+                const fileExtension = fileName.substring(fileName.lastIndexOf('.'))
+                // console.log('fileExtension: ', fileExtension)
+                switch (fileExtension) {
+                    case '.jpg':
+                    case '.JPG':
+                    case '.jpeg':
+                    case '.JPEG':
+                    case '.png':
+                    case '.PNG':
+                        return 'image'
+                    case '.pdf':
+                    case '.PDF':
+                        return 'file'
+                    default:
+                        return null
+                }
+            } catch (error) {
+                console.log('error: ', error)
             }
         },
         formatFileExtension(fileName) {
@@ -434,5 +502,7 @@ export default {
 .folder:hover {
     cursor: pointer;
 }
-
+.active {
+    background: #e9ecef;
+}
 </style>
