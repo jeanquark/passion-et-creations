@@ -14,8 +14,9 @@
                     <!-- items: {{ items }}<br /><br /> -->
                     <!-- showUploadFile: {{ showUploadFile }}<br /><br /> -->
                     <!-- route: {{ this.$route.path }}<br /><br /> -->
-                    order: {{ order }}<br /><br />
+                    <!-- order: {{ order }}<br /><br /> -->
                     <!-- abc: {{ abc }}<br /><br /> -->
+                    <!-- filter: {{ filter }}<br /><br /> -->
                 </v-col>
             </v-row>
 
@@ -27,7 +28,7 @@
                         <v-img :src="`/medias/${selectedFile.path}`"></v-img>
                         <p class="text-center" style="">{{ selectedFile.name }}</p>
                         <p class="text-left">
-                            Size: {{ selectedFile.size }}KB<br />
+                            Size: {{ formatFileSize(selectedFile.size) }}<br />
                             Width: {{ selectedFile.width }}px<br />
                             Height: {{ selectedFile.height }}px<br />
                             Last updated: {{ selectedFile.last_updated | moment('ddd DD MMM YYYY HH:mm') }}<br />
@@ -56,7 +57,7 @@
                 </v-navigation-drawer>
 
                 <v-col cols="12">
-                    <v-row no-gutters class="my-4 mx-0" align="end">
+                    <v-row no-gutters class="mt-4 mx-0" align="end">
                         <v-col cols="12" class="ml-0 mb-3">
                             <v-breadcrumbs large :items="items" id="breadcrumbs">
                                 <template v-slot:item="{ item }">
@@ -71,15 +72,27 @@
                         </v-col>
                     </v-row>
                 </v-col>
-                <v-col cols="12">
-                    <!-- <v-btn icon color="primary" class="my-2" @click="sort('alpha-asc')"><v-icon>mdi-sort-ascending</v-icon></v-btn>
-                    <v-btn icon color="primary" class="my-2" @click="sort('alpha-desc')"><v-icon>mdi-sort-descending</v-icon></v-btn> -->
-                    <v-btn icon color="primary" class="my-2" :class="[order == 'alpha-asc' ? 'active' : '']" @click="sort('alpha-asc')"><v-icon>mdi-sort-alphabetical-ascending</v-icon></v-btn>
-                    <v-btn icon color="primary" class="my-2" :class="[order == 'alpha-desc' ? 'active' : '']" @click="sort('alpha-desc')"><v-icon>mdi-sort-alphabetical-descending</v-icon></v-btn>
-                    <v-btn icon color="primary" class="my-2" :class="[order == 'num-asc' ? 'active' : '']" @click="sort('num-asc')"><v-icon>mdi-sort-numeric-ascending</v-icon></v-btn>
-                    <v-btn icon color="primary" class="my-2" :class="[order == 'num-desc' ? 'active' : '']" @click="sort('num-desc')"><v-icon>mdi-sort-numeric-descending</v-icon></v-btn>
-                    <v-btn icon color="primary" class="my-2" :class="[order == 'date-asc' ? 'active' : '']" @click="sort('date-asc')"><v-icon>mdi-sort-calendar-ascending</v-icon></v-btn>
-                    <v-btn icon color="primary" class="my-2" :class="[order == 'date-desc' ? 'active' : '']" @click="sort('date-desc')"><v-icon>mdi-sort-calendar-descending</v-icon></v-btn>
+                <v-col cols="12" class="d-inline-flex align-center">
+                    <v-btn icon :color="order == 'date-asc' ? 'primary' : ''" class="my-2" :class="[order == 'date-asc' ? 'active' : '']" @click="sort('date-asc')"
+                        ><v-icon>mdi-sort-calendar-ascending</v-icon></v-btn
+                    >
+                    <v-btn icon :color="order == 'date-desc' ? 'primary' : ''" class="my-2" :class="[order == 'date-desc' ? 'active' : '']" @click="sort('date-desc')"
+                        ><v-icon>mdi-sort-calendar-descending</v-icon></v-btn
+                    >
+                    <v-btn icon :color="order == 'alpha-asc' ? 'primary' : ''" class="my-2" :class="[order == 'alpha-asc' ? 'active' : '']" @click="sort('alpha-asc')"
+                        ><v-icon>mdi-sort-alphabetical-ascending</v-icon></v-btn
+                    >
+                    <v-btn icon :color="order == 'alpha-desc' ? 'primary' : ''" class="my-2" :class="[order == 'alpha-desc' ? 'active' : '']" @click="sort('alpha-desc')"
+                        ><v-icon>mdi-sort-alphabetical-descending</v-icon></v-btn
+                    >
+                    <v-btn icon :color="order == 'num-asc' ? 'primary' : ''" class="my-2" :class="[order == 'num-asc' ? 'active' : '']" @click="sort('num-asc')"
+                        ><v-icon>mdi-sort-numeric-ascending</v-icon></v-btn
+                    >
+                    <v-btn icon :color="order == 'num-desc' ? 'primary' : ''" class="my-2" :class="[order == 'num-desc' ? 'active' : '']" @click="sort('num-desc')"
+                        ><v-icon>mdi-sort-numeric-descending</v-icon></v-btn
+                    >
+
+                    <v-text-field prepend-icon="mdi-magnify" label="Chercher" clearable class="ml-5" v-model="search"></v-text-field>
                 </v-col>
                 <v-col cols="12">
                     <v-row no-gutters align="end" class="mx-0" style="border: 2px solid #e9ecef; border-radius: 5px; min-height: 200px" @click="handleClick">
@@ -138,6 +151,7 @@ export default {
             clicksTimer: null,
             loading: false,
             order: 'date-desc',
+            search: '',
         }
     },
     computed: {
@@ -146,6 +160,12 @@ export default {
         },
     },
     methods: {
+        filter(file) {
+            // console.log('filter: ', file.name)
+            // return file.path.split('/').length > 1
+            // console.log('filter', file.name.includes(this.search))
+            return file.name.includes(this.search)
+        },
         async goTo(folderPath, folderName, order = (a, b) => b.last_updated - a.last_updated) {
             try {
                 console.log('goTo folderPath: ', folderPath)
@@ -175,6 +195,7 @@ export default {
 
                     this.medias.files_with_size
                         .filter((file) => file.path.split('/').length === 1)
+                        .filter((file) => this.filter(file))
                         .sort(order)
                         .forEach((file) => {
                             const fileName = this.formatFileName(file.path)
@@ -216,6 +237,8 @@ export default {
 
                     this.medias.files_with_size
                         .filter((file) => file.path.split('/').length > 1)
+                        .filter((file) => this.filter(file))
+                        // .filter((file) => file)
                         .sort(order)
                         .forEach((file) => {
                             const pathArray = file.path.split('/')
@@ -260,23 +283,23 @@ export default {
                 this.order = order
                 switch (this.order) {
                     case 'alpha-asc':
-                        this.goTo(this.path, this.formatFileName(this.path), (a, b) => a.name - b.name)
-                        break;
+                        this.goTo(this.path, this.formatFileName(this.path), (a, b) => a.name.localeCompare(b.name))
+                        break
                     case 'alpha-desc':
-                        this.goTo(this.path, this.formatFileName(this.path), (a, b) => b.name - a.name)
-                        break;
+                        this.goTo(this.path, this.formatFileName(this.path), (a, b) => b.name.localeCompare(a.name))
+                        break
                     case 'num-asc':
                         this.goTo(this.path, this.formatFileName(this.path), (a, b) => a.size - b.size)
-                        break;
+                        break
                     case 'num-desc':
                         this.goTo(this.path, this.formatFileName(this.path), (a, b) => b.size - a.size)
-                        break;
+                        break
                     case 'date-asc':
                         this.goTo(this.path, this.formatFileName(this.path), (a, b) => a.last_updated - b.last_updated)
-                        break;
+                        break
                     case 'date-desc':
                         this.goTo(this.path, this.formatFileName(this.path), (a, b) => b.last_updated - a.last_updated)
-                        break;
+                        break
                     default:
                         return (a, b) => a.name - b.name
                 }
@@ -467,6 +490,17 @@ export default {
                 console.log('error: ', error)
             }
         },
+        formatFileSize(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes'
+
+            const k = 1024
+            const dm = decimals < 0 ? 0 : decimals
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+
+            const i = Math.floor(Math.log(bytes) / Math.log(k))
+
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
+        },
         formatFileExtension(fileName) {
             const index = fileName.lastIndexOf('.')
             return fileName.substring(index + 1)
@@ -478,6 +512,12 @@ export default {
         formatRemoveFileExtension(file) {
             const index = file.lastIndexOf('.')
             return file.substring(0, index)
+        },
+    },
+    watch: {
+        search() {
+            // console.log('search: ', this.search)
+            this.goTo(this.path, this.formatFileName(this.path))
         },
     },
 }
@@ -504,5 +544,8 @@ export default {
 }
 .active {
     background: #e9ecef;
+}
+.icon-active {
+    color: yellowgreen;
 }
 </style>

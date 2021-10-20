@@ -29,21 +29,22 @@ class MediasController extends Controller
         $allFiles = Storage::disk('medias')->allFiles();
         $allDirectories = Storage::disk('medias')->allDirectories();
 
-        foreach ($allFiles as $file) {
-            $array = array();
-            $fileType = Storage::disk('medias')->mimeType($file);
+        // foreach ($allFiles as $file) {
+        //     $array = array();
+        //     $fileType = Storage::disk('medias')->mimeType($file);
 
-            // if (in_array($fileType, $allowedFileTypes)) {
-                array_push($array, $file);
-                array_push($array, $fileType);
-                array_push($array, Storage::disk('medias')->size($file));
-                array_push($array, Storage::disk('medias')->lastModified($file));
-                array_push($files, $array);
-            // }
-        }
+        //     // if (in_array($fileType, $allowedFileTypes)) {
+        //         array_push($array, $file);
+        //         array_push($array, $fileType);
+        //         array_push($array, Storage::disk('medias')->size($file));
+        //         array_push($array, Storage::disk('medias')->lastModified($file));
+        //         array_push($files, $array);
+        //     // }
+        // }
 
         $files_with_size = array();
         foreach ($allFiles as $key => $file) {
+            $files_with_size[$key]['name'] = basename($file);
             $files_with_size[$key]['path'] = $file;
             $files_with_size[$key]['size'] = Storage::disk('medias')->size($file);
             $files_with_size[$key]['last_updated'] = Storage::disk('medias')->lastModified($file);
@@ -59,7 +60,7 @@ class MediasController extends Controller
             'files' => $files,
             'allFiles' => $allFiles,
             'allDirectories' => $allDirectories,
-            'array' => $array,
+            // 'array' => $array,
             'files_with_size' => $files_with_size
         ], 200);
     }
@@ -96,9 +97,20 @@ class MediasController extends Controller
         // ], 200);
         
         $request->validate([
-            'files' => 'required|max:1024',
-            'files.*' => 'mimes:doc,pdf,docx,jpg,jpeg,png'
-        ]);
+            'files' => 'required',
+            // 'files' => 'required|max:100|mimes:doc,pdf,docx,jpg,jpeg,png'
+            // 'files' => 'required|max:100',
+            'files.*' => 'max:1024|mimes:doc,pdf,docx,jpg,jpeg,png'
+            // $request->all, [
+            //     'files.*' => 'required|mimes:jpg,jpeg,png,bmp|max:20000'
+            //     ],[
+            //         'files.*.required' => 'Please upload an image',
+            //         'files.*.mimes' => 'Only jpeg,png and bmp images are allowed',
+            //         'files.*.max' => 'Sorry! Maximum allowed size for an image is 20MB',
+            //     ]
+        ],
+        ['files.required' => 'Vous devez ajouter un ou des fichiers.']
+        );
 
         if ($request->hasfile('files')) {
             foreach($request->file('files') as $file)

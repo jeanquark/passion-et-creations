@@ -19,6 +19,13 @@
                     <!-- form.path: {{ form.path }}<br /><br /> -->
                     <!-- form.files: {{ form.files }}<br /><br /> -->
                     <!-- <span v-if="form.files"> form.files[0][size]: {{ form.files[0]['size'] }}<br /><br /></span> -->
+                    <!-- formFiles.files.length(): {{ formFiles.file.length() }}<br /><br /> -->
+                    <!-- formFilesError: {{ formFilesError }}<br /><br /> -->
+                    <!-- formFiles.errors.get('files'): {{ formFiles.errors.get('files') }}<br /><br /> -->
+                    <!-- formFiles.errors.errors: {{ formFiles.errors.errors }}<br /><br /> -->
+                    <!-- formFiles.errors.get('files*'): {{ formFiles.errors.get('files.*') }}<br /><br /> -->
+                    <!-- abc: {{ abc }}<br /><br /> -->
+
                     <small
                         >Vérifiez que l'image est bien minimisée <b>avant</b> l'upload. Utiliser un service de compression comme
                         <a href="https://compressjpeg.com/fr/" target="_blank">compressjpeg</a> pour obtenir des images de taille inférieur tout en maintenant la qualité (gain de 50% en moyenne et un
@@ -26,11 +33,14 @@
                     >
                     <v-file-input
                         label="Sélectionner un ou des fichiers"
+                        name="Fichiers"
+                        id="Fichiers"
                         filled
                         :multiple="true"
                         :clearable="false"
                         show-size
                         class="mt-3"
+                        :error-messages="formFilesError.files"
                         @change="onFileChange"
                         v-model="formFiles.files"
                     ></v-file-input>
@@ -80,9 +90,23 @@ export default {
             }),
             url: null,
             previewImages: [],
+            // formFilesError: null
         }
     },
-    computed: {},
+    computed: {
+        formFilesError() {
+            const { errors } = this.formFiles.errors
+            for (let key in errors) {
+                // console.log('key: ', key)
+                if (key.startsWith('files.')) {
+                    return {'files': errors[key]}
+                } else {
+                    return {[key]: errors[key]}
+                }
+            }
+            return {}
+        },
+    },
     methods: {
         onFileChange(files) {
             try {

@@ -6,9 +6,13 @@
                 <!-- updatedOrder: {{ updatedOrder }}<br /><br /> -->
                 <!-- indexClicked: {{ indexClicked }}<br /><br /> -->
                 <!-- portfolios: {{ portfolios }}<br /><br /> -->
+                
 
                 <v-btn icon color="primary" class="mx-1" :disabled="displayImage" @click="displayImage = true"><v-icon>mdi-format-list-text</v-icon></v-btn>
                 <v-btn icon color="primary" class="mx-1" :disabled="!displayImage" @click="displayImage = false"><v-icon>mdi-format-list-bulleted</v-icon></v-btn>
+                <v-btn small color="success" @click="updateOrder" v-if="updatedOrder">
+                    Enregistrer le nouvel ordre
+                </v-btn>
             </v-col>
         </v-row>
         <v-row no-gutters justify="center">
@@ -20,7 +24,7 @@
                                 <v-row no-gutters justify="start" align="center">
                                     <v-col class="d-flex justify-start align-center">
                                         <v-chip small class="mr-2">{{ i + 1 }}</v-chip>
-                                        <v-img :src="frontImagePath(portfolio.portfolio_images)" max-width="80" aspect-ratio="1" class="mr-3" v-if="displayImage"></v-img>
+                                        <v-img :src="frontImagePath(portfolio.portfolio_images)" min-width="60" max-width="80" aspect-ratio="1" class="mr-3" v-if="displayImage"></v-img>
 
                                         <p class="ml-2 my-0">{{ portfolio.title }}</p>
                                         <div>
@@ -58,13 +62,12 @@
             </v-col>
         </v-row>
 
-        <v-snackbar color="dark" :timeout="5000" v-model="showSnackbar">
+        <!-- <v-snackbar color="dark" :timeout="5000" v-model="showSnackbar">
             <v-btn small color="success" @click="updateOrder">Enregistrer le nouvel ordre</v-btn>
             <template v-slot:action="{ attrs }">
                 <v-btn icon color="red" v-bind="attrs" @click="showSnackbar = false"><v-icon>mdi-close</v-icon></v-btn>
             </template>
-        </v-snackbar>
-        <!-- <confirm ref="confirm"></confirm> -->
+        </v-snackbar> -->
     </v-main>
 </template>
 
@@ -116,9 +119,9 @@ export default {
                 this.$store.commit('portfolios/SET_PORTFOLIOS', value)
             },
         },
-        updatedOrder2() {
-            return this.portfolios !== this.$store.getters['portfolios/portfolios']
-        },
+        // updatedOrder2() {
+        //     return this.portfolios !== this.$store.getters['portfolios/portfolios']
+        // },
         updatedOrder() {
             let updatedOrder = false
             for (let i = 0; i < this.portfolios.length; i++) {
