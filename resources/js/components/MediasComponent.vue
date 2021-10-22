@@ -73,25 +73,24 @@
                     </v-row>
                 </v-col>
                 <v-col cols="12" class="d-inline-flex align-center">
-                    <v-btn icon :color="order == 'date-asc' ? 'primary' : ''" class="my-2" :class="[order == 'date-asc' ? 'active' : '']" @click="sort('date-asc')"
-                        ><v-icon>mdi-sort-calendar-ascending</v-icon></v-btn
-                    >
                     <v-btn icon :color="order == 'date-desc' ? 'primary' : ''" class="my-2" :class="[order == 'date-desc' ? 'active' : '']" @click="sort('date-desc')"
                         ><v-icon>mdi-sort-calendar-descending</v-icon></v-btn
                     >
-                    <v-btn icon :color="order == 'alpha-asc' ? 'primary' : ''" class="my-2" :class="[order == 'alpha-asc' ? 'active' : '']" @click="sort('alpha-asc')"
-                        ><v-icon>mdi-sort-alphabetical-ascending</v-icon></v-btn
+                    <v-btn icon :color="order == 'date-asc' ? 'primary' : ''" class="my-2" :class="[order == 'date-asc' ? 'active' : '']" @click="sort('date-asc')"
+                        ><v-icon>mdi-sort-calendar-ascending</v-icon></v-btn
                     >
                     <v-btn icon :color="order == 'alpha-desc' ? 'primary' : ''" class="my-2" :class="[order == 'alpha-desc' ? 'active' : '']" @click="sort('alpha-desc')"
                         ><v-icon>mdi-sort-alphabetical-descending</v-icon></v-btn
                     >
-                    <v-btn icon :color="order == 'num-asc' ? 'primary' : ''" class="my-2" :class="[order == 'num-asc' ? 'active' : '']" @click="sort('num-asc')"
-                        ><v-icon>mdi-sort-numeric-ascending</v-icon></v-btn
+                    <v-btn icon :color="order == 'alpha-asc' ? 'primary' : ''" class="my-2" :class="[order == 'alpha-asc' ? 'active' : '']" @click="sort('alpha-asc')"
+                        ><v-icon>mdi-sort-alphabetical-ascending</v-icon></v-btn
                     >
                     <v-btn icon :color="order == 'num-desc' ? 'primary' : ''" class="my-2" :class="[order == 'num-desc' ? 'active' : '']" @click="sort('num-desc')"
                         ><v-icon>mdi-sort-numeric-descending</v-icon></v-btn
                     >
-
+                    <v-btn icon :color="order == 'num-asc' ? 'primary' : ''" class="my-2" :class="[order == 'num-asc' ? 'active' : '']" @click="sort('num-asc')"
+                        ><v-icon>mdi-sort-numeric-ascending</v-icon></v-btn
+                    >
                     <v-text-field prepend-icon="mdi-magnify" label="Chercher" clearable class="ml-5" v-model="search"></v-text-field>
                 </v-col>
                 <v-col cols="12">

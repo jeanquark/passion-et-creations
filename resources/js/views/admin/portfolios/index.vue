@@ -6,26 +6,30 @@
                 <!-- updatedOrder: {{ updatedOrder }}<br /><br /> -->
                 <!-- indexClicked: {{ indexClicked }}<br /><br /> -->
                 <!-- portfolios: {{ portfolios }}<br /><br /> -->
-                <!-- displayImage mini: -->
-                <v-btn icon :color="displayImage ? 'primary' : ''" class="mx-1" @click="displayImage = true"><v-icon>mdi-format-list-text</v-icon></v-btn>
-                <v-btn icon :color="displayImage ? '' : 'primary'" class="mx-1" @click="displayImage = false"><v-icon>mdi-format-list-bulleted</v-icon></v-btn>
+                <v-btn icon :color="display == 'list' ? 'primary' : ''" class="mx-1" @click="display = 'list'"><v-icon>mdi-format-list-text</v-icon></v-btn>
+                <v-btn icon :color="display == 'list-no-image' ? 'primary' : ''" class="mx-1" @click="display = 'list-no-image'"><v-icon>mdi-format-list-bulleted</v-icon></v-btn>
+                <v-btn icon :color="display == 'card' ? 'primary' : ''" class="mx-1" @click="display = 'card'"><v-icon>mdi-collage</v-icon></v-btn>
 
-                <v-btn small color="success" @click="updateOrder" v-if="updatedOrder">
-                    Enregistrer le nouvel ordre
-                </v-btn>
+                <v-btn small color="success" @click="updateOrder" v-if="updatedOrder"> Enregistrer le nouvel ordre </v-btn>
             </v-col>
         </v-row>
-        <!-- <v-row no-gutters>
-            <v-col cols="12" md="2" class="pa-2" v-for="(portfolio, index) in portfolios" :key="index">
-                <v-card>
-                    <v-card-text>
-                        <h3 class="truncate">{{ portfolio.title }}</h3>
-                        <v-img :src="frontImagePath(portfolio.portfolio_images)" min-width="60" max-width="80" aspect-ratio="1" class="mr-3" v-if="displayImage"></v-img>
-                    </v-card-text>
-                </v-card>
+        <v-row no-gutters justify="center" v-if="display == 'card'">
+            <v-col cols="11">
+                <draggable tag="v-row" group="portfolios" style="width: 100%" v-model="portfolios">
+                    <v-col cols="12" md="3" lg="2" class="pa-2" v-for="(portfolio, index) in portfolios" :key="index">
+                        <v-hover v-slot="{ hover }">
+                            <v-card :elevation="hover ? '12' : '2'" class="card">
+                                <v-card-text class="">
+                                    <p class="truncate text-center">{{ portfolio.title }}</p>
+                                    <v-img :src="frontImagePath(portfolio.portfolio_images)" min-width="60" max-width="100%" aspect-ratio="1" class=""></v-img>
+                                </v-card-text>
+                            </v-card>
+                        </v-hover>
+                    </v-col>
+                </draggable>
             </v-col>
-        </v-row> -->
-        <v-row no-gutters justify="center">
+        </v-row>
+        <v-row no-gutters justify="center" v-if="display == 'list' || display == 'list-no-image'">
             <v-col cols="11">
                 <v-expansion-panels>
                     <draggable v-model="portfolios" group="people" @start="drag = true" @end="drag = false" style="width: 100%">
@@ -34,7 +38,7 @@
                                 <v-row no-gutters justify="start" align="center">
                                     <v-col class="d-flex justify-start align-center">
                                         <v-chip small class="mr-2">{{ i + 1 }}</v-chip>
-                                        <v-img :src="frontImagePath(portfolio.portfolio_images)" min-width="60" max-width="80" aspect-ratio="1" class="mr-3" v-if="displayImage"></v-img>
+                                        <v-img :src="frontImagePath(portfolio.portfolio_images)" min-width="60" max-width="80" aspect-ratio="1" class="mr-3" v-if="display == 'list'"></v-img>
 
                                         <p class="ml-2 my-0">{{ portfolio.title }}</p>
                                         <div>
@@ -100,20 +104,20 @@ export default {
                 {
                     text: 'Portfolios',
                     disabled: true,
-                    href: '/admin/portfolios'
+                    href: '/admin/portfolios',
                 },
                 {
                     text: 'Ajouter',
                     disabled: false,
-                    to: '/admin/portfolios/create'
-                }
+                    to: '/admin/portfolios/create',
+                },
             ],
             showSnackbar: false,
-            displayImage: true,
+            display: 'list',
             indexClicked: null,
             form: new Form({
-                id: null
-            })
+                id: null,
+            }),
         }
     },
     computed: {
@@ -126,7 +130,7 @@ export default {
             set(value) {
                 console.log('set portfolio: ', value)
                 this.$store.commit('portfolios/SET_PORTFOLIOS', value)
-            }
+            },
         },
         // updatedOrder2() {
         //     return this.portfolios !== this.$store.getters['portfolios/portfolios']
@@ -142,18 +146,18 @@ export default {
                 this.showSnackbar = true
             }
             return updatedOrder
-        }
+        },
     },
     methods: {
         frontImage(images) {
-            return images.find(image => image.is_front_image == true)
+            return images.find((image) => image.is_front_image == true)
         },
         backImages(images) {
-            return images.filter(image => image.is_front_image == false)
+            return images.filter((image) => image.is_front_image == false)
         },
         frontImagePath(images) {
             if (images.length) {
-                const frontImage = images.find(image => image.is_front_image == true)
+                const frontImage = images.find((image) => image.is_front_image == true)
                 if (frontImage) {
                     return `/medias${frontImage.path}`
                 }
@@ -177,7 +181,7 @@ export default {
                 this.$store.commit('snackbars/SET_SNACKBAR', {
                     show: true,
                     color: 'success',
-                    content: 'Nouvel ordre sauvegardé avec succès.'
+                    content: 'Nouvel ordre sauvegardé avec succès.',
                 })
             } catch (error) {
                 console.log('error: ', error)
@@ -185,7 +189,7 @@ export default {
                 this.$store.commit('snackbars/SET_SNACKBAR', {
                     show: true,
                     color: 'error',
-                    content: "Une erreur est survenue et le nouvel ordre n'a pas pu être sauvegardé."
+                    content: "Une erreur est survenue et le nouvel ordre n'a pas pu être sauvegardé.",
                 })
             }
         },
@@ -200,7 +204,7 @@ export default {
                     this.$store.commit('snackbars/SET_SNACKBAR', {
                         show: true,
                         color: 'success',
-                        content: 'Portfolio supprimé avec succès.'
+                        content: 'Portfolio supprimé avec succès.',
                     })
                 } else {
                     console.log('cancel')
@@ -210,24 +214,27 @@ export default {
                 this.$store.commit('snackbars/SET_SNACKBAR', {
                     show: true,
                     color: 'error',
-                    content: "Une erreur est survenue et le portfolio n'a pas pu être effacé."
+                    content: "Une erreur est survenue et le portfolio n'a pas pu être effacé.",
                 })
             }
-        }
+        },
     },
     watch: {
         updatedOrder() {
             console.log('updatedOrder!')
-        }
-    }
+        },
+    },
 }
 </script>
 
 <style scoped>
 .truncate {
-    width: 100%;   
-     white-space: nowrap;
+    width: 100%;
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.card:hover {
+    cursor: pointer;
 }
 </style>

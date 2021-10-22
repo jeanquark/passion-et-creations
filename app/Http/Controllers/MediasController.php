@@ -86,38 +86,18 @@ class MediasController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function uploadMedias(Request $request)
-    {
-        // return response()->json([
-        //     'success' => true,
-        //     'request' => $request,
-        //     'request->medias' => $request->medias,
-        //     'request->files' => $request->files,
-        //     // 'File::exists($request->files)' => File::exists($request->files),
-        //     'request->hasfile(files)' => $request->hasfile('files')
-        // ], 200);
-        
-        $request->validate([
-            'files' => 'required',
-            // 'files' => 'required|max:100|mimes:doc,pdf,docx,jpg,jpeg,png'
-            // 'files' => 'required|max:100',
-            'files.*' => 'max:1024|mimes:doc,pdf,docx,jpg,jpeg,png'
-            // $request->all, [
-            //     'files.*' => 'required|mimes:jpg,jpeg,png,bmp|max:20000'
-            //     ],[
-            //         'files.*.required' => 'Please upload an image',
-            //         'files.*.mimes' => 'Only jpeg,png and bmp images are allowed',
-            //         'files.*.max' => 'Sorry! Maximum allowed size for an image is 20MB',
-            //     ]
-        ],
-        ['files.required' => 'Vous devez ajouter un ou des fichiers.']
+    {   
+        $request->validate(
+            [
+                'files' => 'required',
+                'files.*' => 'max:2048|mimes:doc,pdf,docx,jpg,jpeg,png'// max:2048 for each file
+            ],
+            ['files.required' => 'Vous devez ajouter un ou des fichiers.']
         );
 
         if ($request->hasfile('files')) {
             foreach($request->file('files') as $file)
             {
-                // $name = time().'.'.$file->extension();
-                // $file->move(public_path().'/medias/', $name);  
-                // $data[] = $name;
                 $fileFullName = $file->getClientOriginalName();
                 $fileName = pathinfo($fileFullName, PATHINFO_FILENAME);
                 $fileExtension = pathinfo($fileFullName, PATHINFO_EXTENSION);
