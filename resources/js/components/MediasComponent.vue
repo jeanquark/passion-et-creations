@@ -1,5 +1,5 @@
 <template>
-    <v-card>
+    <v-card ref="myModal" class="def">
         <v-card-title></v-card-title>
         <v-card-text>
             <v-row no-gutters>
@@ -17,21 +17,24 @@
                     <!-- order: {{ order }}<br /><br /> -->
                     <!-- abc: {{ abc }}<br /><br /> -->
                     <!-- filter: {{ filter }}<br /><br /> -->
+                    <!-- showSidebar: {{ showSidebar }}<br /><br /> -->
                 </v-col>
             </v-row>
 
             <v-row no-gutters>
-                <v-navigation-drawer app bottom right temporary :width="showUploadFile ? 512 : 256" v-model="showSidebar">
+                <!-- <v-navigation-drawer app bottom right temporary :width="showUploadFile ? 512 : 256" v-model="showSidebar"> -->
+                <!-- <v-navigation-drawer app :hide-overlay="true" bottom right temporary :width="showUploadFile ? 512 : 256" v-model="showSidebar" style=""> -->
+                <v-navigation-drawer absolute bottom right temporary :width="showUploadFile ? 512 : 256" v-model="showSidebar" style="" v-if="showSidebar">
                     <!-- selectedFile: {{ selectedFile }}<br /> -->
                     <!-- selectedFolder: {{ selectedFolder }}<br /> -->
-                    <div v-if="selectedFile" class="ma-4">
+                    <div v-if="selectedFile" class="ma-4" style="border: 0px solid red; position: fixed; width: 225px; max-height: 500px; overflow-y: auto;" :style="{top: scrollTop + 'px'}">
                         <v-img :src="`/medias/${selectedFile.path}`"></v-img>
                         <p class="text-center" style="">{{ selectedFile.name }}</p>
                         <p class="text-left">
-                            Size: {{ formatFileSize(selectedFile.size) }}<br />
-                            Width: {{ selectedFile.width }}px<br />
-                            Height: {{ selectedFile.height }}px<br />
-                            Last updated: {{ selectedFile.last_updated | moment('ddd DD MMM YYYY HH:mm') }}<br />
+                            Taille: {{ formatFileSize(selectedFile.size) }}<br />
+                            Largeur: {{ selectedFile.width }}px<br />
+                            Hauteur: {{ selectedFile.height }}px<br />
+                            Dernière modification: {{ selectedFile.last_updated | moment('ddd DD MMM YYYY HH:mm') }}<br />
                         </p>
                         <div class="text-center" v-if="$route.path != '/admin/medias'">
                             <v-btn small color="primary" @click="addFile(selectedFile)">Ajouter</v-btn>
@@ -72,6 +75,7 @@
                         </v-col>
                     </v-row>
                 </v-col>
+
                 <v-col cols="12" class="d-inline-flex align-center">
                     <v-btn icon :color="order == 'date-desc' ? 'primary' : ''" class="my-2" :class="[order == 'date-desc' ? 'active' : '']" @click="sort('date-desc')"
                         ><v-icon>mdi-sort-calendar-descending</v-icon></v-btn
@@ -93,6 +97,7 @@
                     >
                     <v-text-field prepend-icon="mdi-magnify" label="Chercher" clearable class="ml-5" v-model="search"></v-text-field>
                 </v-col>
+
                 <v-col cols="12">
                     <v-row no-gutters align="end" class="mx-0" style="border: 2px solid #e9ecef; border-radius: 5px; min-height: 200px" @click="handleClick">
                         <v-col cols="12" md="3" lg="2" class="pa-3" v-for="(folder, index) of folders" :key="`folder_${index}`">
@@ -136,6 +141,12 @@ export default {
         }
         await this.goTo('/')
     },
+    mounted() {
+        window.addEventListener('scroll', this.onScroll, true)
+    },
+    beforeDestroy() {
+        window.removeEventListener('scroll', this.onScroll, true)
+    },
     data() {
         return {
             showSidebar: false,
@@ -151,12 +162,14 @@ export default {
             loading: false,
             order: 'date-desc',
             search: '',
+            scrollTop: 0,
+            // scrollPosition: 0
         }
     },
     computed: {
         medias() {
             return this.$store.getters['medias/medias']
-        },
+        }
     },
     methods: {
         filter(file) {
@@ -178,25 +191,25 @@ export default {
                     this.items.push({
                         name: 'Dossier racine',
                         path: '/',
-                        disabled: true,
+                        disabled: true
                     })
                     this.medias.allDirectories
-                        .map((directory) => directory.split('/'))
-                        .filter((path) => path.length === 1)
-                        .map((folder) => folder[0])
-                        .forEach((folder) =>
+                        .map(directory => directory.split('/'))
+                        .filter(path => path.length === 1)
+                        .map(folder => folder[0])
+                        .forEach(folder =>
                             this.folders.push({
                                 name: folder,
                                 path: '/' + folder,
-                                type: 'folder',
+                                type: 'folder'
                             })
                         )
 
                     this.medias.files_with_size
-                        .filter((file) => file.path.split('/').length === 1)
-                        .filter((file) => this.filter(file))
+                        .filter(file => file.path.split('/').length === 1)
+                        .filter(file => this.filter(file))
                         .sort(order)
-                        .forEach((file) => {
+                        .forEach(file => {
                             const fileName = this.formatFileName(file.path)
                             this.files.push({
                                 name: fileName,
@@ -206,7 +219,7 @@ export default {
                                 width: file.width,
                                 height: file.height,
                                 last_updated: file.last_updated,
-                                extension: fileName.substring(fileName.lastIndexOf('.') + 1),
+                                extension: fileName.substring(fileName.lastIndexOf('.') + 1)
                             })
                         })
                 } else {
@@ -220,26 +233,26 @@ export default {
                         this.items.push({
                             name: folderName ? folderName : 'Dossier Racine',
                             path: folderName ? array.join('/') : '/',
-                            disabled: index === paths.length - 1 ? true : false,
+                            disabled: index === paths.length - 1 ? true : false
                         })
                     })
                     this.medias.allDirectories
-                        .map((directory) => directory.split('/'))
-                        .filter((a) => a[a.length - 2] === folderName)
-                        .forEach((folder) =>
+                        .map(directory => directory.split('/'))
+                        .filter(a => a[a.length - 2] === folderName)
+                        .forEach(folder =>
                             this.folders.push({
                                 name: folder[folder.length - 1],
                                 path: '/' + folder.join('/'),
-                                type: 'folder',
+                                type: 'folder'
                             })
                         )
 
                     this.medias.files_with_size
-                        .filter((file) => file.path.split('/').length > 1)
-                        .filter((file) => this.filter(file))
+                        .filter(file => file.path.split('/').length > 1)
+                        .filter(file => this.filter(file))
                         // .filter((file) => file)
                         .sort(order)
-                        .forEach((file) => {
+                        .forEach(file => {
                             const pathArray = file.path.split('/')
                             if (pathArray[pathArray.length - 2] === folderName) {
                                 const fileName = this.formatFileName(file.path)
@@ -251,7 +264,7 @@ export default {
                                     width: file.width,
                                     height: file.height,
                                     last_updated: file.last_updated,
-                                    extension: fileName.substring(fileName.lastIndexOf('.') + 1),
+                                    extension: fileName.substring(fileName.lastIndexOf('.') + 1)
                                 })
                             }
                         })
@@ -313,6 +326,11 @@ export default {
                 this.selectedFile = file
                 this.showUploadFile = false
                 this.showSidebar = true
+                const abc = document.querySelector('.def')
+                console.log('abc: ', abc.scrollHeight)
+                console.log('abc: ', abc.scrollTop)
+                // console.log('abc: ', abc.clientHeight)
+                // console.log('abc: ', this.$refs.myModal.scrollTop)
             } catch (error) {
                 console.log('error: ', error)
             }
@@ -333,9 +351,10 @@ export default {
                             console.log('Clicked on folder')
                             console.log(e.target.parentNode.getAttribute('data-path'))
                             const folderPath = e.target.parentNode.getAttribute('data-path')
-                            this.selectedFolder = this.folders.find((folder) => folder.path === folderPath)
+                            this.selectedFolder = this.folders.find(folder => folder.path === folderPath)
                         } else if (e.target.parentNode.getAttribute('data-type') === 'file') {
                             console.log('Clicked on file')
+
                             this.selectedFile = null
                             this.selectedFolder = null
                         } else {
@@ -371,7 +390,7 @@ export default {
             try {
                 console.log('downloadFile: ', this.selectedFile.path)
                 const data = await this.$store.dispatch('medias/downloadMedia', {
-                    path: this.selectedFile.path,
+                    path: this.selectedFile.path
                 })
                 fileDownload(data, this.selectedFile.name)
             } catch (error) {
@@ -387,14 +406,14 @@ export default {
                 this.$store.commit('snackbars/SET_SNACKBAR', {
                     show: true,
                     color: 'success',
-                    content: 'Dossier ajouté avec succès.',
+                    content: 'Dossier ajouté avec succès.'
                 })
             } catch (error) {
                 console.log('error: ', error)
                 this.$store.commit('snackbars/SET_SNACKBAR', {
                     show: true,
                     color: 'error',
-                    content: "Une erreur est survenue et le dossier n'a pas pu être créé.",
+                    content: "Une erreur est survenue et le dossier n'a pas pu être créé."
                 })
             }
         },
@@ -407,7 +426,7 @@ export default {
                 this.$store.commit('snackbars/SET_SNACKBAR', {
                     show: true,
                     color: 'success',
-                    content: 'Fichier ajouté avec succès.',
+                    content: 'Fichier ajouté avec succès.'
                 })
             } catch (error) {
                 console.log('error from MediasComponent: ', error)
@@ -418,7 +437,7 @@ export default {
                 this.$store.commit('snackbars/SET_SNACKBAR', {
                     show: true,
                     color: 'error',
-                    content: "Une erreur est survenue et le fichier n'a pas pu être téléversé.",
+                    content: "Une erreur est survenue et le fichier n'a pas pu être téléversé."
                 })
             } catch (error) {
                 console.log('error: ', error)
@@ -434,14 +453,14 @@ export default {
                 this.$store.commit('snackbars/SET_SNACKBAR', {
                     show: true,
                     color: 'success',
-                    content: 'Dossier supprimé avec succès.',
+                    content: 'Dossier supprimé avec succès.'
                 })
             } catch (error) {
                 this.loading = false
                 this.$store.commit('snackbars/SET_SNACKBAR', {
                     show: true,
                     color: 'error',
-                    content: "Une erreur est survenue et le dossier n'a pas été supprimé.",
+                    content: "Une erreur est survenue et le dossier n'a pas été supprimé."
                 })
             }
         },
@@ -455,7 +474,7 @@ export default {
                 this.$store.commit('snackbars/SET_SNACKBAR', {
                     show: true,
                     color: 'success',
-                    content: 'Fichier supprimé avec succès.',
+                    content: 'Fichier supprimé avec succès.'
                 })
             } catch (error) {
                 console.log('error: ', error)
@@ -463,7 +482,7 @@ export default {
                 this.$store.commit('snackbars/SET_SNACKBAR', {
                     show: true,
                     color: 'error',
-                    content: "Une erreur est survenue et le fichier n'a pas été supprimé.",
+                    content: "Une erreur est survenue et le fichier n'a pas été supprimé."
                 })
             }
         },
@@ -512,13 +531,26 @@ export default {
             const index = file.lastIndexOf('.')
             return file.substring(0, index)
         },
+        onScroll(e) {
+            console.log('e: ', e)
+            console.log('e.target: ', e.target)
+            console.log('e.target.contains: ', e.target.classList.contains('v-dialog'))
+            console.log('onScroll scrollTop: ', e.target.scrollTop)
+            console.log('onScroll scrollHeight: ', e.target.scrollHeight)
+            if (e.target.classList.contains('v-dialog')) {
+                this.scrollTop = e.target.scrollTop.toFixed(0)
+            }
+            // this.scrollPosition = ((e.target.scrollTop/e.target.scrollHeight) * 100).toFixed(0)
+            // console.log('scrollPosition: ', this.scrollPosition)
+        }
     },
     watch: {
         search() {
             // console.log('search: ', this.search)
             this.goTo(this.path, this.formatFileName(this.path))
-        },
+        }
     },
+    
 }
 </script>
 

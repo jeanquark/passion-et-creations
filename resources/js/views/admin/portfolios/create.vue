@@ -66,7 +66,7 @@
                 </v-form>
             </v-col>
         </v-row>
-        <v-dialog v-model="dialog" width="800">
+        <v-dialog v-model="dialog" width="80%">
             <medias-component @addFile="onAddFile"></medias-component>
         </v-dialog>
     </v-main>
