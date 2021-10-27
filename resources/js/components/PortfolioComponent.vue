@@ -1,5 +1,5 @@
 <template>
-    <v-row no-gutters justify="center" id="portfolio" class="my-10" style="border: 0px solid red">
+    <v-row no-gutters justify="center" id="portfolio" class="mb-10" style="border: 0px solid red">
         <v-col cols="12" md="10" class="px-0" style="border: 0px dashed pink">
             <h2 class="text-center my-2" style="color: #c49a6c">Portfolio</h2>
             <!-- Start of page<br /> -->
@@ -7,6 +7,7 @@
             <!-- selectedImage: {{ selectedImage }} -->
             <!-- portfolios: {{ portfolios.length }}<br /><br /> -->
             <!-- selectedPortfolio: {{ selectedPortfolio }}<br /><br /> -->
+            <!-- portfoliosTotal: {{ portfoliosTotal }}<br /><br /> -->
             <v-expand-transition>
                 <waterfall line="v" :line-gap="240" align="center" :watch="portfolios">
                     <waterfall-slot v-for="(portfolio, index) in portfolios" :width="frontImage(portfolio)['width']" :height="frontImage(portfolio)['height']" :order="index" :key="index">
@@ -28,7 +29,7 @@
                 </waterfall>
             </v-expand-transition>
 
-            <div class="text-center my-3">
+            <div class="text-center my-3" v-if="portfoliosTotal > 20">
                 <v-icon size="60" class="icon" @click="showMore" v-if="!showAllPortfolios">mdi-plus</v-icon>
                 <v-icon size="60" class="icon" @click="showLess" v-else>mdi-minus</v-icon>
             </div>
@@ -132,6 +133,9 @@ export default {
                 return this.$store.getters['portfolios/portfolios'].filter((portfolio) => portfolio.is_active)
             }
         },
+        portfoliosTotal() {
+            return this.$store.getters['portfolios/portfolios'].filter((portfolio) => portfolio.is_active).length
+        }
     },
     methods: {
         frontImage(portfolio) {

@@ -1,7 +1,9 @@
 <template>
-    <div style="border: 0px solid pink;">
+    <div style="border: 0px solid pink">
         <!-- formContent: {{ formContent }}<br /><br /> -->
         <!-- content: {{ content }}<br /><br /> -->
+        <!-- selectedText: {{ selectedText }}<br /><br /> -->
+        <!-- selRange: {{ selRange }}<br /><br /> -->
         <v-form>
             <v-btn color="primary" class="" @click.prevent="formatDoc('bold')">
                 <v-icon>mdi-format-bold</v-icon>
@@ -35,8 +37,12 @@
                 <v-icon>mdi-format-list-bulleted</v-icon>
             </v-btn>
 
-            <v-btn color="primary" class="" @click.prevent="openCreateLinkModal">
+            <!-- <v-btn color="primary" class="" @click.prevent="openCreateLinkModal">
                 <v-icon>mdi-link</v-icon>
+            </v-btn> -->
+
+            <v-btn color="primary" class="" @click.prevent="openImagesModal">
+                <v-icon>mdi-image</v-icon>
             </v-btn>
 
             <v-btn color="dark" class="" @click="toggleShowHTML">
@@ -50,15 +56,18 @@
                 </v-col>
             </v-row>
 
-            <div contenteditable="true" id="textBox" v-html="content" @focus="focused = true" @blur="focused = false" @click="selectElement" class="mt-1" v-if="!showHTML"></div>
+            <div contenteditable="true" id="textBox" ref="textBox" v-html="content" @focus="focused = true" @blur="focused = false" @click="selectElement" class="mt-1" v-if="!showHTML"></div>
 
-            <div contenteditable="true" id="textBox" @focus="focused = true" @blur="focused = false" class="mt-1" v-else>
+            <div contenteditable="true" id="textBox" ref="textBox" @focus="focused = true" @blur="focused = false" class="mt-1" v-else>
                 <pre style="">{{ content }}</pre>
             </div>
         </v-form>
 
         <!-- <images-modal @insertImage="insertImage" @closeImagesModal="showImagesModal = false" v-if="showImagesModal" /> -->
         <!-- <create-link-modal :selectedText="selectedText" @insertLink="insertLink" @closeLinkModal="showCreateLinkModal = false" v-if="showCreateLinkModal" /> -->
+        <v-dialog v-model="dialog" width="80%">
+            <medias-component @addFile="onAddImage"></medias-component>
+        </v-dialog>
     </div>
 </template>
 
@@ -66,11 +75,14 @@
 // import ImagesModal from '~/components/ImagesModal'
 // import CreateLinkModal from './CreateLinkModal'
 // import ImageProperties from '~/components/ImageProperties'
+import MediasComponent from './MediasComponent'
+
 export default {
     components: {
         // ImagesModal,
         // CreateLinkModal,
         // ImageProperties
+        MediasComponent,
     },
     props: ['formContent'],
     created() {},
@@ -94,6 +106,7 @@ export default {
             selectedText: '',
             focused: false,
             selRange: null,
+            dialog: false,
         }
     },
     computed: {},
@@ -112,6 +125,7 @@ export default {
             console.log('selectElement: ', event)
             const element = event.target.tagName.toLowerCase()
             console.log('element: ', element)
+            // console.log('element.selectionStart: ', element.selectionStart)
             if (element === 'img') {
                 console.log('img!')
                 this.selectedImageNode = event.target
@@ -140,19 +154,26 @@ export default {
         },
         openImagesModal() {
             console.log('openImagesModal')
-            this.showImagesModal = true
-            setTimeout(() => {
-                this.$bvModal.show('imagesModal')
-            }, 300)
+            this.dialog = true
         },
-        openDocumentsModal() {
+        onAddImage(image) {
+            try {
+                console.log('onAddImage image: ', image)
+                this.dialog = false
+                this.$refs.textBox.focus()
+                this.formatDoc('insertHtml', `<img src="/medias${image.path}" width="100%">`)
+            } catch (error) {
+                console.log('error: ', error)
+            }
+        },
+        TOBEDELETED_openDocumentsModal() {
             console.log('openDocumentsModal')
             this.showDocumentsModal = true
             setTimeout(() => {
                 this.$bvModal.show('documentsModal')
             }, 300)
         },
-        openCreateLinkModal() {
+        TOBEDELETED_openCreateLinkModal() {
             console.log('openCreateLinkModal')
             this.selectedText = window.getSelection().toString() || 'Lien'
             this.selRange = this.saveSelection()
@@ -161,19 +182,19 @@ export default {
                 this.$bvModal.show('createLinkModal')
             }, 300)
         },
-        insertImage(filePath) {
-            console.log('insertImage2: ', filePath)
+        TOBEDELETED_insertImage(filePath) {
+            console.log('insertImage: ', filePath)
 
             this.showModal = false
-            // const image = 'http://dummyimage.com/160x90'
-            const image = `/images/${filePath}`
+            const image = 'http://dummyimage.com/160x90'
+            // const image = `/images/${filePath}`
             this.formatDoc('insertImage', image)
         },
-        insertDocument(filePath, fileType, fileName) {
+        TOBEDELETED_insertDocument(filePath, fileType, fileName) {
             console.log('insertDocument', filePath, fileType, fileName)
             this.formatDoc('insertHTML', `<a href="/documents/${filePath}" type="${fileType}" title="${fileName}" target="_blank">${fileName}</a>`)
         },
-        insertLink({ linkType, linkPage }) {
+        TOBEDELETED_insertLink({ linkType, linkPage }) {
             console.log('insertLink', linkType, linkPage)
             let link
             if (linkType === 'external') {
@@ -189,7 +210,7 @@ export default {
             document.execCommand(sCmd, false, sValue)
         },
         // Insert link persist selection
-        saveSelection() {
+        TOBEDELETD_saveSelection() {
             if (window.getSelection) {
                 let sel
                 sel = window.getSelection()
@@ -201,7 +222,7 @@ export default {
             }
             return null
         },
-        restoreSelection(range) {
+        TOBEDELETED_restoreSelection(range) {
             if (range) {
                 if (window.getSelection) {
                     let sel

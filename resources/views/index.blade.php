@@ -32,14 +32,14 @@
     <v-app id="app" v-cloak style="border: 0px solid red">
         <navbar-component></navbar-component>
         <v-main>
-            <v-row no-gutters class="mb-4" id="slider">
+            <v-row no-gutters class="mb-10" id="slider">
                 <v-col cols="12">
                     <carousel-component></carousel-component>
                 </v-col>
             </v-row>
             <a href="#welcome"></a>
             @if ($content)
-            <v-row no-gutters id="welcome" justify="center" align="center">
+            <v-row no-gutters id="welcome" justify="center" align="center" class="mb-5">
                 <v-col cols="12" sm="6" md="6" class="px-4">
                     {!! $content->content !!}
                 </v-col>

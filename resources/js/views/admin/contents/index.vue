@@ -26,9 +26,10 @@
                             <td>
                                 {{ item.section }}
                             </td>
-                            <td>
+                            <!-- <td style="border: 0px solid green;">
                                 <div v-html="truncate(item.content, 50)"></div>
-                            </td>
+                                <div>{{ truncate(item.content, 20) }}</div>
+                            </td> -->
                             <td>
                                 <v-chip small color="success" v-if="item.is_published">Oui</v-chip>
                                 <v-chip small color="warning" v-else>Non</v-chip>

@@ -1,6 +1,6 @@
 <template>
     <v-main>
-        <v-row no-gutters justify="center" id="contact" class="px-0" style="border: 0px solid orange">
+        <v-row no-gutters justify="center" id="contact" class="mb-10 px-0" style="border: 0px solid orange">
             <v-col cols="12" md="6" class="pr-5">
                 <!-- <GmapMap :center="{ lat: 46.4776, lng: 6.4272 }" :zoom="14" map-type-id="terrain" style="width: 100%; height: 300px">
                     <GmapMarker :key="index" v-for="(m, index) in markers" :position="m.position" :clickable="true" :draggable="true" @click="center = m.position" />

@@ -1,5 +1,5 @@
 <template>
-    <v-row no-gutters justify="center" id="about" class="my-10">
+    <v-row no-gutters justify="center" id="about" class="mb-10">
         <v-col cols="12" sm="6" md="4" class="px-4" style="border: 0px dashed pink">
             <slider-component :slider="slider" :interval="3000" :showArrows="false" style="margin: 0em" />
         </v-col>

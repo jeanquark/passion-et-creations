@@ -42,9 +42,9 @@ export default {
                 },
             ],
             form: new Form({
-                name: 'New name',
-                content: '<b>New content</b>',
-                section: 'portrait',
+                name: '',
+                content: '',
+                section: 'info',
                 is_published: false,
             }),
             sections: [

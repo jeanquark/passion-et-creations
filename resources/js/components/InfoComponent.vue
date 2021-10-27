@@ -1,6 +1,6 @@
 <template>
-    <v-main class="my-0 py-0" v-if="contents.length > 0">
-        <v-row no-gutters justify="center" id="info" class="my-5">
+    <v-main class="mb-10 py-0" v-if="contents.length > 0">
+        <v-row no-gutters justify="center" id="info" class="">
             <h2 class="text-center my-2" style="color: #c49a6c">Info</h2>
             <!-- <v-col cols="12" sm="6" md="6" class="px-4">
                 <h2 class="text-center my-2" style="color: #c49a6c;">Info</h2>
