@@ -21,14 +21,21 @@
             </v-col> -->
         </v-row>
         <v-row no-gutters justify="center">
-            <v-col cols="12" sm="6" md="5" class="pa-4" v-for="content in contents" :key="content.id">
-                <v-card>
-                    <v-card-text>
-                        <div v-html="content.content"></div>
+            <v-col cols="12" sm="6" md="5" class="pa-4" v-for="(content, index) in contents" :key="content.id">
+                <v-card max-height="500" @click="openDialog(index)">
+                    <v-card-text class="text-center" style="">
+                        <div style="border: 0px solid lime; max-width: 100%; max-height: 450px; overflow: hidden">
+                            <div v-html="content.content"></div>
+                        </div>
                     </v-card-text>
                 </v-card>
             </v-col>
         </v-row>
+        <v-dialog v-model="dialog" width="80%">
+            <v-sheet class="text-center">
+                <div v-html="selectedContent"></div>
+            </v-sheet>
+        </v-dialog>
     </v-main>
 </template>
 
@@ -52,7 +59,7 @@ export default {
                         console.log('clicked')
                         console.log('document.activeElement.id: ', document.activeElement)
                         // Increment clicks on video
-                        const element = this.contents.find(content => content.content.includes('https://www.rts.ch/play/embed'))
+                        const element = this.contents.find((content) => content.content.includes('https://www.rts.ch/play/embed'))
                         console.log('element: ', element)
                         if (element) {
                             this.$store.dispatch('statistics/incrementCounter', {
@@ -68,7 +75,10 @@ export default {
         )
     },
     data() {
-        return {}
+        return {
+            dialog: false,
+            selectedContent: null,
+        }
     },
     computed: {
         contents() {
@@ -76,8 +86,14 @@ export default {
         },
     },
     methods: {
-        abc() {
-            console.log('abc')
+        openDialog(index) {
+            try {
+                console.log('openDialog')
+                this.dialog = true
+                this.selectedContent = this.contents[index]['content']
+            } catch (error) {
+                console.log('error: ', error)
+            }
         },
     },
 }

@@ -26,10 +26,11 @@
                             <td>
                                 {{ item.section }}
                             </td>
-                            <!-- <td style="border: 0px solid green;">
-                                <div v-html="truncate(item.content, 50)"></div>
-                                <div>{{ truncate(item.content, 20) }}</div>
-                            </td> -->
+                            <td style="">
+                                <div style="max-height: 40px; max-width: 100px; overflow: hidden">
+                                    <div v-html="truncate(item.content, 50)" style=""></div>
+                                </div>
+                            </td>
                             <td>
                                 <v-chip small color="success" v-if="item.is_published">Oui</v-chip>
                                 <v-chip small color="warning" v-else>Non</v-chip>
@@ -103,7 +104,7 @@ export default {
     },
     methods: {
         truncate(str, n) {
-            return (str.length > n) ? str.substr(0, n-1) + '&hellip;' : str;
+            return str.length > n ? str.substr(0, n - 1) + '&hellip;' : str
         },
         async deleteContent(id) {
             try {
