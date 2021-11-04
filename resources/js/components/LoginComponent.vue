@@ -5,7 +5,7 @@
 
         <v-container fill-height>
             <v-row align="center" justify="center">
-                <v-col cols="12" sm="8" md="4">
+                <v-col cols="12" sm="8" md="5">
                     <v-card class="elevation-12">
                         <v-toolbar class="background-image">
                             <v-toolbar-title class="primary-color">Login</v-toolbar-title>
@@ -32,7 +32,9 @@
                                         <!-- <v-btn color="#c49a6c" class="white--text" :loading="form.busy" @click="login">Login</v-btn> -->
                                         <v-btn type="submit" color="#c49a6c" class="white--text" :loading="form.busy">Login</v-btn>
                                     </v-col>
-                                    <v-col cols="4"> </v-col>
+                                    <v-col cols="4">
+                                        <v-btn x-small class="" @click.stop="loginAlt()">Login alt</v-btn>
+                                    </v-col>
                                     <v-col cols="12" class="d-flex justify-end mt-3">
                                         <small><a href="/forgot-password">Mot de passe oublié &rarr;</a></small>
                                     </v-col>
@@ -59,16 +61,32 @@ export default {
         return {
             form: new Form({
                 email: '',
-                password: ''
-            })
+                password: '',
+            }),
         }
     },
     computed: {},
     methods: {
+        async loginAlt() {
+            try {
+                const response = await axios.get('/sanctum/csrf-cookie')
+                console.log('response: ', response)
+                const response2 = await axios.post('login', {
+                    email: this.form.email,
+                    password: this.form.password,
+                })
+                console.log('response2: ', response2)
+                // this.$router.push('/admin/index')
+                location.href = '/admin/index'
+            } catch (error) {
+                console.log('error: ', error.response)
+                alert(`login error! ${error.response.data.message}`)
+            }
+        },
         async login() {
             try {
                 const data = await this.$store.dispatch('auth/login', this.form)
-                console.log('data2: ', data)
+                console.log('data: ', data)
                 // console.log('data: ', data)
                 // const response = await this.form.post("/login");
                 // console.log('response: ', response)
@@ -78,10 +96,9 @@ export default {
                 console.log('error: ', error)
                 console.log('error.response: ', error.response)
                 console.log('error.response.data: ', error.response.data)
-                
             }
-        }
-    }
+        },
+    },
 }
 </script>
 
