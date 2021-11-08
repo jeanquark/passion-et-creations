@@ -88,7 +88,7 @@
 // import CreateLinkModal from './CreateLinkModal'
 // import ImageProperties from '~/components/ImageProperties'
 import MediasComponent from './MediasComponent'
-
+const later = (delay, value) => new Promise(resolve => setTimeout(resolve, delay, value))
 export default {
     components: {
         // ImagesModal,
@@ -200,7 +200,18 @@ export default {
                 console.log('error: ', error)
             }
         },
-        onAddImage3(image) {
+        async onAddImage3(image) {
+            try {
+                console.log('onAddImage3 image3: ', image)
+                this.dialog = false
+                await later(200, document.getElementById('textBox').focus())
+                console.log('Done!')
+                this.formatDoc('insertImage', `/medias${image.path}`)
+            } catch (error) {
+                console.log('error: ', error)
+            }
+        },
+        onAddImage4(image) {
             try {
                 console.log('onAddImage3 image: ', image)
                 this.dialog = false
