@@ -41,8 +41,14 @@
                 <v-icon>mdi-link</v-icon>
             </v-btn> -->
 
-            <v-btn color="primary" class="" @click.prevent="openImagesModal">
+            <v-btn color="primary" class="" @click.prevent="openImagesModal1">
                 <v-icon>mdi-image</v-icon>
+            </v-btn>
+            <v-btn color="primary" class="" @click.prevent="openImagesModal2">
+                <v-icon color="red">mdi-image</v-icon>
+            </v-btn>
+            <v-btn color="primary" class="" @click.prevent="openImagesModal3">
+                <v-icon color="blue">mdi-image</v-icon>
             </v-btn>
 
             <v-btn color="dark" class="" @click="toggleShowHTML">
@@ -50,11 +56,11 @@
                 <v-icon v-else>mdi-code-braces</v-icon>
             </v-btn>
 
-            <v-row no-gutters class="justify-content-center my-2" v-if="selectedImageNode">
+            <!-- <v-row no-gutters class="justify-content-center my-2" v-if="selectedImageNode">
                 <v-col cols="12">
-                    <!-- <image-properties :selectedImageProps="selectedImageProps" @updateSelectedImageProperties="updateSelectedImageProperties" /> -->
+                    <image-properties :selectedImageProps="selectedImageProps" @updateSelectedImageProperties="updateSelectedImageProperties" />
                 </v-col>
-            </v-row>
+            </v-row> -->
 
             <div contenteditable="true" id="textBox" ref="textBox" v-html="content" @focus="focused = true" @blur="focused = false" @click="selectElement" class="mt-1" v-if="!showHTML"></div>
 
@@ -65,8 +71,14 @@
 
         <!-- <images-modal @insertImage="insertImage" @closeImagesModal="showImagesModal = false" v-if="showImagesModal" /> -->
         <!-- <create-link-modal :selectedText="selectedText" @insertLink="insertLink" @closeLinkModal="showCreateLinkModal = false" v-if="showCreateLinkModal" /> -->
-        <v-dialog v-model="dialog" width="80%">
-            <medias-component @addFile="onAddImage"></medias-component>
+        <v-dialog v-model="dialog" width="80%" v-if="option == 1">
+            <medias-component @addFile="onAddImage1"></medias-component>
+        </v-dialog>
+        <v-dialog v-model="dialog" width="80%" v-if="option == 2">
+            <medias-component @addFile="onAddImage2"></medias-component>
+        </v-dialog>
+        <v-dialog v-model="dialog" width="80%" v-if="option == 3">
+            <medias-component @addFile="onAddImage3"></medias-component>
         </v-dialog>
     </div>
 </template>
@@ -107,6 +119,7 @@ export default {
             focused: false,
             selRange: null,
             dialog: false,
+            option: 1,
         }
     },
     computed: {},
@@ -152,16 +165,47 @@ export default {
                 this.selectedImageNode.style.float = value
             }
         },
-        openImagesModal() {
-            console.log('openImagesModal')
+        openImagesModal1() {
+            console.log('openImagesModal1')
+            this.option = 1
             this.dialog = true
         },
-        onAddImage(image) {
+        openImagesModal2() {
+            console.log('openImagesModal2')
+            this.option = 2
+            this.dialog = true
+        },
+        openImagesModal3() {
+            console.log('openImagesModal3')
+            this.option = 3
+            this.dialog = true
+        },
+        onAddImage1(image) {
             try {
-                console.log('onAddImage image: ', image)
+                console.log('onAddImage1 image: ', image)
                 this.dialog = false
                 this.$refs.textBox.focus()
                 this.formatDoc('insertHtml', `<img src="/medias${image.path}" width="100%">`)
+            } catch (error) {
+                console.log('error: ', error)
+            }
+        },
+        onAddImage2(image) {
+            try {
+                console.log('onAddImage2 image: ', image)
+                this.dialog = false
+                this.$refs.textBox.focus()
+                this.formatDoc('insertImage', `/medias${image.path}`)
+            } catch (error) {
+                console.log('error: ', error)
+            }
+        },
+        onAddImage3(image) {
+            try {
+                console.log('onAddImage3 image: ', image)
+                this.dialog = false
+                document.getElementById('textBox').focus()
+                this.formatDoc('insertImage', `/medias${image.path}`)
             } catch (error) {
                 console.log('error: ', error)
             }

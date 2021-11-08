@@ -99,6 +99,18 @@ export default {
         },
         async login() {
             try {
+                await axios.get('/sanctum/csrf-cookie')
+                const data = await this.$store.dispatch('auth/login', this.form)
+                console.log('data: ', data)
+                location.href = '/admin/index'
+            } catch (error) {
+                console.log('error: ', error)
+                console.log('error.response: ', error.response)
+                console.log('error.response.data: ', error.response.data)
+            }
+        },
+        async login_old() {
+            try {
                 const data = await this.$store.dispatch('auth/login', this.form)
                 console.log('data: ', data)
                 // console.log('data: ', data)
