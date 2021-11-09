@@ -33,8 +33,6 @@
                                         <v-btn type="submit" color="#c49a6c" class="white--text" :loading="form.busy">Login</v-btn>
                                     </v-col>
                                     <v-col cols="4">
-                                        <!-- <v-btn x-small class="" @click.stop="loginAlt2()">L2</v-btn>
-                                        <v-btn x-small class="" @click.stop="loginAlt3()">L3</v-btn> -->
                                     </v-col>
                                     <v-col cols="12" class="d-flex justify-end mt-3">
                                         <small><a href="/forgot-password">Mot de passe oublié &rarr;</a></small>
@@ -68,35 +66,6 @@ export default {
     },
     computed: {},
     methods: {
-        // async loginAlt2() {
-        //     try {
-        //         const response = await axios.get('/sanctum/csrf-cookie')
-        //         console.log('response: ', response)
-        //         const response2 = await axios.post('login', {
-        //             email: this.form.email,
-        //             password: this.form.password,
-        //         })
-        //         console.log('response2: ', response2)
-        //         // this.$router.push('/admin/index')
-        //         location.href = '/admin/index'
-        //     } catch (error) {
-        //         console.log('error: ', error.response)
-        //         alert(`login error! ${error.response.data.message}`)
-        //     }
-        // },
-        // async loginAlt3() {
-        //     try {
-        //         const response = await axios.get('/sanctum/csrf-cookie')
-        //         console.log('response: ', response)
-        //         const response2 = await this.form.post('/login')
-        //         console.log('response2: ', response2)
-        //         // this.$router.push('/admin/index')
-        //         location.href = '/admin/index'
-        //     } catch (error) {
-        //         console.log('error: ', error)
-        //         console.log('error.response: ', error.response)
-        //     }
-        // },
         async login() {
             try {
                 await axios.get('/sanctum/csrf-cookie')

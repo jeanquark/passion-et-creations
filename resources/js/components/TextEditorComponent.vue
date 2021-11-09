@@ -44,12 +44,12 @@
             <v-btn color="primary" class="" @click.prevent="openImagesModal1">
                 <v-icon>mdi-image</v-icon>
             </v-btn>
-            <v-btn color="primary" class="" @click.prevent="openImagesModal2">
+            <!-- <v-btn color="primary" class="" @click.prevent="openImagesModal2">
                 <v-icon color="red">mdi-image</v-icon>
             </v-btn>
             <v-btn color="primary" class="" @click.prevent="openImagesModal3">
                 <v-icon color="blue">mdi-image</v-icon>
-            </v-btn>
+            </v-btn> -->
 
             <v-btn color="dark" class="" @click="toggleShowHTML">
                 <v-icon v-if="showHTML">mdi-eye</v-icon>
@@ -80,6 +80,12 @@
         <v-dialog v-model="dialog" width="80%" v-if="option == 3">
             <medias-component @addFile="onAddImage3"></medias-component>
         </v-dialog>
+        <v-dialog v-model="dialog" width="80%" v-if="option == 4">
+            <medias-component @addFile="onAddImage4"></medias-component>
+        </v-dialog>
+        <v-dialog v-model="dialog" width="80%" v-if="option == 5">
+            <medias-component @addFile="onAddImage5"></medias-component>
+        </v-dialog>
     </div>
 </template>
 
@@ -88,7 +94,7 @@
 // import CreateLinkModal from './CreateLinkModal'
 // import ImageProperties from '~/components/ImageProperties'
 import MediasComponent from './MediasComponent'
-const later = (delay, value) => new Promise(resolve => setTimeout(resolve, delay, value))
+const later = (delay, value) => new Promise((resolve) => setTimeout(resolve, delay, value))
 export default {
     components: {
         // ImagesModal,
@@ -180,6 +186,16 @@ export default {
             this.option = 3
             this.dialog = true
         },
+        openImagesModal4() {
+            console.log('openImagesModal4')
+            this.option = 4
+            this.dialog = true
+        },
+        openImagesModal5() {
+            console.log('openImagesModal5')
+            this.option = 5
+            this.dialog = true
+        },
         onAddImage1(image) {
             try {
                 console.log('onAddImage1 image: ', image)
@@ -204,7 +220,7 @@ export default {
             try {
                 console.log('onAddImage3 image3: ', image)
                 this.dialog = false
-                await later(200, document.getElementById('textBox').focus())
+                await later(2000, document.getElementById('textBox').focus())
                 console.log('Done!')
                 this.formatDoc('insertImage', `/medias${image.path}`)
             } catch (error) {
@@ -217,6 +233,23 @@ export default {
                 this.dialog = false
                 document.getElementById('textBox').focus()
                 this.formatDoc('insertImage', `/medias${image.path}`)
+            } catch (error) {
+                console.log('error: ', error)
+            }
+        },
+        onAddImage5(image) {
+            try {
+                // var sel = document.selection
+                var sel = document.getElementById('textBox').focus()
+                console.log('sel: ', sel)
+                if (sel) {
+                    var textRange = sel.createRange()
+                    this.formatDoc('insertImage', false, 'http://jsfiddle.net/img/logo.png')
+                    textRange.collapse(false)
+                    textRange.select()
+                } else {
+                    this.formatDoc('insertImage', false, 'http://jsfiddle.net/img/logo.png')
+                }
             } catch (error) {
                 console.log('error: ', error)
             }
