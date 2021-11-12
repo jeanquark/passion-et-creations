@@ -44,7 +44,11 @@
                     {!! $content->content !!}
                 </v-col>
                 <v-col cols="12" sm="6" md="4" class="px-4">
-                    <v-img src="/images/welcome.jpg" width="100%"></v-img>
+                    @if ($image)
+                        {!! $image->content !!}     
+                    @else
+                        <v-img src="/images/welcome.jpg" width="100%"></v-img>
+                    @endif
                 </v-col>
             </v-row>
             @endif

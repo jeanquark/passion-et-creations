@@ -42,6 +42,7 @@ class ContentsTableSeeder extends Seeder
             ['name' => 'Point de vente', 'section' => 'contact', 'content' => '[Addresse du point de vente]', 'is_published' => false, 'created_at' => new DateTime, 'updated_at' => new DateTime],
             ['name' => 'Emission RTS', 'section' => 'info', 'content' => '<iframe width="100%" height="300" src="https://www.rts.ch/play/embed?urn=urn:rts:video:12405396&subdivisions=false" allowfullscreen allow="geolocation *; autoplay; encrypted-media"></iframe><p>Participation à l\'émission de la RTS "Bon débarras" diffusée le 13 août 2021 (46 min).</p>', 'is_published' => true, 'created_at' => new DateTime, 'updated_at' => new DateTime],
             ['name' => 'Women Up', 'section' => 'info', 'content' => '<img src="/medias/images/womenup.jpg" width="100%" />', 'is_published' => true, 'created_at' => new DateTime, 'updated_at' => new DateTime],
+            ['name' => 'Accueil Image', 'section' => 'accueil-image', 'content' => '<v-img src="/medias/400x400.jpg" width="100%"></v-img>', 'is_published' => false, 'created_at' => new DateTime, 'updated_at' => new DateTime],
         );
         DB::table('contents')->insert($contents);
     }

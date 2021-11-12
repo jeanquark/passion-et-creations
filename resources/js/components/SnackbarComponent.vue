@@ -3,7 +3,7 @@
         <span v-html="snackbar.content"></span>
         <v-btn small link outlined color="#c49a6c" to="/login" class="ml-2" v-if="snackbar.type === 'session_expired'">Login</v-btn>
         <template v-slot:action="{ attrs }">
-            <v-btn icon color="red" text v-bind="attrs" @click="$store.commit('snackbars/SET_SNACKBAR', { color: snackbar.color ? snackbar.color : 'dark', show: false })">
+            <v-btn icon color="#c49a6c" text v-bind="attrs" @click="$store.commit('snackbars/SET_SNACKBAR', { color: snackbar.color ? snackbar.color : 'dark', show: false })">
                 <v-icon>mdi-close</v-icon>
             </v-btn>
         </template>

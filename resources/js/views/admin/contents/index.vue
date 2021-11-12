@@ -41,7 +41,7 @@
                             <td style="white-space: nowrap">
                                 <v-btn small color="success" :to="`/admin/contents/${item.id}`">Montrer</v-btn>
                                 <v-btn small color="info" :to="`/admin/contents/${item.id}/edit`">Editer</v-btn>
-                                <v-btn small color="error" @click="deleteContent(item.id)">Supprimer</v-btn>
+                                <v-btn small color="error" :disabled="item.section === 'accueil' || item.section === 'accueil-image' || item.section === 'portrait' ? true : false" @click="deleteContent(item.id)" >Supprimer</v-btn>
                             </td>
                         </tr>
                     </template>
