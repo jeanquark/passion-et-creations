@@ -43,14 +43,14 @@
             </v-btn> -->
 
             <v-btn color="primary" class="" @click.prevent="openImagesModal1">
-                <v-icon color="red">mdi-image</v-icon>
+                <v-icon>mdi-image</v-icon>
             </v-btn>
-            <v-btn color="primary" class="" @click.prevent="openImagesModal2">
+            <!-- <v-btn color="primary" class="" @click.prevent="openImagesModal2">
                 <v-icon color="yellow">mdi-image</v-icon>
             </v-btn>
             <v-btn color="primary" class="" @click.prevent="openImagesModal3">
                 <v-icon color="green">mdi-image</v-icon>
-            </v-btn>
+            </v-btn> -->
 
             <v-btn color="dark" class="" @click="toggleShowHTML">
                 <v-icon v-if="showHTML">mdi-eye</v-icon>
@@ -175,6 +175,19 @@ export default {
         },
         openImagesModal1() {
             console.log('openImagesModal1')
+
+            let sel, range, html
+            if (window.getSelection) {
+                sel = window.getSelection()
+                if (sel.getRangeAt && sel.rangeCount) {
+                    this.range = sel.getRangeAt(0)
+                }
+            } else if (document.selection && document.selection.createRange) {
+                this.range = document.selection.createRange()
+            }
+            this.option = 3
+            this.dialog = true
+
             this.option = 1
             this.dialog = true
         },
@@ -212,8 +225,36 @@ export default {
             try {
                 console.log('onAddImage1 image: ', image)
                 this.dialog = false
-                this.$refs.textBox.focus()
-                this.formatDoc('insertHtml', `<img src="/medias${image.path}" width="100%">`)
+                
+                let sel
+                if (window.getSelection) {
+                    sel = window.getSelection()
+                    if (sel.getRangeAt && sel.rangeCount) {
+                        this.range.deleteContents()
+
+                        var el = document.createElement('div')
+                        el.innerHTML = `<img src="/medias/${image.path}" width="100%" />`
+                        var frag = document.createDocumentFragment(),
+                            node,
+                            lastNode
+                        while ((node = el.firstChild)) {
+                            lastNode = frag.appendChild(node)
+                        }
+                        this.range.insertNode(frag)
+
+                        // Preserve the selection
+                        if (lastNode) {
+                            this.range = this.range.cloneRange()
+                            this.range.setStartAfter(lastNode)
+                            this.range.collapse(true)
+                            sel.removeAllRanges()
+                            sel.addRange(this.range)
+                        }
+                    }
+                } else if (document.selection && document.selection.createRange) {
+                    this.range.pasteHTML(`<img src="/medias/${image.path}" width="100%" />`)
+                    this.range.select()
+                }
             } catch (error) {
                 console.log('error: ', error)
             }
