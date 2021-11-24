@@ -4,6 +4,7 @@
         <!-- content: {{ content }}<br /><br /> -->
         <!-- selectedText: {{ selectedText }}<br /><br /> -->
         <!-- selRange: {{ selRange }}<br /><br /> -->
+        range: {{ range }}<br /><br />
         <v-form>
             <v-btn color="primary" class="" @click.prevent="formatDoc('bold')">
                 <v-icon>mdi-format-bold</v-icon>
@@ -45,10 +46,10 @@
                 <v-icon>mdi-image</v-icon>
             </v-btn>
             <!-- <v-btn color="primary" class="" @click.prevent="openImagesModal2">
-                <v-icon color="red">mdi-image</v-icon>
+                <v-icon color="yellow">mdi-image</v-icon>
             </v-btn>
             <v-btn color="primary" class="" @click.prevent="openImagesModal3">
-                <v-icon color="blue">mdi-image</v-icon>
+                <v-icon color="green">mdi-image</v-icon>
             </v-btn> -->
 
             <v-btn color="dark" class="" @click="toggleShowHTML">
@@ -94,13 +95,13 @@
 // import CreateLinkModal from './CreateLinkModal'
 // import ImageProperties from '~/components/ImageProperties'
 import MediasComponent from './MediasComponent'
-const later = (delay, value) => new Promise((resolve) => setTimeout(resolve, delay, value))
+const later = (delay, value) => new Promise(resolve => setTimeout(resolve, delay, value))
 export default {
     components: {
         // ImagesModal,
         // CreateLinkModal,
         // ImageProperties
-        MediasComponent,
+        MediasComponent
     },
     props: ['formContent'],
     created() {},
@@ -119,13 +120,14 @@ export default {
             selectedImageProps: {
                 width: 0,
                 height: 0,
-                style: {},
+                style: {}
             },
             selectedText: '',
             focused: false,
             selRange: null,
             dialog: false,
             option: 1,
+            range: null
         }
     },
     computed: {},
@@ -140,8 +142,8 @@ export default {
             this.$emit('toggleShowHTML', this.showHTML)
         },
         selectElement(event) {
-            this.selectedImageNode = null
             console.log('selectElement: ', event)
+            this.selectedImageNode = null
             const element = event.target.tagName.toLowerCase()
             console.log('element: ', element)
             // console.log('element.selectionStart: ', element.selectionStart)
@@ -173,6 +175,19 @@ export default {
         },
         openImagesModal1() {
             console.log('openImagesModal1')
+
+            let sel, range, html
+            if (window.getSelection) {
+                sel = window.getSelection()
+                if (sel.getRangeAt && sel.rangeCount) {
+                    this.range = sel.getRangeAt(0)
+                }
+            } else if (document.selection && document.selection.createRange) {
+                this.range = document.selection.createRange()
+            }
+            this.option = 3
+            this.dialog = true
+
             this.option = 1
             this.dialog = true
         },
@@ -183,6 +198,16 @@ export default {
         },
         openImagesModal3() {
             console.log('openImagesModal3')
+
+            let sel, range, html
+            if (window.getSelection) {
+                sel = window.getSelection()
+                if (sel.getRangeAt && sel.rangeCount) {
+                    this.range = sel.getRangeAt(0)
+                }
+            } else if (document.selection && document.selection.createRange) {
+                this.range = document.selection.createRange()
+            }
             this.option = 3
             this.dialog = true
         },
@@ -200,8 +225,36 @@ export default {
             try {
                 console.log('onAddImage1 image: ', image)
                 this.dialog = false
-                this.$refs.textBox.focus()
-                this.formatDoc('insertHtml', `<img src="/medias${image.path}" width="100%">`)
+                
+                let sel
+                if (window.getSelection) {
+                    sel = window.getSelection()
+                    if (sel.getRangeAt && sel.rangeCount) {
+                        this.range.deleteContents()
+
+                        var el = document.createElement('div')
+                        el.innerHTML = `<img src="/medias/${image.path}" width="100%" />`
+                        var frag = document.createDocumentFragment(),
+                            node,
+                            lastNode
+                        while ((node = el.firstChild)) {
+                            lastNode = frag.appendChild(node)
+                        }
+                        this.range.insertNode(frag)
+
+                        // Preserve the selection
+                        if (lastNode) {
+                            this.range = this.range.cloneRange()
+                            this.range.setStartAfter(lastNode)
+                            this.range.collapse(true)
+                            sel.removeAllRanges()
+                            sel.addRange(this.range)
+                        }
+                    }
+                } else if (document.selection && document.selection.createRange) {
+                    this.range.pasteHTML(`<img src="/medias/${image.path}" width="100%" />`)
+                    this.range.select()
+                }
             } catch (error) {
                 console.log('error: ', error)
             }
@@ -211,7 +264,7 @@ export default {
                 console.log('onAddImage2 image: ', image)
                 this.dialog = false
                 this.$refs.textBox.focus()
-                this.formatDoc('insertImage', `/medias${image.path}`)
+                this.insertTextAtCursor(`<img src="/medias/${image.path}" width="100%" />`)
             } catch (error) {
                 console.log('error: ', error)
             }
@@ -220,9 +273,36 @@ export default {
             try {
                 console.log('onAddImage3 image3: ', image)
                 this.dialog = false
-                await later(2000, document.getElementById('textBox').focus())
-                console.log('Done!')
-                this.formatDoc('insertImage', `/medias${image.path}`)
+
+                let sel
+                if (window.getSelection) {
+                    sel = window.getSelection()
+                    if (sel.getRangeAt && sel.rangeCount) {
+                        this.range.deleteContents()
+
+                        var el = document.createElement('div')
+                        el.innerHTML = `<img src="/medias/${image.path}" width="100%" />`
+                        var frag = document.createDocumentFragment(),
+                            node,
+                            lastNode
+                        while ((node = el.firstChild)) {
+                            lastNode = frag.appendChild(node)
+                        }
+                        this.range.insertNode(frag)
+
+                        // Preserve the selection
+                        if (lastNode) {
+                            this.range = this.range.cloneRange()
+                            this.range.setStartAfter(lastNode)
+                            this.range.collapse(true)
+                            sel.removeAllRanges()
+                            sel.addRange(this.range)
+                        }
+                    }
+                } else if (document.selection && document.selection.createRange) {
+                    this.range.pasteHTML(`<img src="/medias/${image.path}" width="100%" />`)
+                    this.range.select()
+                }
             } catch (error) {
                 console.log('error: ', error)
             }
@@ -252,74 +332,6 @@ export default {
                 }
             } catch (error) {
                 console.log('error: ', error)
-            }
-        },
-        TOBEDELETED_openDocumentsModal() {
-            console.log('openDocumentsModal')
-            this.showDocumentsModal = true
-            setTimeout(() => {
-                this.$bvModal.show('documentsModal')
-            }, 300)
-        },
-        TOBEDELETED_openCreateLinkModal() {
-            console.log('openCreateLinkModal')
-            this.selectedText = window.getSelection().toString() || 'Lien'
-            this.selRange = this.saveSelection()
-            this.showCreateLinkModal = true
-            setTimeout(() => {
-                this.$bvModal.show('createLinkModal')
-            }, 300)
-        },
-        TOBEDELETED_insertImage(filePath) {
-            console.log('insertImage: ', filePath)
-
-            this.showModal = false
-            const image = 'http://dummyimage.com/160x90'
-            // const image = `/images/${filePath}`
-            this.formatDoc('insertImage', image)
-        },
-        TOBEDELETED_insertDocument(filePath, fileType, fileName) {
-            console.log('insertDocument', filePath, fileType, fileName)
-            this.formatDoc('insertHTML', `<a href="/documents/${filePath}" type="${fileType}" title="${fileName}" target="_blank">${fileName}</a>`)
-        },
-        TOBEDELETED_insertLink({ linkType, linkPage }) {
-            console.log('insertLink', linkType, linkPage)
-            let link
-            if (linkType === 'external') {
-                link = `<a href="${linkPage.external}">${this.selectedText}</a>`
-            } else {
-                link = `<router-link to="/${linkPage.internal.slug}"><span class="link">${this.selectedText}</span></router-link>`
-            }
-            this.restoreSelection(this.selRange)
-            document.getElementById('textBox').focus()
-            this.insertTextAtCursor(link)
-        },
-        formatDoc(sCmd, sValue) {
-            document.execCommand(sCmd, false, sValue)
-        },
-        // Insert link persist selection
-        TOBEDELETD_saveSelection() {
-            if (window.getSelection) {
-                let sel
-                sel = window.getSelection()
-                if (sel.getRangeAt && sel.rangeCount) {
-                    return sel.getRangeAt(0)
-                }
-            } else if (document.selection && document.selection.createRange) {
-                return document.selection.createRange()
-            }
-            return null
-        },
-        TOBEDELETED_restoreSelection(range) {
-            if (range) {
-                if (window.getSelection) {
-                    let sel
-                    sel = window.getSelection()
-                    sel.removeAllRanges()
-                    sel.addRange(range)
-                } else if (document.selection && range.select) {
-                    range.select()
-                }
             }
         },
         insertTextAtCursor(text) {
@@ -355,7 +367,23 @@ export default {
                 range.select()
             }
         },
-    },
+        insertTextAtCursor2(myField, myValue) {
+            //IE support
+            if (document.selection) {
+                myField.focus()
+                sel = document.selection.createRange()
+                sel.text = myValue
+            }
+            //MOZILLA and others
+            else if (myField.selectionStart || myField.selectionStart == '0') {
+                var startPos = myField.selectionStart
+                var endPos = myField.selectionEnd
+                myField.value = myField.value.substring(0, startPos) + myValue + myField.value.substring(endPos, myField.value.length)
+            } else {
+                myField.value += myValue
+            }
+        }
+    }
 }
 </script>
 
