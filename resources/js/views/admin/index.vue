@@ -72,7 +72,8 @@
                     >
                     Dernière compilation: {{ lastBuildDate | moment('ddd DD MMM YYYY HH:mm') }}<br />
                     Webmaster: Jean-Marc Kleger<br />
-                    jm.kleger@gmail.com
+                    jm.kleger@gmail.com<br />
+                    14:33
                 </small>
             </v-col>
         </v-row>
